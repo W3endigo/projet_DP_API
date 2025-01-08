@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: projet_DP_API
+  datasource:
+    url: jdbc:mysql://localhost:3306/bdd_projet_dp
+    username: projet_dp_user
+    password: projet_dp_pwd
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  flyway:
+    enabled: true
+    locations: classpath:db/migrations
+
+  profiles:
+    active: '@environment@'
+
+server:
+  port: 8082
