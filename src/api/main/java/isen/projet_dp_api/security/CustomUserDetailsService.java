@@ -13,11 +13,12 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        // Replace this with your actual user retrieval logic
+        // Hardcoded user details for testing
+        // TODO go search for real users in the database
         if ("test@mail.com".equals(email)) {
-            return new User("user", "password", new ArrayList<>());
+            return new User("test@mail.com", "$2a$12$DRYIb0ui/UG4WpXv2dXtiezv/XGtgb7KFtKoSkzDnxSYYJa8r0ZXS", new ArrayList<>());
         } else {
-            throw new UsernameNotFoundException("User not found with mail: " + email);
+            throw new UsernameNotFoundException("User not found with email: " + email);
         }
     }
 }
