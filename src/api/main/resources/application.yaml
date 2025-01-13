@@ -1,6 +1,9 @@
 spring:
   application:
     name: projet_DP_API
+  security:
+    jwt:
+      secret-key: JWT_SECRET=Tp0*FFCrfeb4RJQ^c!yXZ!dVd@2M1rF1@$2^4cby8R3MGp^UgBEsfb2D8Qtk!qgj
   datasource:
     url: jdbc:mysql://localhost:3306/bdd_projet_dp
     username: projet_dp_user
@@ -19,3 +22,9 @@ spring:
 
 server:
   port: 8082
+  error:
+    include-stacktrace: never
+
+springdoc:
+  swagger-ui:
+    path: /
