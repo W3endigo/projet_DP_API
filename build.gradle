@@ -26,6 +26,7 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.batch:spring-batch-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    implementation 'org.springframework.boot:spring-boot-starter'
 
     // Swagger
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.1'
@@ -41,6 +42,12 @@ dependencies {
     runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
     implementation 'org.springframework.boot:spring-boot-starter-security'
 
+    //secrets
+    implementation "me.paulschwarz:spring-dotenv:4.0.0"
+
+    // mail
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+    implementation 'jakarta.mail:jakarta.mail-api:2.1.3' // Jakarta Mail implementation
 }
 
 tasks.named('test') {
