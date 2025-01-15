@@ -1,4 +1,4 @@
-package isen.projet_dp_api.service.email2;
+package isen.projet_dp_api.service;
 
 import lombok.extern.log4j.Log4j2;
 import org.springframework.core.io.FileSystemResource;
@@ -18,13 +18,13 @@ import java.nio.charset.StandardCharsets;
 
 @Service
 @Log4j2
-public class JavaSmtpGmailSenderService {
+public class EmailService {
 
     private final JavaMailSender emailSender;
 
     private final SpringTemplateEngine templateEngine;
 
-    public JavaSmtpGmailSenderService(JavaMailSender emailSender, SpringTemplateEngine templateEngine) {
+    public EmailService(JavaMailSender emailSender, SpringTemplateEngine templateEngine) {
         this.emailSender = emailSender;
         this.templateEngine = templateEngine;
     }
