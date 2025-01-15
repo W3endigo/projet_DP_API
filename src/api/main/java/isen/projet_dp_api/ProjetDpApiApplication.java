@@ -1,7 +1,7 @@
 package isen.projet_dp_api;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import isen.projet_dp_api.service.email2.JavaSmtpGmailSenderService;
+import isen.projet_dp_api.service.EmailService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -19,15 +19,15 @@ import org.thymeleaf.context.Context;
 public class ProjetDpApiApplication {
 
 
-    private final JavaSmtpGmailSenderService senderService;
+    private final EmailService senderService;
 
 
-    public ProjetDpApiApplication(JavaSmtpGmailSenderService senderService) {
+    public ProjetDpApiApplication(EmailService senderService) {
         this.senderService = senderService;
     }
 
     @Operation(summary = "My endpoint", security = @SecurityRequirement(name = "bearerAuth"))
-    @GetMapping("/api/hello")
+    @GetMapping("/hello")
     public String home() {
         return "Hello Docker World";
     }
@@ -40,15 +40,15 @@ public class ProjetDpApiApplication {
     @EventListener(ApplicationReadyEvent.class)
     public void sendMail(){
 //        senderService.sendEmail("labmanagerresearch@gmail.com","This is subject","This is email body");
-        Context context = new Context();
-        context.setVariable("name", "Jossatan");
-        context.setVariable("message", "Benne");
-        context.setVariable("imageResourceName", "exampleImage");
-        try {
-            senderService.sendEmailTemplatePicture("labmanagerresearch@gmail.com", "Subject of the email", "emailTemplate", context, "src/api/main/resources/pictures/icons8-spring-boot-48.png", "exampleImage");
-        } catch (Exception e) {
-           log.error("Error sending email", e);
-        }
+//        Context context = new Context();
+//        context.setVariable("name", "Jossatan");
+//        context.setVariable("message", "Benne");
+//        context.setVariable("imageResourceName", "exampleImage");
+//        try {
+//            senderService.sendEmailTemplatePicture("labmanagerresearch@gmail.com", "Subject of the email", "emailTemplate", context, "src/api/main/resources/pictures/icons8-spring-boot-48.png", "exampleImage");
+//        } catch (Exception e) {
+//           log.error("Error sending email", e);
+//        }
     }
 
 }
