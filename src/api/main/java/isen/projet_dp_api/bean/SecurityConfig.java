@@ -1,4 +1,4 @@
-package isen.projet_dp_api.security;
+package isen.projet_dp_api.bean;
 
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Bean;
@@ -9,11 +9,18 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 @Log4j2
 public class SecurityConfig {
+
+    private final JwtRequestFilter jwtRequestFilter;
+
+    public SecurityConfig(JwtRequestFilter jwtRequestFilter) {
+        this.jwtRequestFilter = jwtRequestFilter;
+    }
 
     @Bean
     @Profile("dev")
@@ -22,12 +29,15 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/**").permitAll() // Autoriser l'accès à Swagger
+                        .requestMatchers("/api/*").permitAll()
+                        .requestMatchers("/hello").authenticated()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                );
+                )
+                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+        ;
 
         return http.build();
     }
