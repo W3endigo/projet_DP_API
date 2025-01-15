@@ -1,4 +1,4 @@
-package isen.projet_dp_api.security;
+package isen.projet_dp_api.bean;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
