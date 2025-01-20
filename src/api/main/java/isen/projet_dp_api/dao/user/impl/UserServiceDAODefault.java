@@ -20,13 +20,15 @@ public class UserServiceDAODefault implements UserServiceDAO {
     }
 
     @Override
-    public UserDAO registerUser(UserDAO userDAO) {
+    public UserDAO registerUser(UserDAO userDAO) throws Exception {
+        if (userRepository.existsById(userDAO.getEmail())) {
+            throw new Exception("User with ID " + userDAO.getEmail() + " already exists");
+        }
         try {
             return userRepository.save(userDAO);
         } catch (JpaObjectRetrievalFailureException e) {
             log.error(e.getMessage());
-            // TODO Rethrow custom exception to be caught by the controller and return a 409 status code
+            throw e; // TODO Rethrow custom exception to be caught by the controller and return a 409 status code
         }
-        return null;
     }
 }

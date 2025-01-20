@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Email Register</title>
+    </head>
+    <body>
+    <div style="font-family: Arial, sans-serif; color: #333; text-align: center; padding: 1.5rem; background-color: #f9f9f9; border-radius: 8px; max-width: 480px; margin: auto; border: 1px solid #ddd">
+        <div style="margin-bottom: 1rem">
+            <img src="cid:logoImage" alt="Lab Manager Research Logo" width="200" height="200" style="display: block; margin: auto" />
+        </div>
+            <h1 style="font-size: 1.5rem; line-height: 2rem; color: #555; font-weight: normal">Bienvenue chez Lab Manager Research !</h1>
+            <p style="font-size: 1rem; color: #333">Bonjour, <span th:text="${name}">User</span> !</p>
+            <p style="font-size: 1rem; color: #333">Nous sommes ravis de vous accueillir dans notre communauté ! Voici comment commencer :</p>
+        <div style="margin: 1.5rem 0; padding: 1rem; background-color: #fff; text-align: center;">
+            <p style="margin-bottom: 1rem; font-size: 1rem; color: #333;">
+                <a href="" style="text-decoration: none; padding: 10px 20px; background-color: #007BFF; color: white; border-radius: 5px; font-size: 1rem; font-weight: bold; display: inline-block;">
+                    Accéder à votre profil
+                </a>
+            </p>
+            <p style="margin-bottom: 1rem; font-size: 1rem; color: #333;">
+                <a href="" style="text-decoration: none; padding: 10px 20px; background-color: #28A745; color: white; border-radius: 5px; font-size: 1rem; font-weight: bold; display: inline-block;">
+                    Explorer les projets
+                </a>
+            </p>
+        </div>
+        <div style="margin: 1rem 0; padding: 1rem; background-color: #f9f9f9; font-size: 1rem; color: #333;">
+            <p style="margin: 0 0 0.5rem;">
+                Si besoin, notre équipe est à votre disposition :
+                <a href="mailto:labmanagerresearch@gmail.com" style="color: #007BFF; text-decoration: none; font-weight: bold;">labmanagerresearch@gmail.com</a>.
+            </p>
+            <p style="margin: 0 0 0.5rem;">À très bientôt,</p>
+            <p style="margin: 0; font-weight: bold;">L'équipe Lab Manager Research</p>
+        </div>
+    </div>
+    </body>
+</html>

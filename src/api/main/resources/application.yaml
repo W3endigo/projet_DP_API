@@ -27,6 +27,8 @@ spring:
           auth: true
           starttls:
             enable: true
+  thymeleaf:
+    cache: false
 
   profiles:
     active: '@environment@'
@@ -39,8 +41,3 @@ server:
 springdoc:
   swagger-ui:
     path: /
-
-logging:
-  level:
-    org.springframework.mail: DEBUG
-    org.eclipse.angus.mail: DEBUG
