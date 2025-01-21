@@ -1,5 +1,6 @@
 package isen.projet_dp_api.utils.exception;
 
+import isen.projet_dp_api.utils.ApiStrings;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +12,7 @@ import org.springframework.web.context.request.WebRequest;
 
 
 @Log4j2
-@ControllerAdvice //Gestion des erreurs pour tout les @RestController
+@ControllerAdvice //Gestion des erreurs pour tous les @RestController
 public class ApiExceptionHandler {
 
     @ExceptionHandler(ApiException.class)
@@ -27,7 +28,7 @@ public class ApiExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiException.ErrorResponse> handleException(Exception ex, WebRequest request) {
         // Log de l'exception
-        log.error("Unexpected error occurred", ex);
+        log.error(ApiStrings.UNEXPECTED_ERROR, ex);
 
         // Récupération de l'URI de la requête
         var path = request.getDescription(false).replace("uri=", "");

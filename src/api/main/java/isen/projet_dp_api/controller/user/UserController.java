@@ -18,7 +18,7 @@ public interface UserController {
 @PutMapping("/api/user")
 @Operation(summary = "Register a new user", description = "Register a new user with the provided data",
         responses = {
-        @ApiResponse(responseCode = "201", description = "User registered successfully. The response contains no body but includes a header with the JWT token.", content = @Content),
+        @ApiResponse(responseCode = "201", description = "User registered successfully. The response contains no body but includes a header with the JWT token."),
         @ApiResponse(responseCode = "400", description = "Invalid user data", content = @Content(
                 mediaType = "application/json",
                 schema = @Schema(implementation = ApiException.ErrorResponse.class)
@@ -28,5 +28,5 @@ public interface UserController {
                 schema = @Schema(implementation = ApiException.ErrorResponse.class)
         ))
 })
-ResponseEntity<Void> registerUser(@RequestBody @Valid UserDTO userDTO);
+ResponseEntity<Object> registerUser(@RequestBody @Valid UserDTO userDTO);
 }

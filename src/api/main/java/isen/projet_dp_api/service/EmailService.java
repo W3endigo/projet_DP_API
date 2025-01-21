@@ -2,6 +2,7 @@ package isen.projet_dp_api.service;
 
 import isen.projet_dp_api.enums.EmailTypes;
 import isen.projet_dp_api.enums.PicturesTypes;
+import isen.projet_dp_api.utils.ApiStrings;
 import isen.projet_dp_api.utils.exception.ErrorMessage;
 import isen.projet_dp_api.utils.exception.LogExceptionUtils;
 import lombok.extern.log4j.Log4j2;
@@ -40,7 +41,7 @@ public class EmailService {
 
     public Optional<String> sendEmailTemplatePicture(String toEmail, EmailTypes emailTypes, Context context, Optional<List<PicturesTypes>> pictures) {
         try {
-            log.info("Sending email to {} using template {}", toEmail, emailTypes.getTemplateName());
+            log.info(ApiStrings.SENDING_EMAIL, toEmail, emailTypes.getTemplateName());
 
             var message = emailSender.createMimeMessage();
             var helper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED, StandardCharsets.UTF_8.name());
@@ -61,7 +62,7 @@ public class EmailService {
             }
 
             emailSender.send(message);
-            log.info("{} sent successfully", emailTypes.getSubject());
+            log.info(ApiStrings.EMAIL_SENT);
             return Optional.empty();
         } catch (MailConnectException e) {
             LogExceptionUtils.logException(this.getClass(), ErrorMessage.ERROR_SEND_EMAIL + ErrorMessage.ERROR_CONNECT_SMTP, e);

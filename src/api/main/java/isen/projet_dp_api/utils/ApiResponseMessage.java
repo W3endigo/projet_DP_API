@@ -8,6 +8,7 @@ public class ApiResponseMessage {
     public static final String SUCCESS = "success";
 
     public static final String FAILURE = "failure";
+
     // END STATUS
 
     // START MESSAGES
@@ -31,6 +32,9 @@ public class ApiResponseMessage {
     // START EXCEPTIONS
 
     public static final String EMAIL_ERROR = "email_error";
+
+    // END EXCEPTIONS
+
 
 
 

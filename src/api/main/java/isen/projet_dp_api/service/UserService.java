@@ -7,7 +7,7 @@ import isen.projet_dp_api.model.dao.UserDAO;
 import isen.projet_dp_api.model.RequestResponse;
 import isen.projet_dp_api.model.dto.UserDTO;
 import isen.projet_dp_api.utils.ApiResponseMessage;
-import isen.projet_dp_api.utils.exception.ErrorMessage;
+import isen.projet_dp_api.utils.ApiStrings;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -43,11 +43,11 @@ public class UserService {
         var responseData = new HashMap<String, Object>();
 
         var context = new Context();
-        context.setVariable("name", createdUser.getFirstName());
+        context.setVariable(ApiStrings.NAME, createdUser.getFirstName());
 
         var emailError = emailService.sendEmailTemplatePicture(createdUser.getEmail(), EmailTypes.REGISTRATION, context, Optional.empty());
         if (emailError.isPresent()) {
-            responseData.put("requestStatus", new RequestResponse(
+            responseData.put(ApiStrings.REQUEST_STATUS, new RequestResponse(
                     ApiResponseMessage.PARTIAL_SUCCESS,
                     ApiResponseMessage.REGISTER_USER_SUCCESS + ApiResponseMessage.EMAIL_SEND_ERROR,
                     Map.of(
@@ -57,7 +57,7 @@ public class UserService {
                     )
             ));
         } else {
-            responseData.put("requestStatus", new RequestResponse(
+            responseData.put(ApiStrings.REQUEST_STATUS, new RequestResponse(
                     ApiResponseMessage.SUCCESS,
                     ApiResponseMessage.REGISTER_USER_SUCCESS + ApiResponseMessage.EMAIL_SEND_SUCCESS,
                     Map.of(
@@ -67,7 +67,7 @@ public class UserService {
             ));
         }
 
-        responseData.put("token", tokenService.generateToken(new User(createdUser.getEmail(), createdUser.getPassword(), new ArrayList<>())));
+        responseData.put(ApiStrings.TOKEN, tokenService.generateToken(new User(createdUser.getEmail(), createdUser.getPassword(), new ArrayList<>())));
         return responseData;
     }
 }

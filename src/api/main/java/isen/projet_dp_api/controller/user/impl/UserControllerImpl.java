@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import isen.projet_dp_api.controller.user.UserController;
 import isen.projet_dp_api.model.dto.UserDTO;
 import isen.projet_dp_api.service.UserService;
+import isen.projet_dp_api.utils.ApiStrings;
 import jakarta.validation.Valid;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpHeaders;
@@ -23,12 +24,12 @@ public class UserControllerImpl implements UserController {
         this.userService = userService;
     }
 
-    public ResponseEntity<Void> registerUser(@RequestBody @Valid UserDTO userDTO) {
-        log.debug("Registering user: email={}, firstName={}, lastName={}, name={}",
+    public ResponseEntity<Object> registerUser(@RequestBody @Valid UserDTO userDTO) {
+        log.debug(ApiStrings.REGISTERING_USER,
                 userDTO.getEmail(), userDTO.getFirstName(), userDTO.getLastName(), userDTO.getCompany());
-        var jwtToken = userService.registerUser(userDTO);
+        var requestResponseData = userService.registerUser(userDTO);
         var headers = new HttpHeaders();
-        headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + jwtToken);
-        return new ResponseEntity<>(headers, HttpStatus.CREATED);
+        headers.add(HttpHeaders.AUTHORIZATION, ApiStrings.BEARER + requestResponseData.get(ApiStrings.TOKEN));
+        return new ResponseEntity<>(requestResponseData.get(ApiStrings.REQUEST_STATUS), headers, HttpStatus.CREATED);
     }
 }
