@@ -24,16 +24,11 @@ public class UserControllerImpl implements UserController {
     }
 
     public ResponseEntity<Void> registerUser(@RequestBody @Valid UserDTO userDTO) {
-        try {
-            log.debug("Registering user: email={}, firstName={}, lastName={}, name={}",
-                    userDTO.getEmail(), userDTO.getFirstName(), userDTO.getLastName(), userDTO.getCompany());
-            var jwtToken = userService.registerUser(userDTO);
-            var headers = new HttpHeaders();
-            headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + jwtToken);
-            return new ResponseEntity<>(headers, HttpStatus.CREATED);
-        } catch (Exception e) {
-            log.error("Error registering user", e);
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        log.debug("Registering user: email={}, firstName={}, lastName={}, name={}",
+                userDTO.getEmail(), userDTO.getFirstName(), userDTO.getLastName(), userDTO.getCompany());
+        var jwtToken = userService.registerUser(userDTO);
+        var headers = new HttpHeaders();
+        headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + jwtToken);
+        return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 }

@@ -6,5 +6,5 @@ import org.springframework.stereotype.Service;
 @Service
 public interface UserServiceDAO {
 
-    UserDAO registerUser(UserDAO userDAO) throws Exception;
+    UserDAO registerUser(UserDAO userDAO);
 }

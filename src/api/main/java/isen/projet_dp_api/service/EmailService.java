@@ -2,10 +2,12 @@ package isen.projet_dp_api.service;
 
 import isen.projet_dp_api.enums.EmailTypes;
 import isen.projet_dp_api.enums.PicturesTypes;
+import isen.projet_dp_api.utils.exception.ErrorMessage;
+import isen.projet_dp_api.utils.exception.LogExceptionUtils;
 import lombok.extern.log4j.Log4j2;
+import org.eclipse.angus.mail.util.MailConnectException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +15,6 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.thymeleaf.context.Context;
 
 import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMessage;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 
 import java.io.File;
@@ -37,61 +38,37 @@ public class EmailService {
         this.templateEngine = templateEngine;
     }
 
-    public void sendEmail(String toEmail, String subject, String body){
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom(emailFrom);
-        message.setTo(toEmail);
-        message.setSubject(subject);
-        message.setText(body);
+    public Optional<String> sendEmailTemplatePicture(String toEmail, EmailTypes emailTypes, Context context, Optional<List<PicturesTypes>> pictures) {
+        try {
+            log.info("Sending email to {} using template {}", toEmail, emailTypes.getTemplateName());
 
-        emailSender.send(message);
+            var message = emailSender.createMimeMessage();
+            var helper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED, StandardCharsets.UTF_8.name());
 
-        log.info("Message sent successfully");
-    }
+            helper.setTo(toEmail);
+            helper.setText(templateEngine.process(emailTypes.getTemplateName(), context), true);
+            helper.setSubject(emailTypes.getSubject());
+            helper.setFrom(emailFrom);
 
-    public void sendEmailTemplate(String toEmail, String subject, String templateName, Context context) throws MessagingException {
-        MimeMessage message = emailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED, StandardCharsets.UTF_8.name());
+            // Add logo image inline
+            helper.addInline(PicturesTypes.LOGO.getImageVarName(), new FileSystemResource(new File(PicturesTypes.LOGO.getImagePath())));
 
-        String html = templateEngine.process(templateName, context);
-
-        helper.setFrom(emailFrom);
-        helper.setTo(toEmail);
-        helper.setSubject(subject);
-        helper.setText(html, true);
-
-        emailSender.send(message);
-
-        log.info("MessageTemplate sent successfully");
-    }
-
-public void sendEmailTemplatePicture(String toEmail, EmailTypes emailTypes, Context context, Optional<List<PicturesTypes>> pictures) {
-    try {
-        var message = emailSender.createMimeMessage();
-        var helper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED, StandardCharsets.UTF_8.name());
-
-        var html = templateEngine.process(emailTypes.getTemplateName(), context);
-
-
-        helper.setTo(toEmail);
-        helper.setText(templateEngine.process(emailTypes.getTemplateName(), context), true);
-        helper.setSubject(emailTypes.getSubject());
-        helper.setFrom(emailFrom);
-
-        // Tout les mails auront le logo en image inline
-        helper.addInline(PicturesTypes.LOGO.getImageVarName(), new FileSystemResource(new File(PicturesTypes.LOGO.getImagePath())));
-
-        // Ajout d'autres images inline si elles ont été passées en paramètre
-        if (pictures.isPresent()) {
-            for (var picture : pictures.get()) {
-                helper.addInline(picture.getImageVarName(), new FileSystemResource(new File(picture.getImagePath())));
+            // Add other images inline if provided
+            if (pictures.isPresent()) {
+                for (var picture : pictures.get()) {
+                    helper.addInline(picture.getImageVarName(), new FileSystemResource(new File(picture.getImagePath())));
+                }
             }
-        }
 
-        emailSender.send(message);
-        log.info("{} sent successfully", emailTypes.getSubject());
-    } catch (MessagingException e) {
-        log.error("Error sending email with template and pictures", e);
+            emailSender.send(message);
+            log.info("{} sent successfully", emailTypes.getSubject());
+            return Optional.empty();
+        } catch (MailConnectException e) {
+            LogExceptionUtils.logException(this.getClass(), ErrorMessage.ERROR_SEND_EMAIL + ErrorMessage.ERROR_CONNECT_SMTP, e);
+            return Optional.of(ErrorMessage.ERROR_SEND_EMAIL + ErrorMessage.ERROR_CONNECT_SMTP);
+        } catch (MessagingException e) {
+            LogExceptionUtils.logException(this.getClass(), ErrorMessage.ERROR_SEND_EMAIL + ErrorMessage.ERROR_RENDERING_EMAIL, e);
+            return Optional.of(ErrorMessage.ERROR_SEND_EMAIL + ErrorMessage.ERROR_RENDERING_EMAIL);
+        }
     }
-}
 }

@@ -1,13 +1,16 @@
 package isen.projet_dp_api.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import lombok.ToString;
 
 @Data
+@ToString
 public class UserDTO {
 
     @NotBlank(message = "Email is mandatory")
@@ -16,6 +19,7 @@ public class UserDTO {
     @Schema(description = "User's email address", example = "john.doe@example.com")
     private String email;
 
+    @ToString.Exclude
     @NotBlank(message = "Password is mandatory")
     @Size(min = 8, max = 255, message = "Password must be between 8 and 255 characters long")
     @Schema(description = "User's password", example = "password123")
