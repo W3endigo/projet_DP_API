@@ -28,8 +28,6 @@ public class UserControllerImpl implements UserController {
         log.debug(ApiStrings.REGISTERING_USER,
                 userDTO.getEmail(), userDTO.getFirstName(), userDTO.getLastName(), userDTO.getCompany());
         var requestResponseData = userService.registerUser(userDTO);
-        var headers = new HttpHeaders();
-        headers.add(HttpHeaders.AUTHORIZATION, ApiStrings.BEARER + requestResponseData.get(ApiStrings.TOKEN));
-        return new ResponseEntity<>(requestResponseData.get(ApiStrings.REQUEST_STATUS), headers, HttpStatus.CREATED);
+        return new ResponseEntity<>(requestResponseData, HttpStatus.CREATED);
     }
 }

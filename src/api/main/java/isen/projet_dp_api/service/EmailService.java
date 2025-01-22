@@ -1,5 +1,6 @@
 package isen.projet_dp_api.service;
 
+import isen.projet_dp_api.dao.email.EmailServiceDAO;
 import isen.projet_dp_api.enums.EmailTypes;
 import isen.projet_dp_api.enums.PicturesTypes;
 import isen.projet_dp_api.utils.ApiStrings;
@@ -31,12 +32,15 @@ public class EmailService {
 
     private final SpringTemplateEngine templateEngine;
 
+    private final EmailServiceDAO emailServiceDAO;
+
     @Value("${spring.mail.username}")
     private String emailFrom;
 
-    public EmailService(JavaMailSender emailSender, SpringTemplateEngine templateEngine) {
+    public EmailService(JavaMailSender emailSender, SpringTemplateEngine templateEngine, EmailServiceDAO emailServiceDAO) {
         this.emailSender = emailSender;
         this.templateEngine = templateEngine;
+        this.emailServiceDAO = emailServiceDAO;
     }
 
     public Optional<String> sendEmailTemplatePicture(String toEmail, EmailTypes emailTypes, Context context, Optional<List<PicturesTypes>> pictures) {
@@ -61,7 +65,7 @@ public class EmailService {
                 }
             }
 
-            emailSender.send(message);
+            emailServiceDAO.sendEmail(helper);
             log.info(ApiStrings.EMAIL_SENT);
             return Optional.empty();
         } catch (MailConnectException e) {
