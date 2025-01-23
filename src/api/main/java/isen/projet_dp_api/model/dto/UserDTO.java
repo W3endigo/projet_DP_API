@@ -1,6 +1,5 @@
 package isen.projet_dp_api.model.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -28,18 +27,18 @@ public class UserDTO {
     private String password;
 
     @NotBlank(message = "First name is mandatory")
-    @Pattern(regexp = "^[a-zA-Z-]*$", message = "First name must contain only letters and hyphens")
+    @Pattern(regexp = "^[a-zA-Z0-9\\-&/ ]+$", message = "First name must contain only letters and hyphens")
     @Size(max = 30, message = "First name must be at most 30 characters long")
     @Schema(description = "User's first name", example = "John")
     private String firstName;
 
     @NotBlank(message = "Last name is mandatory")
-    @Pattern(regexp = "^[a-zA-Z-]*$", message = "Last name must contain only letters and hyphens")
+    @Pattern(regexp = "^[a-zA-Z0-9\\-&/ ]+$", message = "Last name must contain only letters and hyphens")
     @Size(max = 30, message = "Last name must be at most 30 characters long")
     @Schema(description = "User's last name", example = "Doe")
     private String lastName;
 
-    @Pattern(regexp = "^[a-zA-Z-]*$", message = "Company name must contain only letters and hyphens")
+    @Pattern(regexp = "^[a-zA-Z0-9\\-&/ ]+$", message = "Company name must contain only letters, numbers, and hyphens")
     @Size(max = 50, message = "Company name must be at most 50 characters long")
     @Schema(description = "User's name name", example = "ACME Corp", nullable = true)
     private String company;
