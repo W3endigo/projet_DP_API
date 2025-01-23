@@ -1,6 +1,9 @@
 spring:
   application:
     name: projet_DP_API
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
 
 server:
   port: 8082

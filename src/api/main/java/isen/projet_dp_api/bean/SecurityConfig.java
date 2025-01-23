@@ -23,7 +23,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    @Profile("dev")
+    @Profile("!prod")
     public SecurityFilterChain devSecurityFilterChain(HttpSecurity http) throws Exception {
         log.info("Running in dev mode");
         http
@@ -42,7 +42,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    @Profile("!dev")
+    @Profile("prod")
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         log.info("Running in prod mode");
         http

@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import isen.projet_dp_api.model.ApiException;
+import isen.projet_dp_api.model.RegisterRequestResponse;
 import isen.projet_dp_api.model.dto.UserDTO;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -28,5 +29,5 @@ public interface UserController {
                 schema = @Schema(implementation = ApiException.ErrorResponse.class)
         ))
 })
-ResponseEntity<Object> registerUser(@RequestBody @Valid UserDTO userDTO);
+ResponseEntity<RegisterRequestResponse> registerUser(@RequestBody @Valid UserDTO userDTO);
 }

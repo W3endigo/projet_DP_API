@@ -1,4 +1,4 @@
-package isen.projet_dp_api;
+package isen.projet_dp_api.controller;
 
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
@@ -28,33 +28,29 @@ public abstract class ControllerTest {
     }
 
     @BeforeEach
-    public void setup(){
-
-        spec = new RequestSpecBuilder()
-                .addHeader("Authorization", "Bearer " + jsonJWT)
-                .setContentType(ContentType.JSON)
-                .addFilter(new ResponseLoggingFilter())
-                .build();
-
+    public void setup() {
         RestAssured.port = port;
     }
 
-    protected <T> T put(String path, Object body, Class<T> responseClass) {
+    protected <T> T put(String path, Object body, Class<T> responseClass, boolean includeJwt) {
+        RequestSpecBuilder specBuilder = new RequestSpecBuilder()
+                .setContentType(ContentType.JSON)
+                .addFilter(new ResponseLoggingFilter());
 
-        var response = given(spec)
+        if (includeJwt) {
+            specBuilder.addHeader("Authorization", "Bearer " + jsonJWT);
+        }
+
+        spec = specBuilder.build();
+
+        return given()
+                .spec(spec)
                 .body(body)
+                .when()
                 .put(path)
                 .then()
                 .extract()
-                .response();
-
-        if (response.statusCode() >= 200 && response.statusCode() < 300) {
-            return response.as(responseClass);
-        } else {
-            throw new RuntimeException("""
-                Request failed with status code: %d
-                Response body: %s
-                """.formatted(response.statusCode(), response.getBody().asString()));
-        } //TODO know why i have 302 response instead of 400
+                .body()
+                .as(responseClass);
     }
 }

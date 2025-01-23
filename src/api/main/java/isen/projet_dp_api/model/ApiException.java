@@ -10,8 +10,6 @@ import java.io.Serial;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.List;
-import java.util.UUID;
 
 
 @Data
@@ -44,13 +42,7 @@ public class ApiException extends RuntimeException {
         this.timestamp = Instant.now().atZone(ZoneId.of("Europe/Paris"));
     }
 
-    @Data
-    public static class ErrorResponse {
-        private final String message;
-        private final ZonedDateTime timestamp;
-        private final String path;
-        private final String fishTag;
-    }
+    public record ErrorResponse(String message, ZonedDateTime timestamp, String path, String fishTag) {}
 
     public ErrorResponse toErrorResponse(String path) {
         return new ErrorResponse(message, timestamp, path, fishTag);
