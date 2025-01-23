@@ -4,7 +4,7 @@ package isen.projet_dp_api.service;
 import isen.projet_dp_api.dao.user.UserServiceDAO;
 import isen.projet_dp_api.enums.EmailTypes;
 import isen.projet_dp_api.model.dao.UserDAO;
-import isen.projet_dp_api.model.RequestResponse;
+import isen.projet_dp_api.model.RegisterRequestResponse;
 import isen.projet_dp_api.model.dto.UserDTO;
 import isen.projet_dp_api.utils.ApiResponseMessage;
 import isen.projet_dp_api.utils.ApiStrings;
@@ -16,7 +16,6 @@ import org.thymeleaf.context.Context;
 
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -36,38 +35,30 @@ public class UserService {
         this.emailService = emailService;
     }
 
-    public Map<String, Object> registerUser(UserDTO userDTO) {
+    public RegisterRequestResponse registerUser(UserDTO userDTO) {
         userDTO.setPassword(new BCryptPasswordEncoder().encode(userDTO.getPassword()));
         var createdUser = userServiceDAO.registerUser(new UserDAO(userDTO));
+        var token = tokenService.generateToken(new User(createdUser.getEmail(), createdUser.getPassword(), new ArrayList<>()));
 
-        var responseData = new HashMap<String, Object>();
+        var emailError = sendRegistrationEmail(createdUser);
+        var responseDetails = emailError.map(error -> Map.of(
+                ApiResponseMessage.USER_REGISTRATION, ApiResponseMessage.SUCCESS,
+                ApiResponseMessage.EMAIL_SENDING, ApiResponseMessage.FAILURE,
+                ApiResponseMessage.EMAIL_ERROR, error
+        )).orElseGet(() -> Map.of(
+                ApiResponseMessage.USER_REGISTRATION, ApiResponseMessage.SUCCESS,
+                ApiResponseMessage.EMAIL_SENDING, ApiResponseMessage.SUCCESS
+        ));
 
+        var status = emailError.isPresent() ? ApiResponseMessage.PARTIAL_SUCCESS : ApiResponseMessage.SUCCESS;
+        var message = ApiResponseMessage.REGISTER_USER_SUCCESS + (emailError.isPresent() ? ApiResponseMessage.EMAIL_SEND_ERROR : ApiResponseMessage.EMAIL_SEND_SUCCESS);
+
+        return new RegisterRequestResponse(status, message, responseDetails, token);
+    }
+
+    private Optional<String> sendRegistrationEmail(UserDAO createdUser) {
         var context = new Context();
         context.setVariable(ApiStrings.NAME, createdUser.getFirstName());
-
-        var emailError = emailService.sendEmailTemplatePicture(createdUser.getEmail(), EmailTypes.REGISTRATION, context, Optional.empty());
-        if (emailError.isPresent()) {
-            responseData.put(ApiStrings.REQUEST_STATUS, new RequestResponse(
-                    ApiResponseMessage.PARTIAL_SUCCESS,
-                    ApiResponseMessage.REGISTER_USER_SUCCESS + ApiResponseMessage.EMAIL_SEND_ERROR,
-                    Map.of(
-                            ApiResponseMessage.USER_REGISTRATION, ApiResponseMessage.SUCCESS,
-                            ApiResponseMessage.EMAIL_SENDING, ApiResponseMessage.FAILURE,
-                            ApiResponseMessage.EMAIL_ERROR, emailError.get()
-                    )
-            ));
-        } else {
-            responseData.put(ApiStrings.REQUEST_STATUS, new RequestResponse(
-                    ApiResponseMessage.SUCCESS,
-                    ApiResponseMessage.REGISTER_USER_SUCCESS + ApiResponseMessage.EMAIL_SEND_SUCCESS,
-                    Map.of(
-                            ApiResponseMessage.USER_REGISTRATION, ApiResponseMessage.SUCCESS,
-                            ApiResponseMessage.EMAIL_SENDING, ApiResponseMessage.SUCCESS
-                    )
-            ));
-        }
-
-        responseData.put(ApiStrings.TOKEN, tokenService.generateToken(new User(createdUser.getEmail(), createdUser.getPassword(), new ArrayList<>())));
-        return responseData;
+        return emailService.sendEmailTemplatePicture(createdUser.getEmail(), EmailTypes.REGISTRATION, context, Optional.empty());
     }
 }

@@ -83,7 +83,12 @@ dependencies {
     testImplementation 'com.fasterxml.jackson.core:jackson-databind'
     testImplementation 'io.rest-assured:rest-assured' // Pour les appels API en test
     testImplementation 'org.mockito:mockito-core:4.0.0'
+    testImplementation 'org.assertj:assertj-core'
 
+}
+
+test {
+    useJUnitPlatform()
 }
 
 sourceSets {
