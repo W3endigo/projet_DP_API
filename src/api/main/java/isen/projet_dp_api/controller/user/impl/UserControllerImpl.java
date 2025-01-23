@@ -24,7 +24,7 @@ public class UserControllerImpl implements UserController {
         this.userService = userService;
     }
 
-    public ResponseEntity<Object> registerUser(@RequestBody @Valid UserDTO userDTO) {
+    public ResponseEntity<Object> registerUser(@Valid @RequestBody UserDTO userDTO) {
         log.debug(ApiStrings.REGISTERING_USER,
                 userDTO.getEmail(), userDTO.getFirstName(), userDTO.getLastName(), userDTO.getCompany());
         var requestResponseData = userService.registerUser(userDTO);
