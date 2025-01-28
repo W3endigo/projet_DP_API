@@ -9,7 +9,11 @@ public class TestStrings {
 
     // START TEST DATA
 
-    public static final String EMAIL_GOOD = "harold@berk.com";
+    public static final String EMAIL_HAROLD = "harold@berk.com";
+
+    public static final String EMAIL_ASTRID = "astrid@berk.com";
+
+    public static final String EMAIL_KROKMOU = "krokmou@berk.com";
 
     public static final String PASSWORD = "astrid4life";
 
@@ -22,10 +26,6 @@ public class TestStrings {
     // END TEST DATA
 
     // START TEST STRINGS
-
-    public static final String ERROR_REGISTERING_USER = "Error registering user";
-
-    public static final String ERROR_SEND_EMAIL = "Error sending email";
 
     // END TEST STRINGS
 }
