@@ -5,9 +5,10 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import isen.projet_dp_api.utils.ApiStrings;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import isen.projet_dp_api.bean.SecretKeyProvider;
 
 import java.util.Base64;
 import java.util.Date;
@@ -16,8 +17,11 @@ import java.util.Date;
 @Service
 public class TokenService {
 
-    @Value("${spring.security.jwt.secret-key}")
-    private String secretKey;
+    private final SecretKeyProvider secretKeyProvider;
+
+    public TokenService(SecretKeyProvider secretKeyProvider) {
+        this.secretKeyProvider = secretKeyProvider;
+    }
 
     public String generateToken(UserDetails userDetails) {
         log.debug(ApiStrings.GENERATING_TOKEN, userDetails.getUsername());
@@ -27,7 +31,7 @@ public class TokenService {
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME_MILLISECONDS))
-                .signWith(Keys.hmacShaKeyFor(Base64.getEncoder().encode(secretKey.getBytes())), SignatureAlgorithm.HS512)
+                .signWith(Keys.hmacShaKeyFor(Base64.getDecoder().decode(secretKeyProvider.getSecretKey())), SignatureAlgorithm.HS512)
                 .compact();
     }
 }
