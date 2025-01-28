@@ -13,7 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@Tag(name = "User Controller", description = "Controller for managing user-related operations")
+@Tag(name = "User", description = "Endpoints for managing user-related operations")
 public interface UserController {
 
 @PutMapping("/api/user")

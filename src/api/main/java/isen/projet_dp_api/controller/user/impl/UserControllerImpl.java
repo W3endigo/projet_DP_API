@@ -1,6 +1,5 @@
 package isen.projet_dp_api.controller.user.impl;
 
-import io.swagger.v3.oas.annotations.tags.Tag;
 import isen.projet_dp_api.controller.user.UserController;
 import isen.projet_dp_api.model.RegisterRequestResponse;
 import isen.projet_dp_api.model.dto.UserDTO;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Log4j2
 @RestController
-@Tag(name = "User Controller", description = "Controller for managing user-related operations")
 public class UserControllerImpl implements UserController {
 
     private final UserService userService;
