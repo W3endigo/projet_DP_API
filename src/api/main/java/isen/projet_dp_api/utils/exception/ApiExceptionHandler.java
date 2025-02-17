@@ -4,6 +4,7 @@ import isen.projet_dp_api.utils.ApiStrings;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 
@@ -34,6 +35,18 @@ public class ApiExceptionHandler {
         var path = request.getDescription(false).replace("uri=", "");
 
         var apiException = new ApiException(ex, Objects.requireNonNull(ex.getBindingResult().getFieldError()).getDefaultMessage(), HttpStatus.BAD_REQUEST);
+
+        return ResponseEntity
+                .status(apiException.getHttpStatus())
+                .body(apiException.toErrorResponse(path));
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ApiException.ErrorResponse> handleBadCredentialsException(BadCredentialsException ex, WebRequest request) {
+        // Récupération de l'URI de la requête
+        var path = request.getDescription(false).replace("uri=", "");
+
+        var apiException = new ApiException(ex, HttpStatus.UNAUTHORIZED.getReasonPhrase(), HttpStatus.UNAUTHORIZED);
 
         return ResponseEntity
                 .status(apiException.getHttpStatus())

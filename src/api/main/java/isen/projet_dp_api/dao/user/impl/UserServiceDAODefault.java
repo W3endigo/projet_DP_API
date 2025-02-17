@@ -36,4 +36,9 @@ public class UserServiceDAODefault implements UserServiceDAO {
             throw new ApiException(e, ErrorMessage.ERROR_REGISTERING_USER + String.format(ErrorMessage.ERROR_COMPANY_NOT_FOUND, userDAO.getName().getName()), HttpStatus.BAD_REQUEST);
         }
     }
+
+    @Override
+    public UserDAO getUserByEmail(String email) {
+        return userRepository.findById(email).orElse(null);
+    }
 }

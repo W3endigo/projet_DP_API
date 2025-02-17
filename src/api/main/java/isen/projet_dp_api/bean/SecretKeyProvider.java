@@ -1,5 +1,6 @@
 package isen.projet_dp_api.bean;
 
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Component;
 
@@ -14,7 +15,7 @@ public class SecretKeyProvider {
 
     @PostConstruct
     public void init() {
-        this.secretKey = Keys.secretKeyFor(io.jsonwebtoken.SignatureAlgorithm.HS256);
+        this.secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS512);
     }
 
     public String getSecretKey() {

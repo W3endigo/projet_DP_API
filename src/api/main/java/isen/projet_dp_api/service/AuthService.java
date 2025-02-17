@@ -21,7 +21,7 @@ import java.util.Optional;
 
 @Log4j2
 @Service
-public class UserService {
+public class AuthService {
 
     private final UserServiceDAO userServiceDAO;
 
@@ -29,7 +29,7 @@ public class UserService {
 
     private final EmailService emailService;
 
-    public UserService(UserServiceDAO userServiceDAO, TokenService tokenService, EmailService emailService) {
+    public AuthService(UserServiceDAO userServiceDAO, TokenService tokenService, EmailService emailService) {
         this.userServiceDAO = userServiceDAO;
         this.tokenService = tokenService;
         this.emailService = emailService;
@@ -40,7 +40,7 @@ public class UserService {
         var createdUser = userServiceDAO.registerUser(new UserDAO(userDTO));
         var token = tokenService.generateToken(new User(createdUser.getEmail(), createdUser.getPassword(), new ArrayList<>()));
 
-        var emailError = sendRegistrationEmail(createdUser);
+        var emailError = prepareSendRegistrationEmail(createdUser);
         var responseDetails = emailError.map(error -> Map.of(
                 ApiResponseMessage.USER_REGISTRATION, ApiResponseMessage.SUCCESS,
                 ApiResponseMessage.EMAIL_SENDING, ApiResponseMessage.FAILURE,
@@ -56,7 +56,7 @@ public class UserService {
         return new RegisterRequestResponse(status, message, responseDetails, token);
     }
 
-    private Optional<String> sendRegistrationEmail(UserDAO createdUser) {
+    private Optional<String> prepareSendRegistrationEmail(UserDAO createdUser) {
         var context = new Context();
         context.setVariable(ApiStrings.NAME, createdUser.getFirstName());
         return emailService.sendEmailTemplatePicture(createdUser.getEmail(), EmailTypes.REGISTRATION, context, Optional.empty());

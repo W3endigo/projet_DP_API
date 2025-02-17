@@ -1,5 +1,7 @@
 package isen.projet_dp_api.service;
 
+import isen.projet_dp_api.dao.user.UserServiceDAO;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -11,18 +13,16 @@ import java.util.ArrayList;
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
+    private final UserServiceDAO userServiceDAO;
+
+    public CustomUserDetailsService(UserServiceDAO userServiceDAO){
+        this.userServiceDAO = userServiceDAO;
+    }
+
+
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        // Hardcoded user details for testing
-        // TODO go search for real users in the database
-        return switch (email) {
-            case "test@mail.com" ->
-                    new User("test@mail.com", "$2a$12$DRYIb0ui/UG4WpXv2dXtiezv/XGtgb7KFtKoSkzDnxSYYJa8r0ZXS", new ArrayList<>());
-            case "john.doe@example.com" ->
-                    new User("john.doe@example.com", "$2a$10$cpITvQEUABB86/gUZRnGB.JojZ44m7Ih.TtWEN5PuMdcHQieOull.", new ArrayList<>());
-            case "labmanagerresearch@gmail.com" ->
-                    new User("labmanagerresearch@gmail.com", "$2a$10$cpITvQEUABB86/gUZRnGB.JojZ44m7Ih.TtWEN5PuMdcHQieOull.", new ArrayList<>());
-            case null, default -> throw new UsernameNotFoundException("User not found with email: " + email);
-        };
+        var user = userServiceDAO.getUserByEmail(email);
+        return new User(user.getEmail(), user.getPassword(), new ArrayList<>());
     }
 }
