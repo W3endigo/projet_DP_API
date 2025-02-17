@@ -6,9 +6,13 @@ import isen.projet_dp_api.model.dao.CompanyDAO;
 import isen.projet_dp_api.repository.CompanyRepository;
 import isen.projet_dp_api.utils.exception.ErrorMessage;
 import isen.projet_dp_api.utils.exception.LogExceptionUtils;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpStatus;
 import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
+import org.springframework.stereotype.Repository;
 
+@Repository
+@Profile("!test")
 public class CompanyServiceDAODefault implements CompanyServiceDAO {
 
     private final CompanyRepository companyRepository;
