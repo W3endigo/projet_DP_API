@@ -21,4 +21,10 @@ public class UserServiceDAOMock implements UserServiceDAO {
             throw new ApiException(ErrorMessage.ERROR_REGISTERING_USER, HttpStatus.BAD_REQUEST);
         }
     }
+
+    @Override
+    public UserDAO getUserByEmail(String email) {
+        // TODO
+        return null;
+    }
 }

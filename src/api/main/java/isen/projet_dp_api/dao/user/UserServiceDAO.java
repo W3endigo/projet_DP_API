@@ -7,4 +7,7 @@ import org.springframework.stereotype.Service;
 public interface UserServiceDAO {
 
     UserDAO registerUser(UserDAO userDAO);
+
+    UserDAO getUserByEmail(String email);
+
 }
