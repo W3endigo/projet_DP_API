@@ -32,12 +32,12 @@ CREATE TABLE company(
 #------------------------------------------------------------
 
 CREATE TABLE user(
-        mail       Varchar (150) NOT NULL ,
+        email       Varchar (255) NOT NULL ,
         first_name Varchar (30) NOT NULL ,
         last_name  Varchar (30) NOT NULL ,
         password   Varchar (255) NOT NULL ,
         name       Varchar (50)
-	,CONSTRAINT user_PK PRIMARY KEY (mail)
+	,CONSTRAINT user_PK PRIMARY KEY (email)
 
 	,CONSTRAINT user_company_FK FOREIGN KEY (name) REFERENCES company(name)
 )ENGINE=InnoDB;

@@ -1,9 +1,9 @@
-package isen.projet_dp_api.security;
+package isen.projet_dp_api.bean;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,12 +25,12 @@ import java.util.Date;
 public class JwtRequestFilter extends OncePerRequestFilter {
 
     private final UserDetailsService userDetailsService;
+    private final SecretKeyProvider secretKeyProvider;
 
-    @Value("${spring.security.jwt.secret-key}")
-    private String secretKey;
-
-    public JwtRequestFilter(UserDetailsService userDetailsService) {
+    @Autowired
+    public JwtRequestFilter(UserDetailsService userDetailsService, SecretKeyProvider secretKeyProvider) {
         this.userDetailsService = userDetailsService;
+        this.secretKeyProvider = secretKeyProvider;
     }
 
     @Override
@@ -72,9 +72,10 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     public <T> T extractClaim(String token, java.util.function.Function<Claims, T> claimsResolver) {
         return claimsResolver.apply(extractAllClaims(token));
     }
+
     private Claims extractAllClaims(String token) {
-        return Jwts.parserBuilder().setSigningKey(Keys.hmacShaKeyFor(Base64.getEncoder().encode(secretKey.getBytes())))
-                    .build().parseClaimsJws(token).getBody();
+        return Jwts.parserBuilder().setSigningKey(Keys.hmacShaKeyFor(Base64.getDecoder().decode(secretKeyProvider.getSecretKey())))
+                .build().parseClaimsJws(token).getBody();
     }
 
     private Boolean isTokenExpired(String token) {

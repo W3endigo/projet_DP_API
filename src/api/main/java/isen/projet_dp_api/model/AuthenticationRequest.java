@@ -1,4 +1,4 @@
-package isen.projet_dp_api.model.security;
+package isen.projet_dp_api.model;
 
 import lombok.Data;
 

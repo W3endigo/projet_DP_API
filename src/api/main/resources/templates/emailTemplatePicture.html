@@ -1,0 +1,8 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<body>
+<p th:text="'Hello, ' + ${name} + '!'"></p>
+<p th:text="${message}"></p>
+<img th:src="'cid:' + ${imageResourceName}" alt="Image"/>
+</body>
+</html>

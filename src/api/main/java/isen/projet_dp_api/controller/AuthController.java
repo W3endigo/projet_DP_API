@@ -1,23 +1,16 @@
 package isen.projet_dp_api.controller;
 
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;
+import isen.projet_dp_api.model.AuthenticationRequest;
 
-import isen.projet_dp_api.model.security.AuthenticationRequest;
-
-import org.springframework.beans.factory.annotation.Value;
+import isen.projet_dp_api.service.TokenService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Base64;
-import java.util.Date;
 import java.util.Map;
 
 @RestController
@@ -27,12 +20,12 @@ public class AuthController {
 
     private final UserDetailsService userDetailsService;
 
-    @Value("${spring.security.jwt.secret-key}")
-    private String secretKey;
+    private final TokenService tokenService;
 
-    public AuthController(AuthenticationManager authenticationManager, UserDetailsService userDetailsService) {
+    public AuthController(AuthenticationManager authenticationManager, UserDetailsService userDetailsService, TokenService tokenService) {
         this.authenticationManager = authenticationManager;
         this.userDetailsService = userDetailsService;
+        this.tokenService = tokenService;
     }
 
     @PostMapping("/api/auth/login")
@@ -47,17 +40,6 @@ public class AuthController {
 
         final var userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
 
-        return Map.of("token", generateToken(userDetails));
-    }
-
-    private String generateToken(UserDetails userDetails) {
-        // 10 hours
-        var EXPIRATION_TIME_MILLISECONDS = 36000000;
-        return Jwts.builder()
-                .setSubject(userDetails.getUsername())
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME_MILLISECONDS))
-                .signWith(Keys.hmacShaKeyFor(Base64.getEncoder().encode(secretKey.getBytes())), SignatureAlgorithm.HS512)
-                .compact();
+        return Map.of("token", tokenService.generateToken(userDetails));
     }
 }
