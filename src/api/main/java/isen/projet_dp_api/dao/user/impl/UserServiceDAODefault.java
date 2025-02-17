@@ -6,13 +6,11 @@ import isen.projet_dp_api.model.dao.UserDAO;
 import isen.projet_dp_api.repository.UserRepository;
 import isen.projet_dp_api.utils.exception.ErrorMessage;
 import isen.projet_dp_api.utils.exception.LogExceptionUtils;
-import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpStatus;
 import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
 import org.springframework.stereotype.Repository;
 
-@Log4j2
 @Repository
 @Profile("!test")
 public class UserServiceDAODefault implements UserServiceDAO {
