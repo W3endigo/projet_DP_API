@@ -1,5 +1,6 @@
 package isen.projet_dp_api.model.dao;
 
+import isen.projet_dp_api.model.dto.CompanyDTO;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -18,6 +19,10 @@ public class CompanyDAO {
 
     public CompanyDAO(@NonNull String name) {
         this.name = name;
+    }
+
+    public CompanyDAO(@NonNull CompanyDTO companyDTO) {
+        this.name = companyDTO.getName();
     }
 
 }
