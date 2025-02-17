@@ -34,4 +34,9 @@ public class CompanyServiceDAODefault implements CompanyServiceDAO {
             throw new ApiException(e, ErrorMessage.ERROR_COMPANY_ALR_EXIST + String.format(ErrorMessage.ERROR_COMPANY_NOT_FOUND, companyDAO.getName()), HttpStatus.BAD_REQUEST);
         }
     }
+
+    @Override
+    public CompanyDAO getCompanyByName(String name) {
+        return this.companyRepository.findById(name).orElse(null);
+    }
 }

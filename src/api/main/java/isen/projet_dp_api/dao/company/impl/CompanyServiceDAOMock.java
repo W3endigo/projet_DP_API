@@ -14,4 +14,10 @@ public class CompanyServiceDAOMock implements CompanyServiceDAO {
         // TODO
     }
 
+    @Override
+    public CompanyDAO getCompanyByName(String name) {
+        //TODO
+        return null;
+    }
+
 }

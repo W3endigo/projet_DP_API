@@ -7,6 +7,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 
+
 @Log4j2
 @Service
 public class CompanyService {
@@ -20,4 +21,10 @@ public class CompanyService {
     public void registerCompany(CompanyDTO companyDTO) {
         companyServiceDAO.registerCompany(new CompanyDAO(companyDTO));
     }
+
+    public CompanyDAO getCompanyByName(String name) {
+        var company = companyServiceDAO.getCompanyByName(name);
+        return new CompanyDAO(company.getName());
+    }
+
 }

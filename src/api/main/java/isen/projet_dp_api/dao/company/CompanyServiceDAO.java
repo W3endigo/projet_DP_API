@@ -6,4 +6,6 @@ import org.springframework.stereotype.Service;
 @Service
 public interface CompanyServiceDAO {
     void registerCompany(CompanyDAO companyDAO);
+
+    CompanyDAO getCompanyByName(String name);
 }
