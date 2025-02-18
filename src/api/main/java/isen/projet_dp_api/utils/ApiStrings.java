@@ -20,7 +20,11 @@ public class ApiStrings {
 
     public static final String EMAIL_SENT = "Email successfully sent";
 
-    public static final String REGISTERING_USER = "Registering user: email={}, firstName={}, lastName={}, name={}";
+    public static final String REGISTERING_USER = "Registering user: email={}, firstName={}, lastName={}, company={}";
+
+    public static final String GETTING_USER = "Get user with email: email={}";
+
+    public static final String UPDATING_USER = "Updating user: email={}, firstName={}, lastName={}, company={}";
 
     public static final String REGISTERING_COMPANY = "Registering company: Name={}";
 
