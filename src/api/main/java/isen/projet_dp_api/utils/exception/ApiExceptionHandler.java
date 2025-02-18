@@ -53,6 +53,16 @@ public class ApiExceptionHandler {
                 .body(apiException.toErrorResponse(path));
     }
 
+    @ExceptionHandler(NullPointerException.class)
+    public ResponseEntity<ApiException.ErrorResponse> handleNullPointerException(Exception ex, WebRequest request) {
+        // Récupération de l'URI de la requête
+        var path = request.getDescription(false).replace("uri=", "");
+
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(new ApiException(ex, HttpStatus.NOT_FOUND.getReasonPhrase(), HttpStatus.NOT_FOUND).toErrorResponse(path));
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiException.ErrorResponse> handleException(Exception ex, WebRequest request) {
         // Log de l'exception
@@ -63,7 +73,9 @@ public class ApiExceptionHandler {
 
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new ApiException(ex, ErrorMessage.ERROR_INTERNAL_SERVER, HttpStatus.INTERNAL_SERVER_ERROR).toErrorResponse(path));
+                .body(new ApiException(ex, HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), HttpStatus.INTERNAL_SERVER_ERROR).toErrorResponse(path));
     }
+
+
 
 }

@@ -42,6 +42,10 @@ public interface CompanyController {
                         mediaType = "application/json",
                         schema = @Schema(implementation = ApiException.ErrorResponse.class)
                 )),
+                @ApiResponse(responseCode = "404", description = "Company doesn't exist", content = @Content(
+                mediaType = "application/json",
+                schema = @Schema(implementation = ApiException.ErrorResponse.class)
+                )),
                 @ApiResponse(responseCode = "500", description = "Unexpected error occurred", content = @Content(
                         mediaType = "application/json",
                         schema = @Schema(implementation = ApiException.ErrorResponse.class)
