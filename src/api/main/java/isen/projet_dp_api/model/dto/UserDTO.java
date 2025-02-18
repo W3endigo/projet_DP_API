@@ -26,19 +26,17 @@ public class UserDTO {
     @Schema(description = "User's password", example = "password123")
     private String password;
 
-    @NotBlank(message = "First name is mandatory")
-    @Pattern(regexp = "^[a-zA-Z0-9\\-&/ ]+$", message = "First name must contain only letters and hyphens")
+    @Pattern(regexp = "^[a-zA-Z0-9\\-&/ ]*$", message = "First name must contain only letters and hyphens")
     @Size(max = 30, message = "first name must be at most 30 characters long")
     @Schema(description = "User's first name", example = "John")
     private String firstName;
 
-    @NotBlank(message = "Last name is mandatory")
-    @Pattern(regexp = "^[a-zA-Z0-9\\-&/ ]+$", message = "Last name must contain only letters and hyphens")
+    @Pattern(regexp = "^[a-zA-Z0-9\\-&/ ]*$", message = "Last name must contain only letters and hyphens")
     @Size(max = 30, message = "last name must be at most 30 characters long")
     @Schema(description = "User's last name", example = "Doe")
     private String lastName;
 
-    @Pattern(regexp = "^[a-zA-Z0-9\\-&/ ]+$", message = "Company name must contain only letters, numbers, and hyphens")
+    @Pattern(regexp = "^[a-zA-Z0-9\\-&/ ]*$", message = "Company name must contain only letters, numbers, and hyphens")
     @Size(max = 50, message = "company name must be at most 50 characters long")
     @Schema(description = "User's name name", example = "ACME Corp", nullable = true)
     private String company;
