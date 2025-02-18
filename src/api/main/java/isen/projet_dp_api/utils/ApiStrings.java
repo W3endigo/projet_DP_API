@@ -28,5 +28,7 @@ public class ApiStrings {
 
     public static final String UNEXPECTED_ERROR = "Unexpected error: {}";
 
+    public static final String GET_COMPANY = "Searching for a company named: name={}";
+
     // END LOGS
 }

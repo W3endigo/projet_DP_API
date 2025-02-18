@@ -31,7 +31,7 @@ public class CompanyControllerImpl implements CompanyController {
     }
 
     public ResponseEntity<CompanyDAO> getCompanyByName(@Valid @PathVariable String name) {
-        log.debug(ApiStrings.REGISTERING_COMPANY,
+        log.debug(ApiStrings.GET_COMPANY,
                 name);
         var company = companyService.getCompanyByName(name);
         return new ResponseEntity<>(company, HttpStatus.CREATED);
