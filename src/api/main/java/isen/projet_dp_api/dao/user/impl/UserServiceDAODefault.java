@@ -39,4 +39,18 @@ public class UserServiceDAODefault implements UserServiceDAO {
     public UserDAO getUserByEmail(String email) {
         return userRepository.findById(email).orElse(null);
     }
+
+    @Override
+    public void updateUser(UserDAO userDAO) {
+        if (!userRepository.existsById(userDAO.getEmail())) {
+            LogExceptionUtils.logException(this.getClass(), String.format(ErrorMessage.ERROR_USER_NOT_FOUND, userDAO.getEmail()), null, userDAO.getEmail());
+            throw new ApiException(String.format(ErrorMessage.ERROR_USER_NOT_FOUND, userDAO.getEmail()), HttpStatus.NOT_FOUND);
+        }
+        try {
+            userRepository.save(userDAO);
+        } catch (JpaObjectRetrievalFailureException e) {
+            LogExceptionUtils.logException(this.getClass(), ErrorMessage.ERROR_UPDATING_USER + ErrorMessage.ERROR_FOREIGN_KEY_NOT_FOUND, e, userDAO);
+            throw new ApiException(e, ErrorMessage.ERROR_UPDATING_USER + String.format(ErrorMessage.ERROR_COMPANY_NOT_FOUND, userDAO.getName().getName()), HttpStatus.BAD_REQUEST);
+        }
+    }
 }
