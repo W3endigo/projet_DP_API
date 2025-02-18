@@ -22,9 +22,13 @@ public class ApiStrings {
 
     public static final String REGISTERING_USER = "Registering user: email={}, firstName={}, lastName={}, name={}";
 
+    public static final String REGISTERING_COMPANY = "Registering company: Name={}";
+
     public static final String GENERATING_TOKEN = "Generating token for user: email={}";
 
     public static final String UNEXPECTED_ERROR = "Unexpected error: {}";
+
+    public static final String GET_COMPANY = "Searching for a company named: name={}";
 
     // END LOGS
 }

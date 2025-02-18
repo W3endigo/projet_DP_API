@@ -11,6 +11,9 @@ public class ErrorMessage {
 
     public static final String ERROR_COMPANY_NOT_FOUND = "company with name [%s] not found";
 
+    public static final String ERROR_COMPANY_ALR_EXIST = "company with name [%s] already exist";
+
+
     // END DB
 
     // START EMAIL
