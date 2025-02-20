@@ -26,20 +26,11 @@ public class ProjectServiceDAODefault implements ProjectServiceDAO {
 
     @Override
     public ProjectDAO createProject(ProjectDTO projectDTO, String email) {
-        if (projectRepository.existsById(projectDTO.getId())) {
-            LogExceptionUtils.logException(this.getClass(), String.format(ErrorMessage.ERROR_PROJECT_ALR_EXIST,  projectDTO.getId()), null,  projectDTO.getId());
-            throw new ApiException(String.format(ErrorMessage.ERROR_PROJECT_ALR_EXIST, projectDTO.getId()), HttpStatus.CONFLICT);
-        }
         try {
-            if (projectDTO.getId() != null) {
-                throw new IllegalArgumentException(projectDTO.getId().toString());
-            }
-            ProjectDAO projectDAO = new ProjectDAO(projectDTO, email);
-            LogExceptionUtils.logException(this.getClass(), String.format(ErrorMessage.ERROR_PROJECT_ALR_EXIST,  projectDTO.getId()), null,  projectDTO.getId());
-            return projectRepository.save(projectDAO);
+            return projectRepository.save(new ProjectDAO(projectDTO, email));
         } catch (JpaObjectRetrievalFailureException e) {
             LogExceptionUtils.logException(this.getClass(), ErrorMessage.ERROR_CREATING_PROJECT + ErrorMessage.ERROR_FOREIGN_KEY_NOT_FOUND, e, projectDTO);
-            throw new ApiException(e, ErrorMessage.ERROR_CREATING_PROJECT + String.format(ErrorMessage.ERROR_PROJECT_NOT_FOUND, projectDTO.getId()), HttpStatus.BAD_REQUEST);
+            throw new ApiException(e, ErrorMessage.ERROR_CREATING_PROJECT, HttpStatus.BAD_REQUEST);
         }
     }
 }

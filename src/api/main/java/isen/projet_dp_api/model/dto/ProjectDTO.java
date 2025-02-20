@@ -16,10 +16,6 @@ import java.sql.Date;
 @AllArgsConstructor
 public class ProjectDTO {
 
-    @Schema(description = "Project unique ID (auto generated)", accessMode = Schema.AccessMode.READ_ONLY)
-    private Long id;
-
-
     @NotBlank(message = "chef email is mandatory")
     @Email(message = "Email must be valid")
     @Size(max = 255, message = "email must be at most 255 characters long")
@@ -29,7 +25,7 @@ public class ProjectDTO {
     @ToString.Exclude
     @NotBlank(message = "Participants is mandatory")
     @Schema(description = "List of participants to the project", example = "john.doe@example.com, eve.adamn@example.com, ...")
-    private String participants;
+    private String participants; //TODO : ARRAYLIST
 
     @NotBlank(message = "Description name is mandatory")
     @Schema(description = "Project's description", example = "This is a project.")
@@ -37,7 +33,7 @@ public class ProjectDTO {
 
     @NotBlank(message = "Companies name is mandatory")
     @Schema(description = "List of companies joined to the project", example = "Apple, Microsoft, ...")
-    private String companies;
+    private String companies; //TODO : ARRAYLIST
 
     @NotBlank(message = "Title is mandatory")
     @Pattern(regexp = "^[a-zA-Z0-9- ]*$", message = "Project title must contain only letters and hyphens")

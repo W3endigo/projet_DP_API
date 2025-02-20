@@ -27,8 +27,7 @@ public class ProjectControllerImpl implements ProjectController {
    public ResponseEntity<ProjectDAO> createProject(@RequestBody @Valid ProjectDTO projectDTO, @AuthenticationPrincipal UserDetails userDetails) {
         log.debug(ApiStrings.CREATING_PROJECT,
                 projectDTO.getTitle());
-        String email = userDetails.getUsername();
-        System.out.println(email);
+        var email = userDetails.getUsername();
         return ResponseEntity.ok(projectService.createProject(projectDTO, email));
     }
 }
