@@ -1,8 +1,6 @@
 package isen.projet_dp_api.model.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -14,26 +12,19 @@ import lombok.ToString;
 @AllArgsConstructor
 public class UserDTO {
 
-    @NotBlank(message = "Email is mandatory")
-    @Email(message = "Email must be valid")
-    @Size(max = 255, message = "email must be at most 255 characters long")
-    @Schema(description = "User's email address", example = "john.doe@example.com")
-    private String email;
-
     @ToString.Exclude
-    @NotBlank(message = "Password is mandatory")
-    @Size(min = 8, max = 255, message = "password must be between 8 and 255 characters long")
-    @Schema(description = "User's password", example = "password123")
+    @Pattern(regexp = "^$|.{8,255}", message = "password must be between 8 and 255 characters long or empty")
+    @Schema(description = "User's password", example = "password123", nullable = true)
     private String password;
 
     @Pattern(regexp = "^[a-zA-Z0-9\\-&/ ]*$", message = "First name must contain only letters and hyphens")
     @Size(max = 30, message = "first name must be at most 30 characters long")
-    @Schema(description = "User's first name", example = "John")
+    @Schema(description = "User's first name", example = "John", nullable = true)
     private String firstName;
 
     @Pattern(regexp = "^[a-zA-Z0-9\\-&/ ]*$", message = "Last name must contain only letters and hyphens")
     @Size(max = 30, message = "last name must be at most 30 characters long")
-    @Schema(description = "User's last name", example = "Doe")
+    @Schema(description = "User's last name", example = "Doe", nullable = true)
     private String lastName;
 
     @Pattern(regexp = "^[a-zA-Z0-9\\-&/ ]*$", message = "Company name must contain only letters, numbers, and hyphens")
