@@ -10,6 +10,6 @@ public interface UserServiceDAO {
 
     UserDAO getUserByEmail(String email);
 
-    void updateUser(UserDAO userDAO);
+    UserDAO updateUser(UserDAO userDAO);
 
 }

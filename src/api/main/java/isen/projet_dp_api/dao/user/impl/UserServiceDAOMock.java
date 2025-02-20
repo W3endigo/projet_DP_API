@@ -29,7 +29,8 @@ public class UserServiceDAOMock implements UserServiceDAO {
     }
 
     @Override
-    public void updateUser(UserDAO userDAO) {
+    public UserDAO updateUser(UserDAO userDAO) {
         // TODO
+        return null;
     }
 }
