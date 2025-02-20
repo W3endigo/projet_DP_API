@@ -3,8 +3,8 @@ package isen.projet_dp_api.controller.auth.impl;
 import isen.projet_dp_api.controller.auth.AuthController;
 import isen.projet_dp_api.model.dto.LoginDTO;
 
-import isen.projet_dp_api.model.RegisterRequestResponse;
-import isen.projet_dp_api.model.dto.UserDTO;
+import isen.projet_dp_api.model.RegisterUserRequestResponse;
+import isen.projet_dp_api.model.dto.RegisterDTO;
 import isen.projet_dp_api.service.TokenService;
 import isen.projet_dp_api.service.AuthService;
 import isen.projet_dp_api.utils.ApiStrings;
@@ -48,10 +48,10 @@ public class AuthControllerImpl implements AuthController {
         return new ResponseEntity<>(Map.of("token", tokenService.generateToken(userDetails)), HttpStatus.OK);
     }
 
-    public ResponseEntity<RegisterRequestResponse> registerUser(@Valid @RequestBody UserDTO userDTO) {
+    public ResponseEntity<RegisterUserRequestResponse> registerUser(@Valid @RequestBody RegisterDTO registerDTO) {
         log.debug(ApiStrings.REGISTERING_USER,
-                userDTO.getEmail(), userDTO.getFirstName(), userDTO.getLastName(), userDTO.getCompany());
-        var requestResponseData = authService.registerUser(userDTO);
+                registerDTO.getEmail(), registerDTO.getFirstName(), registerDTO.getLastName(), registerDTO.getCompany());
+        var requestResponseData = authService.registerUser(registerDTO);
         return new ResponseEntity<>(requestResponseData, HttpStatus.CREATED);
     }
 }

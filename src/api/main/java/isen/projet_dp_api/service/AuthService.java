@@ -4,8 +4,8 @@ package isen.projet_dp_api.service;
 import isen.projet_dp_api.dao.user.UserServiceDAO;
 import isen.projet_dp_api.enums.EmailTypes;
 import isen.projet_dp_api.model.dao.UserDAO;
-import isen.projet_dp_api.model.RegisterRequestResponse;
-import isen.projet_dp_api.model.dto.UserDTO;
+import isen.projet_dp_api.model.RegisterUserRequestResponse;
+import isen.projet_dp_api.model.dto.RegisterDTO;
 import isen.projet_dp_api.utils.ApiResponseMessage;
 import isen.projet_dp_api.utils.ApiStrings;
 import lombok.extern.log4j.Log4j2;
@@ -35,9 +35,9 @@ public class AuthService {
         this.emailService = emailService;
     }
 
-    public RegisterRequestResponse registerUser(UserDTO userDTO) {
-        userDTO.setPassword(new BCryptPasswordEncoder().encode(userDTO.getPassword()));
-        var createdUser = userServiceDAO.registerUser(new UserDAO(userDTO));
+    public RegisterUserRequestResponse registerUser(RegisterDTO registerDTO) {
+        registerDTO.setPassword(new BCryptPasswordEncoder().encode(registerDTO.getPassword()));
+        var createdUser = userServiceDAO.registerUser(new UserDAO(registerDTO));
         var token = tokenService.generateToken(new User(createdUser.getEmail(), createdUser.getPassword(), new ArrayList<>()));
 
         var emailError = prepareSendRegistrationEmail(createdUser);
@@ -53,7 +53,7 @@ public class AuthService {
         var status = emailError.isPresent() ? ApiResponseMessage.PARTIAL_SUCCESS : ApiResponseMessage.SUCCESS;
         var message = ApiResponseMessage.REGISTER_USER_SUCCESS + (emailError.isPresent() ? ApiResponseMessage.EMAIL_SEND_ERROR : ApiResponseMessage.EMAIL_SEND_SUCCESS);
 
-        return new RegisterRequestResponse(status, message, responseDetails, token);
+        return new RegisterUserRequestResponse(status, message, responseDetails, token);
     }
 
     private Optional<String> prepareSendRegistrationEmail(UserDAO createdUser) {
