@@ -22,13 +22,12 @@ public class ParticipantServiceDAODefault implements ParticipantServiceDAO {
     }
 
     @Override
-    public ParticipantDAO createParticipant(ParticipantDAO participantDAO) {
+    public void createParticipant(ParticipantDAO participantDAO) {
         try {
             participantRepository.save(participantDAO);
         } catch (JpaObjectRetrievalFailureException e) {
             LogExceptionUtils.logException(this.getClass(), ErrorMessage.ERROR_CREATING_PARTICIPANT + ErrorMessage.ERROR_FOREIGN_KEY_NOT_FOUND, e, participantDAO);
             throw new ApiException(e, ErrorMessage.ERROR_CREATING_PARTICIPANT, HttpStatus.BAD_REQUEST);
         }
-        return participantDAO;
     }
 }

@@ -6,6 +6,6 @@ import org.springframework.stereotype.Service;
 @Service
 public interface ParticipantServiceDAO {
 
-    ParticipantDAO createParticipant(ParticipantDAO participantDAO);
+    void createParticipant(ParticipantDAO participantDAO);
 
 }
