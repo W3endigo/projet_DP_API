@@ -2,7 +2,6 @@ package isen.projet_dp_api.controller.project.impl;
 
 
 import isen.projet_dp_api.controller.project.ProjectController;
-import isen.projet_dp_api.model.dao.ProjectDAO;
 import isen.projet_dp_api.model.dto.ProjectDTO;
 import isen.projet_dp_api.service.ProjectService;
 import isen.projet_dp_api.utils.ApiStrings;

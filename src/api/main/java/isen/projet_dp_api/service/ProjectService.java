@@ -46,6 +46,7 @@ public class ProjectService {
 
                 // On sauvegarde maintenant le participant
                 participantServiceDAO.createParticipant(participantDAO);
+                projectDAO.addParticipant(participantDAO);
             }
         }
 
