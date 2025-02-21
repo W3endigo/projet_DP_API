@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.ToString;
 
 import java.sql.Date;
+import java.util.List;
 
 
 @Data
@@ -22,18 +23,9 @@ public class ProjectDTO {
     @Schema(description = "Project chef email address", example = "john.doe@example.com")
     private String email_chef_project;
 
-    @ToString.Exclude
-    @NotBlank(message = "Participants is mandatory")
-    @Schema(description = "List of participants to the project", example = "john.doe@example.com, eve.adamn@example.com, ...")
-    private String participants; //TODO : ARRAYLIST
-
     @NotBlank(message = "Description name is mandatory")
     @Schema(description = "Project's description", example = "This is a project.")
     private String description;
-
-    @NotBlank(message = "Companies name is mandatory")
-    @Schema(description = "List of companies joined to the project", example = "Apple, Microsoft, ...")
-    private String companies; //TODO : ARRAYLIST
 
     @NotBlank(message = "Title is mandatory")
     @Pattern(regexp = "^[a-zA-Z0-9- ]*$", message = "Project title must contain only letters and hyphens")
@@ -54,4 +46,10 @@ public class ProjectDTO {
     @Schema(description = "Project's end date", example = "19-03-2025")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private Date end_date;
+
+    @Schema(description = "List of participants")
+    private List<ParticipantDTO> participants;
+
+    @Schema(description = "List of companies")
+    private List<ProjectCompaniesDTO> compagnies;
 }

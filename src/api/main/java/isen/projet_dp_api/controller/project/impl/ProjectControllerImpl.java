@@ -8,6 +8,7 @@ import isen.projet_dp_api.service.ProjectService;
 import isen.projet_dp_api.utils.ApiStrings;
 import jakarta.validation.Valid;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,11 +24,12 @@ public class ProjectControllerImpl implements ProjectController {
     public ProjectControllerImpl(ProjectService projectService) {
         this.projectService = projectService;
     }
+
     @Override
-   public ResponseEntity<ProjectDAO> createProject(@RequestBody @Valid ProjectDTO projectDTO, @AuthenticationPrincipal UserDetails userDetails) {
-        log.debug(ApiStrings.CREATING_PROJECT,
-                projectDTO.getTitle());
+   public ResponseEntity<String> createProject(@RequestBody @Valid ProjectDTO projectDTO, @AuthenticationPrincipal UserDetails userDetails) {
+        log.debug(ApiStrings.CREATING_PROJECT, projectDTO.getTitle());
         var email = userDetails.getUsername();
-        return ResponseEntity.ok(projectService.createProject(projectDTO, email));
+        projectService.createProject(projectDTO, email);
+        return new ResponseEntity<>("Created", HttpStatus.CREATED);
     }
 }

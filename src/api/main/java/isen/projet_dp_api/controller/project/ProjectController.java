@@ -32,5 +32,5 @@ public interface ProjectController {
                             schema = @Schema(implementation = ApiException.ErrorResponse.class)
                     ))
             }, security = @SecurityRequirement(name = "bearerAuth"))
-    ResponseEntity<ProjectDAO> createProject(@RequestBody @Valid ProjectDTO projectDTO, @AuthenticationPrincipal UserDetails userDetails);
+    ResponseEntity<String> createProject(@RequestBody @Valid ProjectDTO projectDTO, @AuthenticationPrincipal UserDetails userDetails);
 }
