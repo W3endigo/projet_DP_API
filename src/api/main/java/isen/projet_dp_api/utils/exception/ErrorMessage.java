@@ -5,6 +5,8 @@ public class ErrorMessage {
     // START DB
     public static final String ERROR_REGISTERING_USER = "Error registering user, ";
 
+    public static final String ERROR_UPDATING_USER = "Error updating user, ";
+
     public static final String ERROR_USER_ALREADY_EXIST = "user with email [%s] already exists";
 
     public static final String ERROR_FOREIGN_KEY_NOT_FOUND = "foreign key not found";
@@ -12,6 +14,8 @@ public class ErrorMessage {
     public static final String ERROR_COMPANY_NOT_FOUND = "company with name [%s] not found";
 
     public static final String ERROR_COMPANY_ALR_EXIST = "company with name [%s] already exist";
+
+    public static final String ERROR_USER_NOT_FOUND = "user with email [%s] not found";
 
 
     // END DB
@@ -27,9 +31,5 @@ public class ErrorMessage {
     // END EMAIL
 
     // START GENERIC ERRORS
-
-    public static final String ERROR_INTERNAL_SERVER = "Internal server error";
-
-
 
 }

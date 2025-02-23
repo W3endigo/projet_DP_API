@@ -6,9 +6,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import isen.projet_dp_api.model.ApiException;
-import isen.projet_dp_api.model.RegisterRequestResponse;
+import isen.projet_dp_api.model.RegisterUserRequestResponse;
 import isen.projet_dp_api.model.dto.LoginDTO;
-import isen.projet_dp_api.model.dto.UserDTO;
+import isen.projet_dp_api.model.dto.RegisterDTO;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,7 +34,7 @@ public interface AuthController {
                             schema = @Schema(implementation = ApiException.ErrorResponse.class)
                     ))
             })
-    ResponseEntity<RegisterRequestResponse> registerUser(@RequestBody @Valid UserDTO userDTO);
+    ResponseEntity<RegisterUserRequestResponse> registerUser(@RequestBody @Valid RegisterDTO registerDTO);
 
     @PutMapping("/api/auth/login")
     @Operation(summary = "Login a user", description = "Login a user if the provided credentials are correct",
