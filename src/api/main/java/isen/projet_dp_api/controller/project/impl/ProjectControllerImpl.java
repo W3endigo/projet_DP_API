@@ -2,6 +2,7 @@ package isen.projet_dp_api.controller.project.impl;
 
 
 import isen.projet_dp_api.controller.project.ProjectController;
+import isen.projet_dp_api.model.ProjectCreationRequestResponse;
 import isen.projet_dp_api.model.dto.ProjectDTO;
 import isen.projet_dp_api.service.ProjectService;
 import isen.projet_dp_api.utils.ApiStrings;
@@ -25,10 +26,10 @@ public class ProjectControllerImpl implements ProjectController {
     }
 
     @Override
-   public ResponseEntity<String> createProject(@RequestBody @Valid ProjectDTO projectDTO, @AuthenticationPrincipal UserDetails userDetails) {
+   public ResponseEntity<ProjectCreationRequestResponse> createProject(@RequestBody @Valid ProjectDTO projectDTO, @AuthenticationPrincipal UserDetails userDetails) {
         log.debug(ApiStrings.CREATING_PROJECT, projectDTO.getTitle());
         var email = userDetails.getUsername();
-        projectService.createProject(projectDTO, email);
-        return new ResponseEntity<>("Created", HttpStatus.CREATED);
+        var requestResponseData = projectService.createProject(projectDTO, email);
+        return new ResponseEntity<>(requestResponseData, HttpStatus.CREATED);
     }
 }

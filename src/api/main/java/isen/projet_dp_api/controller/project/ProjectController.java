@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import isen.projet_dp_api.model.ApiException;
+import isen.projet_dp_api.model.ProjectCreationRequestResponse;
 import isen.projet_dp_api.model.dto.ProjectDTO;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -31,5 +32,5 @@ public interface ProjectController {
                             schema = @Schema(implementation = ApiException.ErrorResponse.class)
                     ))
             }, security = @SecurityRequirement(name = "bearerAuth"))
-    ResponseEntity<String> createProject(@RequestBody @Valid ProjectDTO projectDTO, @AuthenticationPrincipal UserDetails userDetails);
+    ResponseEntity<ProjectCreationRequestResponse> createProject(@RequestBody @Valid ProjectDTO projectDTO, @AuthenticationPrincipal UserDetails userDetails);
 }
