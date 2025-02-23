@@ -42,9 +42,8 @@ public class ProjectService {
                 ParticipantDAO participantDAO = new ParticipantDAO();
                 participantDAO.setId(participantId);
                 participantDAO.setUser(new UserDAO(participantDTO.getEmail()));
-                participantDAO.setProject(projectDAO); // 🔥 Ajout important : association du projet
+                participantDAO.setProject(projectDAO);
 
-                // On sauvegarde maintenant le participant
                 participantServiceDAO.createParticipant(participantDAO);
                 projectDAO.addParticipant(participantDAO);
             }
@@ -53,7 +52,7 @@ public class ProjectService {
         if (projectDTO.getCompagnies() != null) {
             for (var compagnieDTO : projectDTO.getCompagnies()) {
                 ProjectCompaniesId projectCompaniesId = new ProjectCompaniesId();
-                projectCompaniesId.setProjectId(projectDAO.getId()); // 🔥 Assurez-vous que projectDAO a un ID
+                projectCompaniesId.setProjectId(projectDAO.getId());
                 projectCompaniesId.setName(compagnieDTO.getName());
 
                 var compagnieDAO = new ProjectCompaniesDAO();
