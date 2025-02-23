@@ -22,49 +22,68 @@ USE bdd_projet_dp;
 #------------------------------------------------------------
 
 CREATE TABLE company(
-        name Varchar (50) NOT NULL
-	,CONSTRAINT company_PK PRIMARY KEY (name)
+                        name Varchar (50) NOT NULL
+    ,CONSTRAINT company_PK PRIMARY KEY (name)
 )ENGINE=InnoDB;
 
 
 #------------------------------------------------------------
 # Table: user
 #------------------------------------------------------------
-CREATE TABLE user
-(
-    email      VARCHAR(255) NOT NULL,
-    password   VARCHAR(255) NOT NULL,
-    first_name VARCHAR(255) NOT NULL,
-    last_name  VARCHAR(255) NOT NULL,
-    name       VARCHAR(50),
-    CONSTRAINT pk_user PRIMARY KEY (email),
-    CONSTRAINT user_company_FK FOREIGN KEY (name) REFERENCES company(name)
-);
+
+CREATE TABLE user(
+                     email      Varchar (255) NOT NULL ,
+                     first_name Varchar (255) NOT NULL ,
+                     last_name  Varchar (255) NOT NULL ,
+                     password   Varchar (255) NOT NULL ,
+                     name       Varchar (50)
+    ,CONSTRAINT user_PK PRIMARY KEY (email)
+
+    ,CONSTRAINT user_company_FK FOREIGN KEY (name) REFERENCES company(name)
+)ENGINE=InnoDB;
+
 
 #------------------------------------------------------------
 # Table: project
 #------------------------------------------------------------
-CREATE TABLE project (
-                        id BIGINT AUTO_INCREMENT PRIMARY KEY,
-                        email_chef_project VARCHAR(255) NOT NULL,
-                        participants TEXT NOT NULL,
-                        description TEXT NOT NULL,
-                        companies TEXT NOT NULL,
-                        title VARCHAR(100) NOT NULL,
-                        status VARCHAR(15) NOT NULL,
-                        start_date DATE NOT NULL,
-                        end_date DATE NOT NULL,
-                        CONSTRAINT project_chef_FK FOREIGN KEY (email_chef_project) REFERENCES user(email)
-) ENGINE=InnoDB;
+
+CREATE TABLE project(
+                        id          Int  Auto_increment  NOT NULL ,
+                        description Text NOT NULL ,
+                        title       Varchar (100) NOT NULL ,
+                        status      Varchar (15) NOT NULL ,
+                        start_date  Date NOT NULL ,
+                        end_date    Date NOT NULL ,
+                        email_chef_project       Varchar (255) NOT NULL
+    ,CONSTRAINT project_PK PRIMARY KEY (id)
+
+    ,CONSTRAINT project_user_FK FOREIGN KEY (email_chef_project) REFERENCES user(email)
+)ENGINE=InnoDB;
+
 
 #------------------------------------------------------------
-# Table: step
+# Table: projet_companies
 #------------------------------------------------------------
-CREATE TABLE step (
-                       id INT AUTO_INCREMENT PRIMARY KEY,
-                       project_id BIGINT NOT NULL,
-                       name VARCHAR(100) NOT NULL,
-                       date DATE NOT NULL,
-                       CONSTRAINT step_project_FK FOREIGN KEY (project_id) REFERENCES project(id) ON DELETE CASCADE
-) ENGINE=InnoDB;
 
+CREATE TABLE project_companies(
+                           name Varchar (50) NOT NULL ,
+                           id   Int NOT NULL
+    ,CONSTRAINT projet_companies_PK PRIMARY KEY (name,id)
+
+    ,CONSTRAINT projet_companies_company_FK FOREIGN KEY (name) REFERENCES company(name)
+    ,CONSTRAINT projet_companies_project0_FK FOREIGN KEY (id) REFERENCES project(id)
+)ENGINE=InnoDB;
+
+
+#------------------------------------------------------------
+# Table: participant
+#------------------------------------------------------------
+
+CREATE TABLE participant(
+                             id    Int NOT NULL ,
+                             email Varchar (255) NOT NULL
+    ,CONSTRAINT participant_PK PRIMARY KEY (id,email)
+
+    ,CONSTRAINT participant_project_FK FOREIGN KEY (id) REFERENCES project(id)
+    ,CONSTRAINT participant_user0_FK FOREIGN KEY (email) REFERENCES user(email)
+)ENGINE=InnoDB;
