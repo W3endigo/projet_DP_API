@@ -14,6 +14,6 @@ public class ParticipantDTO {
 
     @NotBlank(message = "Email is mandatory")
     @Email(message = "Email should be valid")
-    @Schema(description = "Participant's email", example = "participant@example.com")
+    @Schema(description = "Participant's email")
     private String email;
 }
