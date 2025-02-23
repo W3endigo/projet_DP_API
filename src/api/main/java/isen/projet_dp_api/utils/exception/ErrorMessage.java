@@ -7,6 +7,10 @@ public class ErrorMessage {
 
     public static final String ERROR_CREATING_PROJECT = "Error registering a new project, ";
 
+    public static final String ERROR_CREATING_ASSOCIATION_PROJECT_COMPANIES = "Error creating a new association between project and companies, ";
+
+    public static final String ERROR_CREATING_PARTICIPANT = "Error registering a new association between projects and participant, ";
+
     public static final String ERROR_USER_ALREADY_EXIST = "user with email [%s] already exists";
 
     public static final String ERROR_FOREIGN_KEY_NOT_FOUND = "foreign key not found";
@@ -18,6 +22,8 @@ public class ErrorMessage {
     public static final String ERROR_COMPANY_ALR_EXIST = "company with name [%s] already exist";
 
     public static final String ERROR_PROJECT_ALR_EXIST = "project with name [%s] already exist";
+
+
 
 
     // END DB
