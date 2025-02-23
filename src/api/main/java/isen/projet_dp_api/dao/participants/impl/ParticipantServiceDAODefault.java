@@ -23,6 +23,13 @@ public class ParticipantServiceDAODefault implements ParticipantServiceDAO {
 
     @Override
     public void createParticipant(ParticipantDAO participantDAO) {
+        if (participantRepository.existsById(participantDAO.getId())) {
+            LogExceptionUtils.logException(this.getClass(),
+                    String.format(ErrorMessage.ERROR_PARTCIPANTS_ALREADY_IN_PROJECT, participantDAO.getId()),
+                    null, participantDAO.getId()
+            );
+            throw new ApiException(String.format(ErrorMessage.ERROR_PARTCIPANTS_ALREADY_IN_PROJECT, participantDAO.getId()), HttpStatus.CONFLICT);
+        }
         try {
             participantRepository.save(participantDAO);
         } catch (JpaObjectRetrievalFailureException e) {

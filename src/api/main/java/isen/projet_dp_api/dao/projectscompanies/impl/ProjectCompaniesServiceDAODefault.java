@@ -24,10 +24,15 @@ public class ProjectCompaniesServiceDAODefault implements ProjectCompaniesServic
 
     @Override
     public ProjectCompaniesDAO createProjectCompanies(ProjectCompaniesDAO projectCompaniesDAO) {
+        if (projectCompaniesRepository.existsById(projectCompaniesDAO.getId())) {
+            LogExceptionUtils.logException(this.getClass(),
+                    String.format(ErrorMessage.ERROR_COMPANY_ALREADY_IN_PROJECT, projectCompaniesDAO.getId()),
+                    null, projectCompaniesDAO.getId());
+        }
         try {
             projectCompaniesRepository.save(projectCompaniesDAO);
         } catch (JpaObjectRetrievalFailureException e) {
-            LogExceptionUtils.logException(this.getClass(), ErrorMessage.ERROR_CREATING_ASSOCIATION_PROJECT_COMPANIES + ErrorMessage.ERROR_FOREIGN_KEY_NOT_FOUND, e, projectCompaniesDAO);
+            LogExceptionUtils.logException(this.getClass(), ErrorMessage.ERROR_CREATING_ASSOCIATION_PROJECT_COMPANIES + ErrorMessage.ERROR_COMPANY_NOT_FOUND, e, projectCompaniesDAO);
             throw new ApiException(e, ErrorMessage.ERROR_CREATING_ASSOCIATION_PROJECT_COMPANIES, HttpStatus.BAD_REQUEST);
         }
         return projectCompaniesDAO;

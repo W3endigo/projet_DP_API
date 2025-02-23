@@ -5,4 +5,6 @@ import isen.projet_dp_api.model.dao.ParticipantId;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ParticipantRepository extends JpaRepository<ParticipantDAO, ParticipantId> {
+
+    boolean existsById(ParticipantId id);
 }
