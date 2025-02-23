@@ -50,6 +50,7 @@ public class ProjectDAO {
         this.start_date = projectDTO.getStart_date();
         this.end_date = projectDTO.getEnd_date();
         this.email_chef_project = new UserDAO(email);
+
     }
 
     public void addParticipant(ParticipantDAO participant) {

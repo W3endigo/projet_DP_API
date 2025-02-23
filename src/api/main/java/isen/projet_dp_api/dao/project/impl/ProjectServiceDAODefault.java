@@ -24,12 +24,16 @@ public class ProjectServiceDAODefault implements ProjectServiceDAO {
 
     @Override
     public ProjectDAO createProject(ProjectDAO projectDAO) {
+        if (projectRepository.existsByTitleAndEmail_chef_project(projectDAO.getTitle(), projectDAO.getEmail_chef_project().getEmail())) {
+            LogExceptionUtils.logException(this.getClass(),
+                    String.format(ErrorMessage.ERROR_PROJECT_ALREADY_EXIST, projectDAO.getTitle()), null, projectDAO);
+            throw new ApiException(String.format(ErrorMessage.ERROR_PROJECT_ALReADY_EXIST, projectDAO.getTitle()), HttpStatus.CONFLICT);
+        }
         try {
-            projectRepository.save(projectDAO);
+            return projectRepository.save(projectDAO);
         } catch (JpaObjectRetrievalFailureException e) {
             LogExceptionUtils.logException(this.getClass(), ErrorMessage.ERROR_CREATING_PROJECT + ErrorMessage.ERROR_FOREIGN_KEY_NOT_FOUND, e, projectDAO);
             throw new ApiException(e, ErrorMessage.ERROR_CREATING_PROJECT, HttpStatus.BAD_REQUEST);
         }
-        return projectDAO;
     }
 }
