@@ -4,11 +4,19 @@ package isen.projet_dp_api.service;
 import isen.projet_dp_api.dao.participants.ParticipantServiceDAO;
 import isen.projet_dp_api.dao.project.ProjectServiceDAO;
 import isen.projet_dp_api.dao.projectscompanies.ProjectCompaniesServiceDAO;
+import isen.projet_dp_api.enums.EmailTypes;
+import isen.projet_dp_api.model.ProjectCreationRequestResponse;
 import isen.projet_dp_api.model.dao.*;
 import isen.projet_dp_api.model.dto.ProjectDTO;
+import isen.projet_dp_api.utils.ApiResponseMessage;
+import isen.projet_dp_api.utils.ApiStrings;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.thymeleaf.context.Context;
+
+import java.util.Map;
+import java.util.Optional;
 
 @Log4j2
 @Service
@@ -19,12 +27,14 @@ public class ProjectService {
     private final ProjectCompaniesServiceDAO projectCompaniesServiceDAO;
 
     private final ParticipantServiceDAO participantServiceDAO;
+    private final EmailService emailService;
 
 
-    public ProjectService(ProjectServiceDAO projectServiceDAO, ProjectCompaniesServiceDAO projectCompaniesServiceDAO, ParticipantServiceDAO participantServiceDAO) {
+    public ProjectService(ProjectServiceDAO projectServiceDAO, ProjectCompaniesServiceDAO projectCompaniesServiceDAO, ParticipantServiceDAO participantServiceDAO, EmailService emailService) {
         this.projectServiceDAO = projectServiceDAO;
         this.projectCompaniesServiceDAO = projectCompaniesServiceDAO;
         this.participantServiceDAO = participantServiceDAO;
+        this.emailService = emailService;
     }
 
     public void addProjectCompanies(ProjectDTO projectDTO, ProjectDAO projectDAO) {
@@ -56,12 +66,21 @@ public class ProjectService {
     }
 
     @Transactional
-    public void createProject(ProjectDTO projectDTO, String email) {
-
+    public ProjectCreationRequestResponse createProject(ProjectDTO projectDTO, String email) {
 
         var projectDAO = new ProjectDAO(projectDTO, email);
 
         projectDAO = projectServiceDAO.createProject(projectDAO);
+
+        var emailError = prepareSendCreationProjectEmail(projectDAO);
+        var responseDetails = emailError.map(error -> Map.of(
+                ApiResponseMessage.PROJECT_CREATION, ApiResponseMessage.FAILURE,
+                ApiResponseMessage.EMAIL_SENDING, ApiResponseMessage.FAILURE,
+                ApiResponseMessage.EMAIL_ERROR, error
+        )).orElseGet(() -> Map.of(
+                ApiResponseMessage.PROJECT_CREATION, ApiResponseMessage.SUCCESS,
+                ApiResponseMessage.EMAIL_SENDING, ApiResponseMessage.SUCCESS
+        ));
 
         addParticipant(email, projectDAO);
 
@@ -73,8 +92,19 @@ public class ProjectService {
 
         if (projectDTO.getCompagnies() != null) {
             this.addProjectCompanies(projectDTO, projectDAO);
-            }
         }
+
+        var status = emailError.isPresent() ? ApiResponseMessage.PARTIAL_SUCCESS : ApiResponseMessage.SUCCESS;
+        var message = ApiResponseMessage.PROJECT_CREATION_SUCCESS + (emailError.isPresent() ? ApiResponseMessage.EMAIL_SEND_ERROR : ApiResponseMessage.EMAIL_SEND_SUCCESS);
+
+        return new ProjectCreationRequestResponse(status, message, responseDetails, projectDTO);
+    }
+
+    private Optional<String> prepareSendCreationProjectEmail(ProjectDAO createdProject) {
+        var context = new Context();
+        context.setVariable(ApiStrings.NAME, createdProject.getEmail());
+        return emailService.sendEmailTemplatePicture(createdProject.getEmail().getEmail(), EmailTypes.PROJECTCREATION, context, Optional.empty());
+    }
 
 
 }

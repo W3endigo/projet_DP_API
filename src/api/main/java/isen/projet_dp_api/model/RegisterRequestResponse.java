@@ -9,4 +9,5 @@ public record RegisterRequestResponse(String status, String message, Map<String,
         this(status, message, details, null);
     }
 
+
 }

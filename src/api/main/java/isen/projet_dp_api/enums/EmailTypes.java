@@ -8,7 +8,9 @@ import lombok.Getter;
 @Getter
 public enum EmailTypes {
 
-    REGISTRATION("Inscription - Lab Manager Research", "templateRegister");
+    REGISTRATION("Inscription - Lab Manager Research", "templateRegister"),
+
+    PROJECTCREATION("Création d'un nouveau projet", "templateProject");
 
     private final String subject;
 
