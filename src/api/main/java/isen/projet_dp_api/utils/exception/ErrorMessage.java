@@ -19,9 +19,13 @@ public class ErrorMessage {
 
     public static final String ERROR_PROJECT_NOT_FOUND = "company with name [%s] not found";
 
-    public static final String ERROR_COMPANY_ALR_EXIST = "company with name [%s] already exist";
+    public static final String ERROR_COMPANY_ALREADY_EXIST = "company with name [%s] already exist";
 
-    public static final String ERROR_PROJECT_ALR_EXIST = "project with name [%s] already exist";
+    public static final String ERROR_PARTCIPANTS_ALREADY_IN_PROJECT = "[%s] already in project";
+
+    public static final String ERROR_COMPANY_ALREADY_IN_PROJECT = "[%s] already in project";
+
+    public static final String ERROR_PROJECT_ALREADY_EXIST = "project with name [%s] already exist";
 
 
 
