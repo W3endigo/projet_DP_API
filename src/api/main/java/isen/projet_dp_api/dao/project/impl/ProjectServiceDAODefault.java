@@ -27,7 +27,7 @@ public class ProjectServiceDAODefault implements ProjectServiceDAO {
         if (projectRepository.existsByTitleAndEmail_chef_project(projectDAO.getTitle(), projectDAO.getEmail_chef_project().getEmail())) {
             LogExceptionUtils.logException(this.getClass(),
                     String.format(ErrorMessage.ERROR_PROJECT_ALREADY_EXIST, projectDAO.getTitle()), null, projectDAO);
-            throw new ApiException(String.format(ErrorMessage.ERROR_PROJECT_ALReADY_EXIST, projectDAO.getTitle()), HttpStatus.CONFLICT);
+            throw new ApiException(String.format(ErrorMessage.ERROR_PROJECT_ALREADY_EXIST, projectDAO.getTitle()), HttpStatus.CONFLICT);
         }
         try {
             return projectRepository.save(projectDAO);

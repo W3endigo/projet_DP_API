@@ -5,7 +5,6 @@ import isen.projet_dp_api.dao.participants.ParticipantServiceDAO;
 import isen.projet_dp_api.dao.project.ProjectServiceDAO;
 import isen.projet_dp_api.dao.projectscompanies.ProjectCompaniesServiceDAO;
 import isen.projet_dp_api.model.dao.*;
-import isen.projet_dp_api.model.dto.ParticipantDTO;
 import isen.projet_dp_api.model.dto.ProjectDTO;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
