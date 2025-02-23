@@ -1,10 +1,13 @@
 package isen.projet_dp_api.repository;
 
 import isen.projet_dp_api.model.dao.ProjectDAO;
+import isen.projet_dp_api.model.dao.UserDAO;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface ProjectRepository extends JpaRepository<ProjectDAO, Integer> {
 
-    boolean existsByTitleAndEmail_chef_project(String title, String emailChefProject);
+    boolean existsByEmailAndTitle(UserDAO email_chef_project, String title);
 
 }

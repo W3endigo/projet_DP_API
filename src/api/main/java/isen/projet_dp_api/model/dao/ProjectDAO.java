@@ -35,7 +35,7 @@ public class ProjectDAO {
 
     @ManyToOne
     @JoinColumn(name = "email_chef_project", referencedColumnName = "email")
-    private UserDAO email_chef_project;
+    private UserDAO email;
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ParticipantDAO> participants = new HashSet<>();
@@ -49,7 +49,7 @@ public class ProjectDAO {
         this.status = projectDTO.getStatus();
         this.start_date = projectDTO.getStart_date();
         this.end_date = projectDTO.getEnd_date();
-        this.email_chef_project = new UserDAO(email);
+        this.email = new UserDAO(email);
 
     }
 
