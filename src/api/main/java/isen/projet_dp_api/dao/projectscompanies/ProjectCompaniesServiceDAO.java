@@ -11,4 +11,5 @@ public interface ProjectCompaniesServiceDAO {
     ProjectCompaniesDAO createProjectCompanies(ProjectCompaniesDAO projectCompaniesDAO);
 
     List<ProjectCompaniesDAO> getProjectCompaniesDAOSByProject_Id(Integer projectId);
+
 }

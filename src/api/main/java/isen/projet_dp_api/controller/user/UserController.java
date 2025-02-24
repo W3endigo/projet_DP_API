@@ -7,8 +7,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import isen.projet_dp_api.model.ApiException;
-import isen.projet_dp_api.model.ParticipationRequestResponse;
 import isen.projet_dp_api.model.UpdateUserRequestResponse;
+import isen.projet_dp_api.model.dto.ProjectDTO;
 import isen.projet_dp_api.model.dto.UserDTO;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +17,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+
+import java.util.ArrayList;
 
 @Tag(name = "User", description = "Endpoints for managing user-related operations")
 public interface UserController {
@@ -68,5 +70,5 @@ public interface UserController {
                     schema = @Schema(implementation = ApiException.ErrorResponse.class)
             ))
     }, security = @SecurityRequirement(name = "bearerAuth"))
-    ResponseEntity<ParticipationRequestResponse> getParticipations(@AuthenticationPrincipal UserDetails userDetails);
+    ResponseEntity<ArrayList<ProjectDTO>> getParticipations(@AuthenticationPrincipal UserDetails userDetails);
 }

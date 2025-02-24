@@ -1,8 +1,8 @@
 package isen.projet_dp_api.controller.user.impl;
 
 import isen.projet_dp_api.controller.user.UserController;
-import isen.projet_dp_api.model.ParticipationRequestResponse;
 import isen.projet_dp_api.model.UpdateUserRequestResponse;
+import isen.projet_dp_api.model.dto.ProjectDTO;
 import isen.projet_dp_api.model.dto.UserDTO;
 import isen.projet_dp_api.service.UserService;
 import isen.projet_dp_api.utils.ApiStrings;
@@ -14,6 +14,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
 
 @Log4j2
 @RestController
@@ -37,7 +39,7 @@ public class UserControllerImpl implements UserController {
         return new ResponseEntity<>(userService.updateUser(updateUserDTO, userDetails.getUsername()), HttpStatus.OK);
     }
 
-    public ResponseEntity<ParticipationRequestResponse> getParticipations(@AuthenticationPrincipal UserDetails userDetails) {
+    public ResponseEntity<ArrayList<ProjectDTO>> getParticipations(@AuthenticationPrincipal UserDetails userDetails) {
         log.debug(ApiStrings.GETTING_PARTICIPATIONS, userDetails.getUsername());
         return new ResponseEntity<>(userService.getProjectParticipation(userDetails), HttpStatus.OK);
     }

@@ -7,6 +7,8 @@ import isen.projet_dp_api.dao.projectscompanies.ProjectCompaniesServiceDAO;
 import isen.projet_dp_api.enums.EmailTypes;
 import isen.projet_dp_api.model.ProjectCreationRequestResponse;
 import isen.projet_dp_api.model.dao.*;
+import isen.projet_dp_api.model.dto.ParticipantDTO;
+import isen.projet_dp_api.model.dto.ProjectCompaniesDTO;
 import isen.projet_dp_api.model.dto.ProjectDTO;
 import isen.projet_dp_api.utils.ApiResponseMessage;
 import isen.projet_dp_api.utils.ApiStrings;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.context.Context;
 
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Optional;
 
@@ -104,6 +107,28 @@ public class ProjectService {
         var context = new Context();
         context.setVariable(ApiStrings.NAME, createdProject.getEmail());
         return emailService.sendEmailTemplatePicture(createdProject.getEmail().getEmail(), EmailTypes.PROJECTCREATION, context, Optional.empty());
+    }
+
+    public ProjectDTO getProjectDTO(Integer projectId) {
+
+        ArrayList<ParticipantDTO> participantDTO = new ArrayList<>();
+        ArrayList<ProjectCompaniesDTO> projectCompaniesDTO = new ArrayList<>();
+
+        var projectDAO = projectServiceDAO.getProjectById(projectId);
+
+        var participantsDAO = participantServiceDAO.getParticipantsByProject_Id(projectDAO.getId());
+        var companiesDAO = projectCompaniesServiceDAO.getProjectCompaniesDAOSByProject_Id(projectDAO.getId());
+
+        for (ParticipantDAO participant : participantsDAO) {
+            participantDTO.add(new ParticipantDTO(participant.getUser().getEmail()));
+        }
+
+        for (ProjectCompaniesDAO projectCompaniesDAO : companiesDAO) {
+            projectCompaniesDTO.add(new ProjectCompaniesDTO(projectCompaniesDAO.getCompany().getName()));
+        }
+
+        return new ProjectDTO(projectDAO.getDescription(), projectDAO.getTitle(), projectDAO.getStart_date(), projectCompaniesDTO, participantDTO);
+
     }
 
 
