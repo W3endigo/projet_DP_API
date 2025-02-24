@@ -6,6 +6,7 @@ import isen.projet_dp_api.model.dto.CompanyDTO;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 
 
 @Log4j2
@@ -25,6 +26,10 @@ public class CompanyService {
     public CompanyDAO getCompanyByName(String name) {
         var company = companyServiceDAO.getCompanyByName(name);
         return new CompanyDAO(company.getName());
+    }
+
+    public List<CompanyDAO> getAllCompanies() {
+        return companyServiceDAO.getAllCompanies();
     }
 
 }

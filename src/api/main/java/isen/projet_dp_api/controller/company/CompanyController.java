@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.List;
+
 @Tag(name = "Company", description = "Endpoints for managing user-related operations")
 public interface CompanyController {
 
@@ -54,4 +56,15 @@ public interface CompanyController {
     }, security = @SecurityRequirement(name = "bearerAuth"))
     ResponseEntity<CompanyDAO> getCompanyByName(@PathVariable @Valid String name);
 
+
+    @GetMapping("/api/companies")
+    @Operation(summary = "Get all companies", description = "Retrieve a list of all companies",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "List of companies retrieved successfully."),
+                    @ApiResponse(responseCode = "500", description = "Unexpected error occurred", content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ApiException.ErrorResponse.class)
+                    ))
+            })
+    ResponseEntity<List<CompanyDAO>> getAllCompanies();
 }
