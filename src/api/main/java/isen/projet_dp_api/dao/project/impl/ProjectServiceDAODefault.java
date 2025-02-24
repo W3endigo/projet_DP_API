@@ -12,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 
 @Repository
 @Profile("!test")
