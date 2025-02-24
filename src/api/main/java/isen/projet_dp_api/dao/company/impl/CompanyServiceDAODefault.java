@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 @Profile("!test")
 public class CompanyServiceDAODefault implements CompanyServiceDAO {
@@ -39,4 +41,7 @@ public class CompanyServiceDAODefault implements CompanyServiceDAO {
     public CompanyDAO getCompanyByName(String name) {
         return this.companyRepository.findById(name).orElse(null);
     }
+
+    @Override
+    public List<CompanyDAO> getAllCompanies() { return this.companyRepository.findAll(); }
 }

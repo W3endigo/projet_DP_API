@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @Log4j2
 @RestController
 public class CompanyControllerImpl implements CompanyController {
@@ -35,6 +37,12 @@ public class CompanyControllerImpl implements CompanyController {
                 name);
         var company = companyService.getCompanyByName(name);
         return new ResponseEntity<>(company, HttpStatus.CREATED);
+    }
+
+    @Override
+    public ResponseEntity<List<CompanyDAO>> getAllCompanies() {
+        List<CompanyDAO> companiesNames = companyService.getAllCompanies();
+        return new ResponseEntity<>(companiesNames, HttpStatus.OK);
     }
 
 
