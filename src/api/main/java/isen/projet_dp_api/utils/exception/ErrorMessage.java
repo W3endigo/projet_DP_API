@@ -5,6 +5,12 @@ public class ErrorMessage {
     // START DB
     public static final String ERROR_REGISTERING_USER = "Error registering user, ";
 
+    public static final String ERROR_CREATING_PROJECT = "Error registering a new project, ";
+
+    public static final String ERROR_CREATING_ASSOCIATION_PROJECT_COMPANIES = "Error creating a new association between project and companies, ";
+
+    public static final String ERROR_CREATING_PARTICIPANT = "Error registering a new association between projects and participant, ";
+
     public static final String ERROR_UPDATING_USER = "Error updating user, ";
 
     public static final String ERROR_USER_ALREADY_EXIST = "user with email [%s] already exists";
@@ -13,7 +19,17 @@ public class ErrorMessage {
 
     public static final String ERROR_COMPANY_NOT_FOUND = "company with name [%s] not found";
 
-    public static final String ERROR_COMPANY_ALR_EXIST = "company with name [%s] already exist";
+    public static final String ERROR_PROJECT_NOT_FOUND = "company with name [%s] not found";
+
+    public static final String ERROR_COMPANY_ALREADY_EXIST = "company with name [%s] already exist";
+
+    public static final String ERROR_PARTCIPANTS_ALREADY_IN_PROJECT = "[%s] already in project";
+
+    public static final String ERROR_COMPANY_ALREADY_IN_PROJECT = "[%s] already in project";
+
+    public static final String ERROR_PROJECT_ALREADY_EXIST = "project with name [%s] already exist";
+
+
 
     public static final String ERROR_USER_NOT_FOUND = "user with email [%s] not found";
 
@@ -31,5 +47,9 @@ public class ErrorMessage {
     // END EMAIL
 
     // START GENERIC ERRORS
+
+    public static final String ERROR_INTERNAL_SERVER = "Internal server error";
+
+
 
 }

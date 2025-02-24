@@ -4,6 +4,7 @@ import isen.projet_dp_api.model.dto.RegisterDTO;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 @Data
 @Entity
@@ -30,5 +31,9 @@ public class UserDAO {
         this.firstName = userDTO.getFirstName();
         this.lastName = userDTO.getLastName();
         this.name = userDTO.getCompany() != null ? new CompanyDAO(userDTO.getCompany()) : null;
+    }
+
+    public UserDAO(@NonNull String email) {
+        this.email = email;
     }
 }

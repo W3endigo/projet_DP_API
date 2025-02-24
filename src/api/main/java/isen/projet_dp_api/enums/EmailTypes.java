@@ -10,6 +10,9 @@ public enum EmailTypes {
 
     REGISTRATION("Inscription - Lab Manager Research", "templateRegister"),
 
+    PROJECTCREATION("Création d'un nouveau projet", "templateProject"),
+    REGISTRATION("Inscription - Lab Manager Research", "templateRegister"),
+
     UPDATE_PROFILE("Modification du profil - Lab Manager Research", "templateUpdateUser");
 
 

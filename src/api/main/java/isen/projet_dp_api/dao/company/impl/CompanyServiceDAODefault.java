@@ -24,14 +24,14 @@ public class CompanyServiceDAODefault implements CompanyServiceDAO {
     @Override
     public void registerCompany(CompanyDAO companyDAO) {
         if (companyRepository.existsById(companyDAO.getName())) {
-            LogExceptionUtils.logException(this.getClass(), String.format(ErrorMessage.ERROR_COMPANY_ALR_EXIST,  companyDAO.getName()), null,  companyDAO.getName());
-            throw new ApiException(String.format(ErrorMessage.ERROR_COMPANY_ALR_EXIST, companyDAO.getName()), HttpStatus.CONFLICT);
+            LogExceptionUtils.logException(this.getClass(), String.format(ErrorMessage.ERROR_COMPANY_ALREADY_EXIST,  companyDAO.getName()), null,  companyDAO.getName());
+            throw new ApiException(String.format(ErrorMessage.ERROR_COMPANY_ALREADY_EXIST, companyDAO.getName()), HttpStatus.CONFLICT);
         }
         try {
             companyRepository.save(companyDAO);
         } catch (JpaObjectRetrievalFailureException e) {
-            LogExceptionUtils.logException(this.getClass(), ErrorMessage.ERROR_COMPANY_ALR_EXIST + ErrorMessage.ERROR_FOREIGN_KEY_NOT_FOUND, e, companyDAO);
-            throw new ApiException(e, ErrorMessage.ERROR_COMPANY_ALR_EXIST + String.format(ErrorMessage.ERROR_COMPANY_NOT_FOUND, companyDAO.getName()), HttpStatus.BAD_REQUEST);
+            LogExceptionUtils.logException(this.getClass(), ErrorMessage.ERROR_COMPANY_ALREADY_EXIST + ErrorMessage.ERROR_FOREIGN_KEY_NOT_FOUND, e, companyDAO);
+            throw new ApiException(e, ErrorMessage.ERROR_COMPANY_ALREADY_EXIST + String.format(ErrorMessage.ERROR_COMPANY_NOT_FOUND, companyDAO.getName()), HttpStatus.BAD_REQUEST);
         }
     }
 

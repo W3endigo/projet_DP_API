@@ -15,6 +15,8 @@ public class ApiResponseMessage {
 
     public static final String REGISTER_USER_SUCCESS = "User registered successfully, ";
 
+    public static final String PROJECT_CREATION_SUCCESS = "Project created successfully, ";
+
     public static final String UPDATE_USER_SUCCESS = "User updated successfully, ";
 
     public static final String EMAIL_SEND_SUCCESS = "and email sent successfully";
@@ -30,6 +32,9 @@ public class ApiResponseMessage {
     public static final String USER_UPDATE = "user_update";
 
     public static final String EMAIL_SENDING = "email_sending";
+
+    public static final String PROJECT_CREATION = "project_creation";
+
 
     // END ACTIONS
 

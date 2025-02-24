@@ -2,6 +2,7 @@ package isen.projet_dp_api.utils.exception;
 
 import isen.projet_dp_api.utils.ApiStrings;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -40,6 +41,18 @@ public class ApiExceptionHandler {
                 .status(apiException.getHttpStatus())
                 .body(apiException.toErrorResponse(path));
     }
+
+    /*@ExceptionHandler(InvalidDataAccessApiUsageException.class)
+    public ResponseEntity<ApiException.ErrorResponse> handleInvalidDataAccessApiUsageException(MethodArgumentNotValidException ex, WebRequest request) {
+        // Récupération de l'URI de la requête
+        var path = request.getDescription(false).replace("uri=", "");
+
+        var apiException = new ApiException(ex, Objects.requireNonNull(ex.getBindingResult().getFieldError()).getDefaultMessage(), HttpStatus.BAD_REQUEST);
+
+        return ResponseEntity
+                .status(apiException.getHttpStatus())
+                .body(apiException.toErrorResponse(path));
+    }*/
 
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<ApiException.ErrorResponse> handleBadCredentialsException(BadCredentialsException ex, WebRequest request) {

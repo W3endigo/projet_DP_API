@@ -28,6 +28,8 @@ public class ApiStrings {
 
     public static final String REGISTERING_COMPANY = "Registering company: Name={}";
 
+    public static final String CREATING_PROJECT = "Creating project: Title={}";
+
     public static final String GENERATING_TOKEN = "Generating token for user: email={}";
 
     public static final String UNEXPECTED_ERROR = "Unexpected error: {}";
