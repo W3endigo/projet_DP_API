@@ -1,0 +1,72 @@
+package isen.projet_dp_api.service;
+
+import isen.projet_dp_api.dao.user.UserServiceDAO;
+import isen.projet_dp_api.enums.EmailTypes;
+import isen.projet_dp_api.model.UpdateUserRequestResponse;
+import isen.projet_dp_api.model.dao.CompanyDAO;
+import isen.projet_dp_api.model.dao.UserDAO;
+import isen.projet_dp_api.model.dto.UserDTO;
+import isen.projet_dp_api.utils.ApiResponseMessage;
+import isen.projet_dp_api.utils.ApiStrings;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.thymeleaf.context.Context;
+
+import java.util.Map;
+import java.util.Optional;
+
+@Service
+public class UserService {
+
+    private final UserServiceDAO userServiceDAO;
+
+    private final EmailService emailService;
+
+    public UserService(UserServiceDAO userServiceDAO, EmailService emailService) {
+        this.userServiceDAO = userServiceDAO;
+        this.emailService = emailService;
+    }
+
+    public UserDTO getUser(String email) {
+        var user = userServiceDAO.getUserByEmail(email);
+        return new UserDTO(null, user.getFirstName(), user.getLastName(), user.getName() == null ? null : user.getName().getName());
+    }
+
+    public UpdateUserRequestResponse updateUser(UserDTO userDTO, String email) {
+        var existingUser = userServiceDAO.getUserByEmail(email);
+        if (userDTO.getFirstName() != null && !userDTO.getFirstName().isEmpty()) {
+            existingUser.setFirstName(userDTO.getFirstName());
+        }
+        if (userDTO.getLastName() != null && !userDTO.getLastName().isEmpty()) {
+            existingUser.setLastName(userDTO.getLastName());
+        }
+        if (userDTO.getCompany() != null && !userDTO.getCompany().isEmpty()) {
+            existingUser.setName(new CompanyDAO(userDTO.getCompany()));
+        }
+        if (userDTO.getPassword() != null) {
+            existingUser.setPassword(new BCryptPasswordEncoder().encode(userDTO.getPassword()));
+        }
+        var updatedUser = userServiceDAO.updateUser(existingUser);
+        var emailError = prepareSendUpdateEmail(updatedUser);
+        var responseDetails = emailError.map(error -> Map.of(
+                ApiResponseMessage.USER_UPDATE, ApiResponseMessage.SUCCESS,
+                ApiResponseMessage.EMAIL_SENDING, ApiResponseMessage.FAILURE,
+                ApiResponseMessage.EMAIL_ERROR, error
+        )).orElseGet(() -> Map.of(
+                ApiResponseMessage.USER_UPDATE, ApiResponseMessage.SUCCESS,
+                ApiResponseMessage.EMAIL_SENDING, ApiResponseMessage.SUCCESS
+        ));
+
+        var status = emailError.isPresent() ? ApiResponseMessage.PARTIAL_SUCCESS : ApiResponseMessage.SUCCESS;
+        var message = ApiResponseMessage.UPDATE_USER_SUCCESS + (emailError.isPresent() ? ApiResponseMessage.EMAIL_SEND_ERROR : ApiResponseMessage.EMAIL_SEND_SUCCESS);
+
+        return new UpdateUserRequestResponse(status, message, responseDetails, new UserDTO(null, updatedUser.getFirstName(), updatedUser.getLastName(), updatedUser.getName().getName()));
+    }
+
+    private Optional<String> prepareSendUpdateEmail(UserDAO createdUser) {
+        var context = new Context();
+        context.setVariable(ApiStrings.NAME, createdUser.getFirstName());
+        return emailService.sendEmailTemplatePicture(createdUser.getEmail(), EmailTypes.UPDATE_PROFILE, context, Optional.empty());
+    }
+
+}

@@ -11,6 +11,8 @@ public class ErrorMessage {
 
     public static final String ERROR_CREATING_PARTICIPANT = "Error registering a new association between projects and participant, ";
 
+    public static final String ERROR_UPDATING_USER = "Error updating user, ";
+
     public static final String ERROR_USER_ALREADY_EXIST = "user with email [%s] already exists";
 
     public static final String ERROR_FOREIGN_KEY_NOT_FOUND = "foreign key not found";
@@ -28,6 +30,8 @@ public class ErrorMessage {
     public static final String ERROR_PROJECT_ALREADY_EXIST = "project with name [%s] already exist";
 
 
+
+    public static final String ERROR_USER_NOT_FOUND = "user with email [%s] not found";
 
 
     // END DB

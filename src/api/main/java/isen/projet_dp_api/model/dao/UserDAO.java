@@ -1,6 +1,6 @@
 package isen.projet_dp_api.model.dao;
 
-import isen.projet_dp_api.model.dto.UserDTO;
+import isen.projet_dp_api.model.dto.RegisterDTO;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,7 +25,7 @@ public class UserDAO {
     @JoinColumn(name = "name", referencedColumnName = "name")
     private CompanyDAO name;
 
-    public UserDAO(UserDTO userDTO) {
+    public UserDAO(RegisterDTO userDTO) {
         this.email = userDTO.getEmail();
         this.password = userDTO.getPassword();
         this.firstName = userDTO.getFirstName();
