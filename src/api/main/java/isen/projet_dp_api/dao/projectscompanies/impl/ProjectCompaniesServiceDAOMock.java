@@ -18,4 +18,15 @@ public class ProjectCompaniesServiceDAOMock implements ProjectCompaniesServiceDA
         //TODO
         return null;
     }
+
+    @Override
+    public void deleteProjectCompanies(ProjectCompaniesDAO projectCompaniesDAO) {
+        //TODO
+    }
+
+    @Override
+    public List<ProjectCompaniesDAO> getProjectCompaniesDAOSByCompany_Name(String companyName) {
+        //TODO
+        return null;
+    }
 }

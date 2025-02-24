@@ -12,8 +12,9 @@ import java.util.List;
 public class CompanyServiceDAOMock implements CompanyServiceDAO {
 
     @Override
-    public void registerCompany(CompanyDAO companyDAO) {
+    public CompanyDAO registerCompany(CompanyDAO companyDAO) {
         // TODO
+        return companyDAO;
     }
 
     @Override
@@ -26,6 +27,11 @@ public class CompanyServiceDAOMock implements CompanyServiceDAO {
     public List<CompanyDAO> getAllCompanies() {
         //TODO
         return null;
+    }
+
+    @Override
+    public void deleteCompany(CompanyDAO companyDAO) {
+        //TODO
     }
 
 }

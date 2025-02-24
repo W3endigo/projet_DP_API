@@ -44,4 +44,25 @@ public class ProjectCompaniesServiceDAODefault implements ProjectCompaniesServic
     public List<ProjectCompaniesDAO> getProjectCompaniesDAOSByProject_Id(Integer projectId) {
         return this.projectCompaniesRepository.findByProject_Id(projectId);
     }
+
+    @Override
+    public void deleteProjectCompanies(ProjectCompaniesDAO projectCompaniesDAO) {
+        if (projectCompaniesRepository.existsById(projectCompaniesDAO.getId())) {
+            LogExceptionUtils.logException(this.getClass(),
+                    String.format(ErrorMessage.ERROR_ASSOCIATION_NOT_FOUND, projectCompaniesDAO.getId()),
+                    null, projectCompaniesDAO.getId());
+        } try {
+            this.projectCompaniesRepository.delete(projectCompaniesDAO);
+        }
+        catch (JpaObjectRetrievalFailureException e) {
+            LogExceptionUtils.logException(this.getClass(), ErrorMessage.ERROR_ASSOCIATION_NOT_FOUND + ErrorMessage.ERROR_COMPANY_NOT_FOUND, e, projectCompaniesDAO);
+            throw new ApiException(e, ErrorMessage.ERROR_ASSOCIATION_NOT_FOUND, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @Override
+    public List<ProjectCompaniesDAO> getProjectCompaniesDAOSByCompany_Name(String companyName) {
+        return this.projectCompaniesRepository.findByCompany_Name(companyName);
+    }
+
 }

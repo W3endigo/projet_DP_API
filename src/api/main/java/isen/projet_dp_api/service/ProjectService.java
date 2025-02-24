@@ -30,6 +30,7 @@ public class ProjectService {
     private final ProjectCompaniesServiceDAO projectCompaniesServiceDAO;
 
     private final ParticipantServiceDAO participantServiceDAO;
+
     private final EmailService emailService;
 
 
@@ -127,7 +128,7 @@ public class ProjectService {
             projectCompaniesDTO.add(new ProjectCompaniesDTO(projectCompaniesDAO.getCompany().getName()));
         }
 
-        return new ProjectDTO(projectDAO.getDescription(), projectDAO.getTitle(), projectDAO.getStart_date(), projectCompaniesDTO, participantDTO);
+        return new ProjectDTO(null, projectDAO.getTitle(), projectDAO.getDescription(), null,  projectDAO.getStart_date(), null, participantDTO, projectCompaniesDTO);
 
     }
 

@@ -38,6 +38,8 @@ public class ApiStrings {
 
     public static final String GETTING_PARTICIPATIONS = "Searching for a participations to project for user : email={}";
 
+    public static final String DELETE_COMPANY = "Deleting company with name : name={}";
+
 
     // END LOGS
 }

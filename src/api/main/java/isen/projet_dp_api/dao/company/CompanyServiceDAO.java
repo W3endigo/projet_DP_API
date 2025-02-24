@@ -7,9 +7,12 @@ import java.util.List;
 
 @Service
 public interface CompanyServiceDAO {
-    void registerCompany(CompanyDAO companyDAO);
+
+    CompanyDAO registerCompany(CompanyDAO companyDAO);
 
     CompanyDAO getCompanyByName(String name);
 
     List<CompanyDAO> getAllCompanies();
+
+    void deleteCompany(CompanyDAO companyDAO);
 }

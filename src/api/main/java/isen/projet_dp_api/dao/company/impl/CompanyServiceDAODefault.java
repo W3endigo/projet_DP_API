@@ -24,13 +24,13 @@ public class CompanyServiceDAODefault implements CompanyServiceDAO {
     }
 
     @Override
-    public void registerCompany(CompanyDAO companyDAO) {
+    public CompanyDAO registerCompany(CompanyDAO companyDAO) {
         if (companyRepository.existsById(companyDAO.getName())) {
             LogExceptionUtils.logException(this.getClass(), String.format(ErrorMessage.ERROR_COMPANY_ALREADY_EXIST,  companyDAO.getName()), null,  companyDAO.getName());
             throw new ApiException(String.format(ErrorMessage.ERROR_COMPANY_ALREADY_EXIST, companyDAO.getName()), HttpStatus.CONFLICT);
         }
         try {
-            companyRepository.save(companyDAO);
+            return companyRepository.save(companyDAO);
         } catch (JpaObjectRetrievalFailureException e) {
             LogExceptionUtils.logException(this.getClass(), ErrorMessage.ERROR_COMPANY_ALREADY_EXIST + ErrorMessage.ERROR_FOREIGN_KEY_NOT_FOUND, e, companyDAO);
             throw new ApiException(e, ErrorMessage.ERROR_COMPANY_ALREADY_EXIST + String.format(ErrorMessage.ERROR_COMPANY_NOT_FOUND, companyDAO.getName()), HttpStatus.BAD_REQUEST);
@@ -44,4 +44,21 @@ public class CompanyServiceDAODefault implements CompanyServiceDAO {
 
     @Override
     public List<CompanyDAO> getAllCompanies() { return this.companyRepository.findAll(); }
+
+    @Override
+    public void deleteCompany(CompanyDAO companyDAO) {
+        if (!companyRepository.existsById(companyDAO.getName())) {
+            LogExceptionUtils.logException(this.getClass(), String.format(ErrorMessage.ERROR_COMPANY_NOT_FOUND,  companyDAO.getName()), null,  companyDAO.getName());
+            throw new ApiException(String.format(ErrorMessage.ERROR_COMPANY_NOT_FOUND, companyDAO.getName()), HttpStatus.CONFLICT);
+        }
+        try {
+            companyRepository.delete(companyDAO);
+        } catch (JpaObjectRetrievalFailureException e) {
+            LogExceptionUtils.logException(this.getClass(), ErrorMessage.ERROR_COMPANY_NOT_FOUND + ErrorMessage.ERROR_FOREIGN_KEY_NOT_FOUND, e, companyDAO);
+            throw new ApiException(e, ErrorMessage.ERROR_COMPANY_NOT_FOUND + String.format(ErrorMessage.ERROR_COMPANY_NOT_FOUND, companyDAO.getName()), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
+
 }

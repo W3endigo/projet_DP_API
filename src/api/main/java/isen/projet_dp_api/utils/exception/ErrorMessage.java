@@ -29,6 +29,8 @@ public class ErrorMessage {
 
     public static final String ERROR_PROJECT_ALREADY_EXIST = "project with name [%s] already exist";
 
+    public static final String ERROR_ASSOCIATION_NOT_FOUND = "Association not found";
+
 
 
     public static final String ERROR_USER_NOT_FOUND = "user with email [%s] not found";

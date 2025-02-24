@@ -1,7 +1,6 @@
 package isen.projet_dp_api.controller.company.impl;
 
 import isen.projet_dp_api.controller.company.CompanyController;
-import isen.projet_dp_api.model.dao.CompanyDAO;
 import isen.projet_dp_api.model.dto.CompanyDTO;
 import isen.projet_dp_api.service.CompanyService;
 import isen.projet_dp_api.utils.ApiStrings;
@@ -32,7 +31,7 @@ public class CompanyControllerImpl implements CompanyController {
         return new ResponseEntity<>("Created", HttpStatus.CREATED);
     }
 
-    public ResponseEntity<CompanyDAO> getCompanyByName(@Valid @PathVariable String name) {
+    public ResponseEntity<CompanyDTO> getCompanyByName(@Valid @PathVariable String name) {
         log.debug(ApiStrings.GET_COMPANY,
                 name);
         var company = companyService.getCompanyByName(name);
@@ -40,9 +39,16 @@ public class CompanyControllerImpl implements CompanyController {
     }
 
     @Override
-    public ResponseEntity<List<CompanyDAO>> getAllCompanies() {
-        List<CompanyDAO> companiesNames = companyService.getAllCompanies();
+    public ResponseEntity<List<CompanyDTO>> getAllCompanies() {
+        List<CompanyDTO> companiesNames = companyService.getAllCompanies();
         return new ResponseEntity<>(companiesNames, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<String> deleteCompanyByName(@Valid @PathVariable String name) {
+        log.debug(ApiStrings.DELETE_COMPANY, name);
+        companyService.deleteCompanyByName(name);
+        return new ResponseEntity<>("Deleted !", HttpStatus.OK);
     }
 
 

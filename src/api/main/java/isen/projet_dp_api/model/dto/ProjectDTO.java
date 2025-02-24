@@ -52,12 +52,4 @@ public class ProjectDTO {
 
     @Schema(description = "List of companies")
     private List<ProjectCompaniesDTO> compagnies;
-
-    public ProjectDTO(String title, String description,  Date start_date, List<ProjectCompaniesDTO> compagnies, List<ParticipantDTO> participants) {
-        this.title = title;
-        this.description = description;
-        this.compagnies = compagnies;
-        this.start_date = start_date;
-        this.participants = participants;
-    }
 }
