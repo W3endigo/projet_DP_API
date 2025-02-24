@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 @Profile("!test")
 public class ProjectCompaniesServiceDAODefault implements ProjectCompaniesServiceDAO {
@@ -36,5 +38,10 @@ public class ProjectCompaniesServiceDAODefault implements ProjectCompaniesServic
             throw new ApiException(e, ErrorMessage.ERROR_CREATING_ASSOCIATION_PROJECT_COMPANIES, HttpStatus.BAD_REQUEST);
         }
         return projectCompaniesDAO;
+    }
+
+    @Override
+    public List<ProjectCompaniesDAO> getProjectCompaniesDAOSByProject_Id(Integer projectId) {
+        return this.projectCompaniesRepository.getProjectCompaniesDAOSByProject_Id(projectId);
     }
 }

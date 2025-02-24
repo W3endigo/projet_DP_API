@@ -3,9 +3,23 @@ package isen.projet_dp_api.dao.participants.impl;
 import isen.projet_dp_api.dao.participants.ParticipantServiceDAO;
 import isen.projet_dp_api.model.dao.ParticipantDAO;
 
+import java.util.List;
+
 public class ParticipantServiceDAOMock implements ParticipantServiceDAO {
     @Override
     public void createParticipant(ParticipantDAO participantDAO) {
         //TODO
+    }
+
+    @Override
+    public List<ParticipantDAO> getParticipantsByEmail(String email) {
+        //TODO
+        return null;
+    }
+
+    @Override
+    public List<ParticipantDAO> getParticipantsByProject_Id(Integer projectId) {
+        //TODO
+        return null;
     }
 }

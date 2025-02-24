@@ -36,5 +36,8 @@ public class ApiStrings {
 
     public static final String GET_COMPANY = "Searching for a company named: name={}";
 
+    public static final String GETTING_PARTICIPATIONS = "Searching for a participations to project for user : email={}";
+
+
     // END LOGS
 }

@@ -1,17 +1,26 @@
 package isen.projet_dp_api.service;
 
+import isen.projet_dp_api.dao.participants.ParticipantServiceDAO;
+import isen.projet_dp_api.dao.project.ProjectServiceDAO;
+import isen.projet_dp_api.dao.projectscompanies.ProjectCompaniesServiceDAO;
 import isen.projet_dp_api.dao.user.UserServiceDAO;
 import isen.projet_dp_api.enums.EmailTypes;
+import isen.projet_dp_api.model.ParticipationRequestResponse;
 import isen.projet_dp_api.model.UpdateUserRequestResponse;
-import isen.projet_dp_api.model.dao.CompanyDAO;
-import isen.projet_dp_api.model.dao.UserDAO;
+import isen.projet_dp_api.model.dao.*;
+import isen.projet_dp_api.model.dto.ParticipantDTO;
+import isen.projet_dp_api.model.dto.ProjectCompaniesDTO;
+import isen.projet_dp_api.model.dto.ProjectDTO;
 import isen.projet_dp_api.model.dto.UserDTO;
 import isen.projet_dp_api.utils.ApiResponseMessage;
 import isen.projet_dp_api.utils.ApiStrings;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -22,14 +31,48 @@ public class UserService {
 
     private final EmailService emailService;
 
-    public UserService(UserServiceDAO userServiceDAO, EmailService emailService) {
+    private final ParticipantServiceDAO participantServiceDAO;
+
+    private final ProjectServiceDAO projectServiceDAO;
+
+    private final ProjectCompaniesServiceDAO projectCompaniesServiceDAO;
+
+    public UserService(UserServiceDAO userServiceDAO, EmailService emailService, ParticipantServiceDAO participantServiceDAO, ProjectServiceDAO projectServiceDAO, ProjectCompaniesServiceDAO projectCompaniesServiceDAO) {
         this.userServiceDAO = userServiceDAO;
         this.emailService = emailService;
+        this.participantServiceDAO = participantServiceDAO;
+        this.projectServiceDAO = projectServiceDAO;
+        this.projectCompaniesServiceDAO = projectCompaniesServiceDAO;
     }
 
     public UserDTO getUser(String email) {
         var user = userServiceDAO.getUserByEmail(email);
         return new UserDTO(null, user.getFirstName(), user.getLastName(), user.getName() == null ? null : user.getName().getName());
+    }
+
+    public ParticipationRequestResponse getProjectParticipation(UserDetails userDetails) {
+
+        ArrayList<ProjectDTO> projectsDTO = new ArrayList<>();
+        ArrayList<ParticipantDTO> participantDTO = new ArrayList<>();
+        ArrayList<ProjectCompaniesDTO> projectCompaniesDTO = new ArrayList<>();
+
+        List<ParticipantDAO> participations = this.participantServiceDAO.getParticipantsByEmail(userDetails.getUsername());
+
+        for (ParticipantDAO participation : participations) {
+            var projectDAO = projectServiceDAO.getProjectById(participation.getProject().getId());
+            var participantsDAO = participantServiceDAO.getParticipantsByProject_Id(projectDAO.getId());
+            var companiesDAO = projectCompaniesServiceDAO.getProjectCompaniesDAOSByProject_Id(projectDAO.getId());
+            for (ParticipantDAO participant : participantsDAO) {
+                participantDTO.add(new ParticipantDTO(participant.getUser().getEmail()));
+            }
+
+            for (ProjectCompaniesDAO projectCompaniesDAO : companiesDAO) {
+                projectCompaniesDTO.add(new ProjectCompaniesDTO(projectCompaniesDAO.getCompany().getName()));
+            }
+            projectsDTO.add(new ProjectDTO(projectDAO.getEmail().getEmail(), projectDAO.getDescription(), projectDAO.getTitle(), projectDAO.getStatus(), projectDAO.getStart_date(), projectDAO.getEnd_date(), participantDTO, projectCompaniesDTO));
+        }
+
+        return new ParticipationRequestResponse("En cours", "Réception", projectsDTO);
     }
 
     public UpdateUserRequestResponse updateUser(UserDTO userDTO, String email) {

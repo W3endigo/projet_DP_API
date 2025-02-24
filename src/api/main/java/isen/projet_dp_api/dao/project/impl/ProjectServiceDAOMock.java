@@ -9,4 +9,10 @@ public class ProjectServiceDAOMock implements ProjectServiceDAO {
         //TODO
         return null;
     }
+
+    @Override
+    public ProjectDAO getProjectById(Integer id) {
+        //TODO
+        return null;
+    }
 }

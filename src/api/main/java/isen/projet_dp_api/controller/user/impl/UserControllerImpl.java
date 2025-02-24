@@ -1,6 +1,7 @@
 package isen.projet_dp_api.controller.user.impl;
 
 import isen.projet_dp_api.controller.user.UserController;
+import isen.projet_dp_api.model.ParticipationRequestResponse;
 import isen.projet_dp_api.model.UpdateUserRequestResponse;
 import isen.projet_dp_api.model.dto.UserDTO;
 import isen.projet_dp_api.service.UserService;
@@ -34,5 +35,10 @@ public class UserControllerImpl implements UserController {
         log.debug(ApiStrings.UPDATING_USER,
                 userDetails.getUsername(), updateUserDTO.getFirstName(), updateUserDTO.getLastName(), updateUserDTO.getCompany());
         return new ResponseEntity<>(userService.updateUser(updateUserDTO, userDetails.getUsername()), HttpStatus.OK);
+    }
+
+    public ResponseEntity<ParticipationRequestResponse> getParticipations(@AuthenticationPrincipal UserDetails userDetails) {
+        log.debug(ApiStrings.GETTING_PARTICIPATIONS, userDetails.getUsername());
+        return new ResponseEntity<>(userService.getProjectParticipation(userDetails), HttpStatus.OK);
     }
 }
