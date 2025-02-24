@@ -34,7 +34,7 @@ public interface CompanyController {
                             schema = @Schema(implementation = ApiException.ErrorResponse.class)
                     ))
             }, security = @SecurityRequirement(name = "bearerAuth"))
-    ResponseEntity<String> registerCompany(@RequestBody @Valid CompanyDTO companyDTO);
+    ResponseEntity<CompanyDTO> registerCompany(@RequestBody @Valid CompanyDTO companyDTO);
 
 
     @GetMapping("/api/company/{name}")
@@ -54,7 +54,7 @@ public interface CompanyController {
                         schema = @Schema(implementation = ApiException.ErrorResponse.class)
             ))
     }, security = @SecurityRequirement(name = "bearerAuth"))
-    ResponseEntity<CompanyDAO> getCompanyByName(@PathVariable @Valid String name);
+    ResponseEntity<CompanyDTO> getCompanyByName(@PathVariable @Valid String name);
 
 
     @GetMapping("/api/companies")

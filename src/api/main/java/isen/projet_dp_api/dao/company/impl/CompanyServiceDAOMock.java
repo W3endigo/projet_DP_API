@@ -2,6 +2,7 @@ package isen.projet_dp_api.dao.company.impl;
 
 import isen.projet_dp_api.dao.company.CompanyServiceDAO;
 import isen.projet_dp_api.model.dao.CompanyDAO;
+import isen.projet_dp_api.utils.TestStrings;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
@@ -12,14 +13,21 @@ import java.util.List;
 public class CompanyServiceDAOMock implements CompanyServiceDAO {
 
     @Override
-    public void registerCompany(CompanyDAO companyDAO) {
-        // TODO
+    public CompanyDAO registerCompany(CompanyDAO companyDAO) {
+        if (companyDAO.getName().equals(TestStrings.COMPANY)) {
+            return companyDAO;
+        } else {
+            throw new IllegalArgumentException("Company name is not valid");
+        }
     }
 
     @Override
     public CompanyDAO getCompanyByName(String name) {
-        //TODO
-        return null;
+        if (name.equals(TestStrings.COMPANY.replace(" ", "+"))) {
+            return new CompanyDAO(TestStrings.COMPANY);
+        } else {
+            throw new IllegalArgumentException("Company name is not valid");
+        }
     }
 
     @Override

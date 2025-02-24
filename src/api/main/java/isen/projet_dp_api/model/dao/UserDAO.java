@@ -2,6 +2,7 @@ package isen.projet_dp_api.model.dao;
 
 import isen.projet_dp_api.model.dto.RegisterDTO;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -9,6 +10,7 @@ import lombok.NonNull;
 @Data
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "user")
 public class UserDAO {
 

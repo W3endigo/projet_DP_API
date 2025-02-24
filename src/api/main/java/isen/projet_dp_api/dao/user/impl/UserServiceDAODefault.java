@@ -9,6 +9,7 @@ import isen.projet_dp_api.utils.exception.LogExceptionUtils;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpStatus;
 import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -37,7 +38,7 @@ public class UserServiceDAODefault implements UserServiceDAO {
 
     @Override
     public UserDAO getUserByEmail(String email) {
-        return userRepository.findById(email).orElse(null);
+        return userRepository.findById(email).orElseThrow(() -> new UsernameNotFoundException(String.format(ErrorMessage.ERROR_USER_NOT_FOUND, email)));
     }
 
     @Override

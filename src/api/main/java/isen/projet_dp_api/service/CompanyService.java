@@ -19,13 +19,12 @@ public class CompanyService {
         this.companyServiceDAO = companyServiceDAO;
     }
 
-    public void registerCompany(CompanyDTO companyDTO) {
-        companyServiceDAO.registerCompany(new CompanyDAO(companyDTO));
+    public CompanyDTO registerCompany(CompanyDTO companyDTO) {
+        return new CompanyDTO(companyServiceDAO.registerCompany(new CompanyDAO(companyDTO)).getName());
     }
 
-    public CompanyDAO getCompanyByName(String name) {
-        var company = companyServiceDAO.getCompanyByName(name);
-        return new CompanyDAO(company.getName());
+    public CompanyDTO getCompanyByName(String name) {
+        return new CompanyDTO(companyServiceDAO.getCompanyByName(name).getName());
     }
 
     public List<CompanyDAO> getAllCompanies() {
