@@ -22,7 +22,7 @@ public interface ProjectController {
     @PutMapping("/api/project")
     @Operation(summary = "Create a project", description = "Create a new project with the provided data",
             responses = {
-                    @ApiResponse(responseCode = "201", description = "Project created successfully. The response contains no body but includes a header with the JWT token."),
+                    @ApiResponse(responseCode = "201", description = "Project created successfully. The response contains the projectDTO."),
                     @ApiResponse(responseCode = "400", description = "Invalid company data", content = @Content(
                             mediaType = "application/json",
                             schema = @Schema(implementation = ApiException.ErrorResponse.class)

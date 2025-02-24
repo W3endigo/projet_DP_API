@@ -28,8 +28,6 @@ public class ProjectControllerImpl implements ProjectController {
     @Override
    public ResponseEntity<ProjectCreationRequestResponse> createProject(@RequestBody @Valid ProjectDTO projectDTO, @AuthenticationPrincipal UserDetails userDetails) {
         log.debug(ApiStrings.CREATING_PROJECT, projectDTO.getTitle());
-        var email = userDetails.getUsername();
-        var requestResponseData = projectService.createProject(projectDTO, email);
-        return new ResponseEntity<>(requestResponseData, HttpStatus.CREATED);
+        return new ResponseEntity<>(projectService.createProject(projectDTO, userDetails.getUsername()), HttpStatus.CREATED);
     }
 }
