@@ -30,7 +30,7 @@ public interface CompanyController {
                             schema = @Schema(implementation = ApiException.ErrorResponse.class)
                     ))
             }, security = @SecurityRequirement(name = "bearerAuth"))
-    ResponseEntity<String> registerCompany(@RequestBody @Valid CompanyDTO companyDTO);
+    ResponseEntity<CompanyDTO> registerCompany(@RequestBody @Valid CompanyDTO companyDTO);
 
 
     @GetMapping("/api/company/{name}")

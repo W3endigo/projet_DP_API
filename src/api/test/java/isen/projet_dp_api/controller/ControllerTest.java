@@ -4,41 +4,76 @@ import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.http.ContentType;
+import io.restassured.parsing.Parser;
 import io.restassured.specification.RequestSpecification;
-import org.junit.jupiter.api.BeforeAll;
+import isen.projet_dp_api.model.dto.LoginDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+
+import java.net.URI;
+import java.net.URL;
+import java.util.Map;
 
 import static io.restassured.RestAssured.given;
 
 @SpringBootTest
 public abstract class ControllerTest {
 
-    public static String jsonJWT = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QG1haWwuY29tIiwiaWF0IjoxNzM3NTUyNjYzLCJleHAiOjIwOTc1NTI2NjN9.tBGCvHohV8JjRq0bzgJdgD6VjaxEpZywphd2Sq7pGZaO4RFK3V_BCN9EcslIqA_cCJSCGtVLMCkU4NgNQGew5w";
+    @LocalServerPort
+    private int port;
+
+    private URL base;
+
+    @BeforeEach
+    public void setUp() throws Exception {
+        this.base = new URI("http://localhost:" + port).toURL();
+        RestAssured.defaultParser = Parser.JSON;
+    }
+
 
     static protected RequestSpecification spec;
 
-    @LocalServerPort
-    protected int port;
-
-    @BeforeAll
-    public static void initSpec() {
-        RestAssured.reset();
+    protected String loginAndGetToken(String email, String password) {
+        var path = "/api/auth/login";
+        var response = put(
+                path,
+                new LoginDTO(email, password),
+                Map.class,
+                null
+        );
+        return (String) response.get("token");
     }
 
-    @BeforeEach
-    public void setup() {
-        RestAssured.port = port;
-    }
 
-    protected <T> T put(String path, Object body, Class<T> responseClass, boolean includeJwt) {
+    protected <T> T get(String path, Class<T> responseClass, String jwt) {
         RequestSpecBuilder specBuilder = new RequestSpecBuilder()
                 .setContentType(ContentType.JSON)
                 .addFilter(new ResponseLoggingFilter());
 
-        if (includeJwt) {
-            specBuilder.addHeader("Authorization", "Bearer " + jsonJWT);
+        if (jwt != null) {
+            specBuilder.addHeader("Authorization", "Bearer " + jwt);
+        }
+
+        spec = specBuilder.build();
+
+        return given()
+                .spec(spec)
+                .when()
+                .get(this.base + path)
+                .then()
+                .extract()
+                .body()
+                .as(responseClass);
+    }
+
+    protected <T> T put(String path, Object body, Class<T> responseClass, String jwt) {
+        RequestSpecBuilder specBuilder = new RequestSpecBuilder()
+                .setContentType(ContentType.JSON)
+                .addFilter(new ResponseLoggingFilter());
+
+        if (jwt != null) {
+            specBuilder.addHeader("Authorization", "Bearer " + jwt);
         }
 
         spec = specBuilder.build();
@@ -47,7 +82,29 @@ public abstract class ControllerTest {
                 .spec(spec)
                 .body(body)
                 .when()
-                .put(path)
+                .put(this.base + path)
+                .then()
+                .extract()
+                .body()
+                .as(responseClass);
+    }
+
+    protected <T> T post(String path, Object body, Class<T> responseClass, String jwt) {
+        RequestSpecBuilder specBuilder = new RequestSpecBuilder()
+                .setContentType(ContentType.JSON)
+                .addFilter(new ResponseLoggingFilter());
+
+        if (jwt != null) {
+            specBuilder.addHeader("Authorization", "Bearer " + jwt);
+        }
+
+        spec = specBuilder.build();
+
+        return given()
+                .spec(spec)
+                .body(body)
+                .when()
+                .post(this.base + path)
                 .then()
                 .extract()
                 .body()

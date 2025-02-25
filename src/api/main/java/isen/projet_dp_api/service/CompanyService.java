@@ -25,14 +25,13 @@ public class CompanyService {
         this.projectCompaniesServiceDAO = projectCompaniesServiceDAO;
     }
 
-    public void registerCompany(CompanyDTO companyDTO) {
-        companyServiceDAO.registerCompany(new CompanyDAO(companyDTO));
+    public CompanyDTO registerCompany(CompanyDTO companyDTO) {
+        return new CompanyDTO(companyServiceDAO.registerCompany(new CompanyDAO(companyDTO)).getName());
     }
 
     public CompanyDTO getCompanyByName(String name) {
         var company = companyServiceDAO.getCompanyByName(name);
         return new CompanyDTO(company.getName());
-    }
 
     public List<CompanyDTO> getAllCompanies() {
         var companiesDAO = companyServiceDAO.getAllCompanies();
@@ -50,8 +49,5 @@ public class CompanyService {
         for (ProjectCompaniesDAO projectCompaniesDAO : projectCompanies) {
             projectCompaniesServiceDAO.deleteProjectCompanies(projectCompaniesDAO);
         }
-
-        companyServiceDAO.deleteCompany(company);
-    }
 
 }

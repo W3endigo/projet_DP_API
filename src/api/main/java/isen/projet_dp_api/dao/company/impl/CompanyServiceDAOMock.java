@@ -13,14 +13,20 @@ public class CompanyServiceDAOMock implements CompanyServiceDAO {
 
     @Override
     public CompanyDAO registerCompany(CompanyDAO companyDAO) {
-        // TODO
-        return companyDAO;
+        if (companyDAO.getName().equals(TestStrings.COMPANY)) {
+            return companyDAO;
+        } else {
+            throw new IllegalArgumentException("Company name is not valid");
+        }
     }
 
     @Override
     public CompanyDAO getCompanyByName(String name) {
-        //TODO
-        return null;
+        if (name.equals(TestStrings.COMPANY.replace(" ", "+"))) {
+            return new CompanyDAO(TestStrings.COMPANY);
+        } else {
+            throw new IllegalArgumentException("Company name is not valid");
+        }
     }
 
     @Override

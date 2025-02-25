@@ -5,6 +5,8 @@ import isen.projet_dp_api.model.dao.ParticipantDAO;
 
 import java.util.List;
 
+@Repository
+@Profile("test")
 public class ParticipantServiceDAOMock implements ParticipantServiceDAO {
     @Override
     public void createParticipant(ParticipantDAO participantDAO) {
