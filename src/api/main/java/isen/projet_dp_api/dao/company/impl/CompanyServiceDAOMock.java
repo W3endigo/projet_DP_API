@@ -24,7 +24,7 @@ public class CompanyServiceDAOMock implements CompanyServiceDAO {
 
     @Override
     public CompanyDAO getCompanyByName(String name) {
-        if (name.equals(TestStrings.COMPANY.replace(" ", "+")) || name.equals(TestStrings.COMPANY_THIRD.replace(" ", "+"))) {
+        if (name.equals(TestStrings.COMPANY.replace(" ", "+")) || name.equals(TestStrings.COMPANY_THIRD)) {
             return new CompanyDAO(TestStrings.COMPANY);
         } else {
             throw new IllegalArgumentException("Company name is not valid");
@@ -33,14 +33,12 @@ public class CompanyServiceDAOMock implements CompanyServiceDAO {
 
     @Override
     public List<CompanyDAO> getAllCompanies() {
-        List<CompanyDAO> companies = new ArrayList<>();
-        companies.add(new CompanyDAO(TestStrings.COMPANY));
-        return companies;
+        return new ArrayList<>(List.of(new CompanyDAO(TestStrings.COMPANY)));
     }
 
     @Override
     public void deleteCompany(CompanyDAO companyDAO) {
-        if (!companyDAO.getName().equals(TestStrings.COMPANY_THIRD.replace(" ", "+"))) {
+        if (!companyDAO.getName().equals(TestStrings.COMPANY_THIRD)) {
             throw new IllegalArgumentException("Company name is not valid");
         }
     }

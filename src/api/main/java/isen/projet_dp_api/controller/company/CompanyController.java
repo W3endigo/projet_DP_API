@@ -50,7 +50,7 @@ public interface CompanyController {
                         schema = @Schema(implementation = ApiException.ErrorResponse.class)
             ))
     }, security = @SecurityRequirement(name = "bearerAuth"))
-    ResponseEntity<CompanyDTO> getCompanyByName(@PathVariable @Valid String name);
+    ResponseEntity<CompanyDTO> getCompanyByName(@PathVariable String name);
 
 
     @GetMapping("/api/companies")
@@ -69,6 +69,7 @@ public interface CompanyController {
     @Operation(summary = "Delete a company by name", description = "Delete a company by its name",
             responses = {
                     @ApiResponse(responseCode = "204", description = "Company deleted successfully."),
+                    @ApiResponse(responseCode = "403", description = "User not authorized", content = @Content()),
                     @ApiResponse(responseCode = "404", description = "Company not found", content = @Content(
                             mediaType = "application/json",
                             schema = @Schema(implementation = ApiException.ErrorResponse.class)
@@ -78,7 +79,7 @@ public interface CompanyController {
                             schema = @Schema(implementation = ApiException.ErrorResponse.class)
                     ))
             }, security = @SecurityRequirement(name = "bearerAuth"))
-    ResponseEntity<String> deleteCompanyByName(@PathVariable @Valid String name);
+    ResponseEntity<String> deleteCompanyByName(@PathVariable String name);
 
 
 

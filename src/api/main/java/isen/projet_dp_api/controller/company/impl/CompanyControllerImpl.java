@@ -46,7 +46,7 @@ public class CompanyControllerImpl implements CompanyController {
     public ResponseEntity<String> deleteCompanyByName(@Valid @PathVariable String name) {
         log.debug(ApiStrings.DELETE_COMPANY, name);
         companyService.deleteCompanyByName(name);
-        return new ResponseEntity<>("Deleted !", HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 
