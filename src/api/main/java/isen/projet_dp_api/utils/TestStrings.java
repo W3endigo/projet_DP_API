@@ -23,6 +23,14 @@ public class TestStrings {
 
     public static final String COMPANY = "Dragon School";
 
+    public static final String FIRST_NAME_SECONDARY = "Astrid";
+
+    public static final String LAST_NAME_SECONDARY = "Hofferson";
+
+    public static final String PASSWORD_SECONDARY = "hiccup4life";
+
+    public static final String COMPANY_SECONDARY = "Chief of Berk";
+
     // END TEST DATA
 
     // START TEST STRINGS

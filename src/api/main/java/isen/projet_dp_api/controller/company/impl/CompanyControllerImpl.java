@@ -25,18 +25,16 @@ public class CompanyControllerImpl implements CompanyController {
         this.companyService = companyService;
     }
 
-    public ResponseEntity<String> registerCompany(@Valid @RequestBody CompanyDTO companyDTO) {
+    public ResponseEntity<CompanyDTO> registerCompany(@Valid @RequestBody CompanyDTO companyDTO) {
         log.debug(ApiStrings.REGISTERING_COMPANY,
                 companyDTO.getName());
-        companyService.registerCompany(companyDTO);
-        return new ResponseEntity<>("Created", HttpStatus.CREATED);
+        return new ResponseEntity<>(companyService.registerCompany(companyDTO), HttpStatus.CREATED);
     }
 
-    public ResponseEntity<CompanyDAO> getCompanyByName(@Valid @PathVariable String name) {
+    public ResponseEntity<CompanyDTO> getCompanyByName(@Valid @PathVariable String name) {
         log.debug(ApiStrings.GET_COMPANY,
                 name);
-        var company = companyService.getCompanyByName(name);
-        return new ResponseEntity<>(company, HttpStatus.CREATED);
+        return new ResponseEntity<>(companyService.getCompanyByName(name), HttpStatus.CREATED);
     }
 
     @Override
