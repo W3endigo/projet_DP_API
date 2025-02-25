@@ -30,13 +30,11 @@ public class CompanyService {
     }
 
     public CompanyDTO getCompanyByName(String name) {
-        var company = companyServiceDAO.getCompanyByName(name);
-        return new CompanyDTO(company.getName());
+        return new CompanyDTO(companyServiceDAO.getCompanyByName(name).getName());
     }
 
     public List<CompanyDTO> getAllCompanies() {
-        var companiesDAO = companyServiceDAO.getAllCompanies();
-        return companiesDAO.stream()
+        return companyServiceDAO.getAllCompanies().stream()
                 .map(company -> new CompanyDTO(company.getName()))
                 .toList();
     }
@@ -47,7 +45,7 @@ public class CompanyService {
 
         var projectCompanies = projectCompaniesServiceDAO.getProjectCompaniesByCompanyName(company.getName());
 
-        for (ProjectCompaniesDAO projectCompaniesDAO : projectCompanies) {
+        for (var projectCompaniesDAO : projectCompanies) {
             projectCompaniesServiceDAO.deleteProjectCompanies(projectCompaniesDAO);
         }
 

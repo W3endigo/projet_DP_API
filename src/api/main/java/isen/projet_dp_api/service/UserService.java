@@ -47,11 +47,11 @@ public class UserService {
 
     public ArrayList<ProjectDTO> getProjectParticipation(UserDetails userDetails) {
 
-        ArrayList<ProjectDTO> projectsDTO = new ArrayList<>();
+        var projectsDTO = new ArrayList<ProjectDTO>();
 
-        List<ParticipantDAO> participations = this.participantServiceDAO.getParticipantsByEmail(userDetails.getUsername());
+        var participations = this.participantServiceDAO.getParticipantsByEmail(userDetails.getUsername());
 
-        for (ParticipantDAO participation : participations) {
+        for (var participation : participations) {
             projectsDTO.add(projectService.getProjectDTO(participation.getProject().getId()));
         }
 

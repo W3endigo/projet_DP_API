@@ -10,8 +10,6 @@ import java.util.List;
 @Repository
 public interface ParticipantRepository extends JpaRepository<ParticipantDAO, ParticipantId> {
 
-    boolean existsById(ParticipantId id);
-
     List<ParticipantDAO> getParticipantByUserEmail(String userEmail);
 
     List<ParticipantDAO> getParticipantByProjectId(Integer projectId);

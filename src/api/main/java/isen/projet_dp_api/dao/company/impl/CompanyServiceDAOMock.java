@@ -33,7 +33,7 @@ public class CompanyServiceDAOMock implements CompanyServiceDAO {
 
     @Override
     public List<CompanyDAO> getAllCompanies() {
-        return new ArrayList<>(List.of(new CompanyDAO(TestStrings.COMPANY)));
+        return List.of(new CompanyDAO(TestStrings.COMPANY));
     }
 
     @Override

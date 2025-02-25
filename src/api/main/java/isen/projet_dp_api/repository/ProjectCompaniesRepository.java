@@ -10,9 +10,6 @@ import java.util.List;
 @Repository
 public interface ProjectCompaniesRepository extends JpaRepository<ProjectCompaniesDAO, ProjectCompaniesId> {
 
-    boolean existsById(ProjectCompaniesId projectCompaniesId);
-
-
     List<ProjectCompaniesDAO> findByProjectId(Integer projectId);
 
     List<ProjectCompaniesDAO> findByCompanyName(String companyName);
