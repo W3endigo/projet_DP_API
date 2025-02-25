@@ -12,5 +12,5 @@ public interface ProjectCompaniesRepository extends JpaRepository<ProjectCompani
 
     boolean existsById(ProjectCompaniesId projectCompaniesId);
 
-    List<ProjectCompaniesDAO> findByProject_Id(Integer projectId);
+    List<ProjectCompaniesDAO> findByProjectId(Integer projectId);
 }

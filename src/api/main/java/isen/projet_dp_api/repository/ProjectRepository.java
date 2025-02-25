@@ -10,5 +10,4 @@ public interface ProjectRepository extends JpaRepository<ProjectDAO, Integer> {
 
     boolean existsByEmailAndTitle(UserDAO email_chef_project, String title);
 
-    ProjectDAO getProjectById(Integer id);
 }

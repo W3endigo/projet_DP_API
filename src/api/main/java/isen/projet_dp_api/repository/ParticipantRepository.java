@@ -12,7 +12,7 @@ public interface ParticipantRepository extends JpaRepository<ParticipantDAO, Par
 
     boolean existsById(ParticipantId id);
 
-    List<ParticipantDAO> getParticipantDAOSByUser_Email(String userEmail);
+    List<ParticipantDAO> getParticipantByUserEmail(String userEmail);
 
-    List<ParticipantDAO> getParticipantDAOSByProject_Id(Integer projectId);
+    List<ParticipantDAO> getParticipantByProjectId(Integer projectId);
 }

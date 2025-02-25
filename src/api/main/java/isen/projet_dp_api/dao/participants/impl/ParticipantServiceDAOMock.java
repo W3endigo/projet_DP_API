@@ -18,7 +18,7 @@ public class ParticipantServiceDAOMock implements ParticipantServiceDAO {
     }
 
     @Override
-    public List<ParticipantDAO> getParticipantsByProject_Id(Integer projectId) {
+    public List<ParticipantDAO> getParticipantsByProjectId(Integer projectId) {
         //TODO
         return null;
     }

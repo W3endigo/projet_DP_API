@@ -41,7 +41,7 @@ public class ProjectCompaniesServiceDAODefault implements ProjectCompaniesServic
     }
 
     @Override
-    public List<ProjectCompaniesDAO> getProjectCompaniesDAOSByProject_Id(Integer projectId) {
-        return this.projectCompaniesRepository.findByProject_Id(projectId);
+    public List<ProjectCompaniesDAO> getProjectCompaniesByProjectId(Integer projectId) {
+        return this.projectCompaniesRepository.findByProjectId(projectId);
     }
 }

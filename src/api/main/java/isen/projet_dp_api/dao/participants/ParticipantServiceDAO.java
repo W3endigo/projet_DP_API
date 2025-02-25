@@ -12,5 +12,5 @@ public interface ParticipantServiceDAO {
 
     List<ParticipantDAO> getParticipantsByEmail(String email);
 
-    List<ParticipantDAO> getParticipantsByProject_Id(Integer projectId);
+    List<ParticipantDAO> getParticipantsByProjectId(Integer projectId);
 }
