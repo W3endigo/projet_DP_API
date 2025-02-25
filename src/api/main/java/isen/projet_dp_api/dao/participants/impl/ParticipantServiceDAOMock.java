@@ -2,6 +2,9 @@ package isen.projet_dp_api.dao.participants.impl;
 
 import isen.projet_dp_api.dao.participants.ParticipantServiceDAO;
 import isen.projet_dp_api.model.dao.ParticipantDAO;
+import org.springframework.stereotype.Repository;
+import org.springframework.context.annotation.Profile;
+
 
 import java.util.List;
 

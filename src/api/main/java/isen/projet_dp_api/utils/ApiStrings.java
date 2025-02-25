@@ -40,6 +40,8 @@ public class ApiStrings {
 
     public static final String DELETE_COMPANY = "Deleting company with name : name={}";
 
+    public static final String GET_COMPANIES  = "Retrieving all companies";
+
 
     // END LOGS
 }

@@ -2,9 +2,11 @@ package isen.projet_dp_api.dao.company.impl;
 
 import isen.projet_dp_api.dao.company.CompanyServiceDAO;
 import isen.projet_dp_api.model.dao.CompanyDAO;
+import isen.projet_dp_api.utils.TestStrings;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -22,7 +24,7 @@ public class CompanyServiceDAOMock implements CompanyServiceDAO {
 
     @Override
     public CompanyDAO getCompanyByName(String name) {
-        if (name.equals(TestStrings.COMPANY.replace(" ", "+"))) {
+        if (name.equals(TestStrings.COMPANY.replace(" ", "+")) || name.equals(TestStrings.COMPANY_THIRD.replace(" ", "+"))) {
             return new CompanyDAO(TestStrings.COMPANY);
         } else {
             throw new IllegalArgumentException("Company name is not valid");
@@ -31,13 +33,16 @@ public class CompanyServiceDAOMock implements CompanyServiceDAO {
 
     @Override
     public List<CompanyDAO> getAllCompanies() {
-        //TODO
-        return null;
+        List<CompanyDAO> companies = new ArrayList<>();
+        companies.add(new CompanyDAO(TestStrings.COMPANY));
+        return companies;
     }
 
     @Override
     public void deleteCompany(CompanyDAO companyDAO) {
-        //TODO
+        if (!companyDAO.getName().equals(TestStrings.COMPANY_THIRD.replace(" ", "+"))) {
+            throw new IllegalArgumentException("Company name is not valid");
+        }
     }
 
 }

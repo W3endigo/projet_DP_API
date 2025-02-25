@@ -32,6 +32,7 @@ public class CompanyService {
     public CompanyDTO getCompanyByName(String name) {
         var company = companyServiceDAO.getCompanyByName(name);
         return new CompanyDTO(company.getName());
+    }
 
     public List<CompanyDTO> getAllCompanies() {
         var companiesDAO = companyServiceDAO.getAllCompanies();
@@ -49,5 +50,7 @@ public class CompanyService {
         for (ProjectCompaniesDAO projectCompaniesDAO : projectCompanies) {
             projectCompaniesServiceDAO.deleteProjectCompanies(projectCompaniesDAO);
         }
+    }
+
 
 }

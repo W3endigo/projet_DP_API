@@ -38,8 +38,8 @@ public class CompanyControllerImpl implements CompanyController {
 
     @Override
     public ResponseEntity<List<CompanyDTO>> getAllCompanies() {
-        List<CompanyDTO> companiesNames = companyService.getAllCompanies();
-        return new ResponseEntity<>(companiesNames, HttpStatus.OK);
+        log.debug(ApiStrings.GET_COMPANIES);
+        return new ResponseEntity<>(companyService.getAllCompanies(), HttpStatus.OK);
     }
 
     @Override
