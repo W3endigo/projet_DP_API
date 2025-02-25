@@ -5,6 +5,7 @@ import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.http.ContentType;
 import io.restassured.parsing.Parser;
+import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import isen.projet_dp_api.model.dto.LoginDTO;
 import org.junit.jupiter.api.BeforeEach;
@@ -87,6 +88,22 @@ public abstract class ControllerTest {
                 .extract()
                 .body()
                 .as(responseClass);
+    }
+
+    protected Response del(String path, String jwt) {
+        RequestSpecBuilder specBuilder = new RequestSpecBuilder()
+                .setContentType(ContentType.JSON)
+                .addFilter(new ResponseLoggingFilter());
+
+        if (jwt != null) {
+            specBuilder.addHeader("Authorization", "Bearer " + jwt);
+        }
+        spec = specBuilder.build();
+
+        return given()
+                .spec(spec)
+                .when()
+                .delete(this.base + path);
     }
 
     protected <T> T post(String path, Object body, Class<T> responseClass, String jwt) {

@@ -31,6 +31,9 @@ public class TestStrings {
 
     public static final String COMPANY_SECONDARY = "Chief of Berk";
 
+    public static final String COMPANY_THIRD = "Apple";
+
+
     // END TEST DATA
 
     // START TEST STRINGS

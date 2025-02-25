@@ -7,14 +7,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import isen.projet_dp_api.model.ApiException;
-import isen.projet_dp_api.model.dao.CompanyDAO;
 import isen.projet_dp_api.model.dto.CompanyDTO;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -54,7 +50,7 @@ public interface CompanyController {
                         schema = @Schema(implementation = ApiException.ErrorResponse.class)
             ))
     }, security = @SecurityRequirement(name = "bearerAuth"))
-    ResponseEntity<CompanyDTO> getCompanyByName(@PathVariable @Valid String name);
+    ResponseEntity<CompanyDTO> getCompanyByName(@PathVariable String name);
 
 
     @GetMapping("/api/companies")
@@ -66,5 +62,25 @@ public interface CompanyController {
                             schema = @Schema(implementation = ApiException.ErrorResponse.class)
                     ))
             })
-    ResponseEntity<List<CompanyDAO>> getAllCompanies();
+    ResponseEntity<List<CompanyDTO>> getAllCompanies();
+
+
+    @DeleteMapping("/api/company/{name}")
+    @Operation(summary = "Delete a company by name", description = "Delete a company by its name",
+            responses = {
+                    @ApiResponse(responseCode = "204", description = "Company deleted successfully."),
+                    @ApiResponse(responseCode = "403", description = "User not authorized", content = @Content()),
+                    @ApiResponse(responseCode = "404", description = "Company not found", content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ApiException.ErrorResponse.class)
+                    )),
+                    @ApiResponse(responseCode = "500", description = "Unexpected error occurred", content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ApiException.ErrorResponse.class)
+                    ))
+            }, security = @SecurityRequirement(name = "bearerAuth"))
+    ResponseEntity<String> deleteCompanyByName(@PathVariable String name);
+
+
+
 }

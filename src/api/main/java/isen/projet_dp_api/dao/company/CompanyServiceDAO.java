@@ -13,4 +13,6 @@ public interface CompanyServiceDAO {
     CompanyDAO getCompanyByName(String name);
 
     List<CompanyDAO> getAllCompanies();
+
+    void deleteCompany(CompanyDAO companyDAO);
 }

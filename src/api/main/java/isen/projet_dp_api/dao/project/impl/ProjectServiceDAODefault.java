@@ -7,10 +7,12 @@ import isen.projet_dp_api.model.dao.ProjectDAO;
 import isen.projet_dp_api.repository.ProjectRepository;
 import isen.projet_dp_api.utils.exception.ErrorMessage;
 import isen.projet_dp_api.utils.exception.LogExceptionUtils;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpStatus;
 import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
 import org.springframework.stereotype.Repository;
+
 
 @Repository
 @Profile("!test")
@@ -35,5 +37,10 @@ public class ProjectServiceDAODefault implements ProjectServiceDAO {
             LogExceptionUtils.logException(this.getClass(), ErrorMessage.ERROR_CREATING_PROJECT + ErrorMessage.ERROR_FOREIGN_KEY_NOT_FOUND, e, projectDAO);
             throw new ApiException(e, ErrorMessage.ERROR_CREATING_PROJECT, HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @Override
+    public ProjectDAO getProjectById(Integer id) {
+        return projectRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Project not found with id: " + id));
     }
 }

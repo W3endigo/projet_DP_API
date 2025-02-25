@@ -1,17 +1,23 @@
 package isen.projet_dp_api.service;
 
+import isen.projet_dp_api.dao.participants.ParticipantServiceDAO;
+import isen.projet_dp_api.dao.project.ProjectServiceDAO;
+import isen.projet_dp_api.dao.projectscompanies.ProjectCompaniesServiceDAO;
 import isen.projet_dp_api.dao.user.UserServiceDAO;
 import isen.projet_dp_api.enums.EmailTypes;
 import isen.projet_dp_api.model.UpdateUserRequestResponse;
-import isen.projet_dp_api.model.dao.CompanyDAO;
-import isen.projet_dp_api.model.dao.UserDAO;
+import isen.projet_dp_api.model.dao.*;
+import isen.projet_dp_api.model.dto.ProjectDTO;
 import isen.projet_dp_api.model.dto.UserDTO;
 import isen.projet_dp_api.utils.ApiResponseMessage;
 import isen.projet_dp_api.utils.ApiStrings;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -22,14 +28,34 @@ public class UserService {
 
     private final EmailService emailService;
 
-    public UserService(UserServiceDAO userServiceDAO, EmailService emailService) {
+    private final ParticipantServiceDAO participantServiceDAO;
+
+
+    private final ProjectService projectService;
+
+    public UserService(UserServiceDAO userServiceDAO, EmailService emailService, ParticipantServiceDAO participantServiceDAO, ProjectServiceDAO projectServiceDAO, ProjectCompaniesServiceDAO projectCompaniesServiceDAO, ProjectService projectService) {
         this.userServiceDAO = userServiceDAO;
         this.emailService = emailService;
+        this.participantServiceDAO = participantServiceDAO;
+        this.projectService = projectService;
     }
 
     public UserDTO getUser(String email) {
         var user = userServiceDAO.getUserByEmail(email);
         return new UserDTO(null, user.getFirstName(), user.getLastName(), user.getName() == null ? null : user.getName().getName());
+    }
+
+    public ArrayList<ProjectDTO> getProjectParticipation(UserDetails userDetails) {
+
+        var projectsDTO = new ArrayList<ProjectDTO>();
+
+        var participations = this.participantServiceDAO.getParticipantsByEmail(userDetails.getUsername());
+
+        for (var participation : participations) {
+            projectsDTO.add(projectService.getProjectDTO(participation.getProject().getId()));
+        }
+
+        return projectsDTO;
     }
 
     public UpdateUserRequestResponse updateUser(UserDTO userDTO, String email) {

@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 @Profile("!test")
 public class ParticipantServiceDAODefault implements ParticipantServiceDAO {
@@ -36,5 +38,15 @@ public class ParticipantServiceDAODefault implements ParticipantServiceDAO {
             LogExceptionUtils.logException(this.getClass(), ErrorMessage.ERROR_CREATING_PARTICIPANT + ErrorMessage.ERROR_FOREIGN_KEY_NOT_FOUND, e, participantDAO);
             throw new ApiException(e, ErrorMessage.ERROR_CREATING_PARTICIPANT, HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @Override
+    public List<ParticipantDAO> getParticipantsByEmail(String email) {
+        return participantRepository.getParticipantByUserEmail(email);
+    }
+
+    @Override
+    public List<ParticipantDAO> getParticipantsByProjectId(Integer projectId) {
+        return participantRepository.getParticipantByProjectId(projectId);
     }
 }

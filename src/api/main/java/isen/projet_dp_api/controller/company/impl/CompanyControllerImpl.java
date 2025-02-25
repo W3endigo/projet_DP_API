@@ -1,7 +1,6 @@
 package isen.projet_dp_api.controller.company.impl;
 
 import isen.projet_dp_api.controller.company.CompanyController;
-import isen.projet_dp_api.model.dao.CompanyDAO;
 import isen.projet_dp_api.model.dto.CompanyDTO;
 import isen.projet_dp_api.service.CompanyService;
 import isen.projet_dp_api.utils.ApiStrings;
@@ -38,9 +37,16 @@ public class CompanyControllerImpl implements CompanyController {
     }
 
     @Override
-    public ResponseEntity<List<CompanyDAO>> getAllCompanies() {
-        List<CompanyDAO> companiesNames = companyService.getAllCompanies();
-        return new ResponseEntity<>(companiesNames, HttpStatus.OK);
+    public ResponseEntity<List<CompanyDTO>> getAllCompanies() {
+        log.debug(ApiStrings.GET_COMPANIES);
+        return new ResponseEntity<>(companyService.getAllCompanies(), HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<String> deleteCompanyByName(@Valid @PathVariable String name) {
+        log.debug(ApiStrings.DELETE_COMPANY, name);
+        companyService.deleteCompanyByName(name);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 
