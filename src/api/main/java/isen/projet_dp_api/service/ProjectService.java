@@ -5,6 +5,7 @@ import isen.projet_dp_api.dao.participants.ParticipantServiceDAO;
 import isen.projet_dp_api.dao.project.ProjectServiceDAO;
 import isen.projet_dp_api.dao.projectscompanies.ProjectCompaniesServiceDAO;
 import isen.projet_dp_api.enums.EmailTypes;
+import isen.projet_dp_api.enums.Status;
 import isen.projet_dp_api.model.ProjectCreationRequestResponse;
 import isen.projet_dp_api.model.dao.*;
 import isen.projet_dp_api.model.dto.ParticipantDTO;
@@ -43,7 +44,7 @@ public class ProjectService {
 
     public void addProjectCompanies(ProjectDTO projectDTO, ProjectDAO projectDAO) {
         for (var compagnieDTO : projectDTO.getCompagnies()) {
-            ProjectCompaniesId projectCompaniesId = new ProjectCompaniesId();
+            var projectCompaniesId = new ProjectCompaniesId();
             projectCompaniesId.setProjectId(projectDAO.getId());
             projectCompaniesId.setName(compagnieDTO.getName());
 
@@ -57,11 +58,11 @@ public class ProjectService {
     }
 
     public void addParticipant(String email, ProjectDAO projectDAO) {
-        ParticipantId participantId = new ParticipantId();
+        var participantId = new ParticipantId();
         participantId.setEmail(email);
         participantId.setProjectId(projectDAO.getId());
 
-        ParticipantDAO participantDAO = new ParticipantDAO();
+        var participantDAO = new ParticipantDAO();
         participantDAO.setId(participantId);
         participantDAO.setUser(new UserDAO(email));
         participantDAO.setProject(projectDAO);
@@ -112,15 +113,15 @@ public class ProjectService {
 
     public ProjectDTO getProjectDTO(Integer projectId) {
 
-        ArrayList<ParticipantDTO> participantDTO = new ArrayList<>();
-        ArrayList<ProjectCompaniesDTO> projectCompaniesDTO = new ArrayList<>();
+        var participantDTO = new ArrayList<ParticipantDTO>();
+        var projectCompaniesDTO = new ArrayList<ProjectCompaniesDTO>();
 
         var projectDAO = projectServiceDAO.getProjectById(projectId);
 
-        var participantsDAO = participantServiceDAO.getParticipantsByProject_Id(projectDAO.getId());
-        var companiesDAO = projectCompaniesServiceDAO.getProjectCompaniesDAOSByProject_Id(projectDAO.getId());
+        var participantsDAO = participantServiceDAO.getParticipantsByProjectId(projectId);
+        var companiesDAO = projectCompaniesServiceDAO.getProjectCompaniesByProjectId(projectId);
 
-        for (ParticipantDAO participant : participantsDAO) {
+        for (var participant : participantsDAO) {
             participantDTO.add(new ParticipantDTO(participant.getUser().getEmail()));
         }
 
@@ -128,7 +129,7 @@ public class ProjectService {
             projectCompaniesDTO.add(new ProjectCompaniesDTO(projectCompaniesDAO.getCompany().getName()));
         }
 
-        return new ProjectDTO(null, projectDAO.getTitle(), projectDAO.getDescription(), null,  projectDAO.getStart_date(), null, participantDTO, projectCompaniesDTO);
+        return new ProjectDTO(null, projectDAO.getDescription(), projectDAO.getTitle(), Status.EN_COURS, projectDAO.getStart_date(), projectDAO.getEnd_date(), participantDTO, projectCompaniesDTO);
 
     }
 

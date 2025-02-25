@@ -10,7 +10,7 @@ public interface ProjectCompaniesServiceDAO {
 
     ProjectCompaniesDAO createProjectCompanies(ProjectCompaniesDAO projectCompaniesDAO);
 
-    List<ProjectCompaniesDAO> getProjectCompaniesDAOSByProject_Id(Integer projectId);
+    List<ProjectCompaniesDAO> getProjectCompaniesByProjectId(Integer projectId);
 
     void deleteProjectCompanies(ProjectCompaniesDAO projectCompaniesDAO);
 

@@ -42,11 +42,11 @@ public class ParticipantServiceDAODefault implements ParticipantServiceDAO {
 
     @Override
     public List<ParticipantDAO> getParticipantsByEmail(String email) {
-        return participantRepository.getParticipantDAOSByUser_Email(email);
+        return participantRepository.getParticipantByUserEmail(email);
     }
 
     @Override
-    public List<ParticipantDAO> getParticipantsByProject_Id(Integer projectId) {
-        return participantRepository.getParticipantDAOSByProject_Id(projectId);
+    public List<ParticipantDAO> getParticipantsByProjectId(Integer projectId) {
+        return participantRepository.getParticipantByProjectId(projectId);
     }
 }

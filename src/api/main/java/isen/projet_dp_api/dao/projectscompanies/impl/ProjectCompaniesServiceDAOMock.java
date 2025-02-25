@@ -18,7 +18,7 @@ public class ProjectCompaniesServiceDAOMock implements ProjectCompaniesServiceDA
 
 
     @Override
-    public List<ProjectCompaniesDAO> getProjectCompaniesDAOSByProject_Id(Integer projectId) {
+    public List<ProjectCompaniesDAO> getProjectCompaniesByProjectId(Integer projectId) {
         //TODO
         return null;
     }

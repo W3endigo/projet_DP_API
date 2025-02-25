@@ -40,6 +40,6 @@ public class ProjectServiceDAODefault implements ProjectServiceDAO {
 
     @Override
     public ProjectDAO getProjectById(Integer id) {
-        return projectRepository.getProjectById(id);
+        return projectRepository.findById(id).orElse(null);
     }
 }

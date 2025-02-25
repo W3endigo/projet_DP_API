@@ -49,7 +49,6 @@ public class UserService {
 
         ArrayList<ProjectDTO> projectsDTO = new ArrayList<>();
 
-
         List<ParticipantDAO> participations = this.participantServiceDAO.getParticipantsByEmail(userDetails.getUsername());
 
         for (ParticipantDAO participation : participations) {
