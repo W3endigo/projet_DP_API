@@ -61,8 +61,8 @@ public class ProjectCompaniesServiceDAODefault implements ProjectCompaniesServic
     }
 
     @Override
-    public List<ProjectCompaniesDAO> getProjectCompaniesDAOSByCompany_Name(String companyName) {
-        return this.projectCompaniesRepository.findByCompany_Name(companyName);
+    public List<ProjectCompaniesDAO> getProjectCompaniesByCompanyName(String companyName) {
+        return this.projectCompaniesRepository.findByCompanyName(companyName);
     }
 
 }

@@ -45,11 +45,13 @@ public class CompanyService {
     public void deleteCompanyByName(String name) {
         var company = companyServiceDAO.getCompanyByName(name);
 
-        var projectCompanies = projectCompaniesServiceDAO.getProjectCompaniesDAOSByCompany_Name(company.getName());
+        var projectCompanies = projectCompaniesServiceDAO.getProjectCompaniesByCompanyName(company.getName());
 
         for (ProjectCompaniesDAO projectCompaniesDAO : projectCompanies) {
             projectCompaniesServiceDAO.deleteProjectCompanies(projectCompaniesDAO);
         }
+
+        companyServiceDAO.deleteCompany(company);
     }
 
 

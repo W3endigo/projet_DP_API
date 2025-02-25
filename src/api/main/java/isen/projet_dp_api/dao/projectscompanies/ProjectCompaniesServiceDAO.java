@@ -14,5 +14,5 @@ public interface ProjectCompaniesServiceDAO {
 
     void deleteProjectCompanies(ProjectCompaniesDAO projectCompaniesDAO);
 
-    List<ProjectCompaniesDAO> getProjectCompaniesDAOSByCompany_Name(String companyName);
+    List<ProjectCompaniesDAO> getProjectCompaniesByCompanyName(String companyName);
 }
