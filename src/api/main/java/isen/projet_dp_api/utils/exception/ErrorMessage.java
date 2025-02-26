@@ -48,6 +48,12 @@ public class ErrorMessage {
 
     // END EMAIL
 
+    // START FILE
+
+    public static final String ERROR_CHECKING_BUCKET = "Error checking if bucket exists, ";
+
+    public static final String ERROR_CREATING_BUCKET = "Error creating bucket, ";
+
     // START GENERIC ERRORS
 
     public static final String ERROR_INTERNAL_SERVER = "Internal server error";

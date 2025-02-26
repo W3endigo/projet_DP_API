@@ -85,6 +85,9 @@ dependencies {
     testImplementation 'org.mockito:mockito-core:4.0.0'
     testImplementation 'org.assertj:assertj-core'
 
+    //minio
+    implementation 'io.minio:minio:8.5.17'
+
 }
 
 test {
