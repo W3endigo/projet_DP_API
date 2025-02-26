@@ -52,7 +52,7 @@ public class UserService {
         var participations = this.participantServiceDAO.getParticipantsByEmail(userDetails.getUsername());
 
         for (var participation : participations) {
-            projectsDTO.add(projectService.getProjectDTO(participation.getProject().getId()));
+            projectsDTO.add(projectService.getProjectById(participation.getProject().getId()));
         }
 
         return projectsDTO;

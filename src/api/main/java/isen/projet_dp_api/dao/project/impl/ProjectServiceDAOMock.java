@@ -25,4 +25,23 @@ public class ProjectServiceDAOMock implements ProjectServiceDAO {
         project.setTitle(TestStrings.TITLE);
         return project;
     }
+
+    @Override
+    public ProjectDAO updateProject(ProjectDAO projectDAO) {
+        var project = new ProjectDAO();
+        project.setId(projectDAO.getId());
+        project.setTitle(projectDAO.getTitle());
+        return project;
+    }
+
+    @Override
+    public ProjectDAO getProjectByEmailAndTitle(String email_chef_project, String title) {
+        if (title.equals(TestStrings.TITLE) && email_chef_project.equals(TestStrings.EMAIL_HAROLD)) {
+            var project = new ProjectDAO();
+            project.setId(1);
+            project.setTitle(title);
+            return project;
+        }
+        throw new IllegalArgumentException("project title or email is not valid");
+    }
 }

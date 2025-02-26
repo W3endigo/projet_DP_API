@@ -39,6 +39,8 @@ public class TestStrings {
 
     public static final String DESCRIPTION = "Project description";
 
+    public static final String NEW_DESCRIPTION = "Project description";
+
     public static final String TITLE = "Project";
 
     public static final Integer PROJECT_COMP_ID = 1;

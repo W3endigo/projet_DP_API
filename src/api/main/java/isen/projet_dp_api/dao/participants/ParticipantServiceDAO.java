@@ -13,4 +13,6 @@ public interface ParticipantServiceDAO {
     List<ParticipantDAO> getParticipantsByEmail(String email);
 
     List<ParticipantDAO> getParticipantsByProjectId(Integer projectId);
+
+    void deleteParticipant(ParticipantDAO participantDAO);
 }

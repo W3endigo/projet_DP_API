@@ -5,6 +5,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import isen.projet_dp_api.enums.Status;
 import isen.projet_dp_api.model.ApiException;
 import isen.projet_dp_api.model.ProjectCreationRequestResponse;
+import isen.projet_dp_api.model.UpdateUserRequestResponse;
 import isen.projet_dp_api.model.dto.ProjectDTO;
 import isen.projet_dp_api.utils.ApiResponseMessage;
 import isen.projet_dp_api.utils.TestStrings;
@@ -40,5 +41,24 @@ public class ProjectControllerTest extends ControllerTest{
                         jwt
                 )
         ).extracting(ApiException.ErrorResponse::message).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
+    }
+
+    @Test
+    void updateProjectTest() {
+
+        var path = "/api/updateProject?title=" + TestStrings.TITLE;
+        var jwt = loginAndGetToken(TestStrings.EMAIL_HAROLD, TestStrings.PASSWORD);
+
+        var updateProjectDTO = new ProjectDTO(TestStrings.EMAIL_HAROLD, TestStrings.NEW_DESCRIPTION, TestStrings.TITLE, Status.TERMINE, TestStrings.START_DATE, TestStrings.END_DATE, null, null);
+
+        var project = put(
+                path,
+                updateProjectDTO,
+                ProjectDTO.class,
+                jwt
+        );
+
+        assertThat(project.getStatus()).isEqualTo(Status.TERMINE);
+
     }
 }

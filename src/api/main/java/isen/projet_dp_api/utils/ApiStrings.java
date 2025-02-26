@@ -42,6 +42,8 @@ public class ApiStrings {
 
     public static final String GET_COMPANIES  = "Retrieving all companies";
 
+    public static final String UPDATING_PROJECT = "Updating project: title={}";
+
 
     // END LOGS
 }

@@ -51,4 +51,11 @@ public class ParticipantServiceDAOMock implements ParticipantServiceDAO {
             throw new IllegalArgumentException("Poject id is not valid");
         }
     }
+
+    @Override
+    public void deleteParticipant(ParticipantDAO participantDAO) {
+        if (!participantDAO.getUser().getEmail().equals(TestStrings.EMAIL_HAROLD)) {
+            throw new IllegalArgumentException("Participant name is not valid");
+        }
+    }
 }

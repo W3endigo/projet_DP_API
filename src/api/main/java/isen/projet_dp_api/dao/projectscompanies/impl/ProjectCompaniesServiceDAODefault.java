@@ -47,7 +47,7 @@ public class ProjectCompaniesServiceDAODefault implements ProjectCompaniesServic
 
     @Override
     public void deleteProjectCompanies(ProjectCompaniesDAO projectCompaniesDAO) {
-        if (projectCompaniesRepository.existsById(projectCompaniesDAO.getId())) {
+        if (!projectCompaniesRepository.existsById(projectCompaniesDAO.getId())) {
             LogExceptionUtils.logException(this.getClass(),
                     String.format(ErrorMessage.ERROR_ASSOCIATION_NOT_FOUND, projectCompaniesDAO.getId()),
                     null, projectCompaniesDAO.getId());

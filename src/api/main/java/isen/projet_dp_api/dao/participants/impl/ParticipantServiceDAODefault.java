@@ -49,4 +49,18 @@ public class ParticipantServiceDAODefault implements ParticipantServiceDAO {
     public List<ParticipantDAO> getParticipantsByProjectId(Integer projectId) {
         return participantRepository.getParticipantByProjectId(projectId);
     }
+
+    @Override
+    public void deleteParticipant(ParticipantDAO participantDAO) {
+        if (!participantRepository.existsById(participantDAO.getId())) {
+            LogExceptionUtils.logException(this.getClass(), String.format(ErrorMessage.ERROR_PARTICIPANT_NOT_FOUND,  participantDAO.getId()), null,  participantDAO.getId());
+            throw new ApiException(String.format(ErrorMessage.ERROR_PARTICIPANT_NOT_FOUND, participantDAO.getId()), HttpStatus.CONFLICT);
+        }
+        try {
+            participantRepository.delete(participantDAO);
+        } catch (JpaObjectRetrievalFailureException e) {
+            LogExceptionUtils.logException(this.getClass(), ErrorMessage.ERROR_PARTICIPANT_NOT_FOUND + ErrorMessage.ERROR_FOREIGN_KEY_NOT_FOUND, e, participantDAO);
+            throw new ApiException(e, ErrorMessage.ERROR_PARTICIPANT_NOT_FOUND + String.format(ErrorMessage.ERROR_PARTICIPANT_NOT_FOUND, participantDAO.getId()), HttpStatus.BAD_REQUEST);
+        }
+    }
 }
