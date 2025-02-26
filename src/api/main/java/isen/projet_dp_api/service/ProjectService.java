@@ -5,7 +5,6 @@ import isen.projet_dp_api.dao.participants.ParticipantServiceDAO;
 import isen.projet_dp_api.dao.project.ProjectServiceDAO;
 import isen.projet_dp_api.dao.projectscompanies.ProjectCompaniesServiceDAO;
 import isen.projet_dp_api.enums.EmailTypes;
-import isen.projet_dp_api.enums.Status;
 import isen.projet_dp_api.model.ProjectCreationRequestResponse;
 import isen.projet_dp_api.model.dao.*;
 import isen.projet_dp_api.model.dto.ParticipantDTO;
@@ -44,7 +43,7 @@ public class ProjectService {
 
     public void addProjectCompanies(ProjectDTO projectDTO, ProjectDAO projectDAO) {
         for (var compagnieDTO : projectDTO.getCompagnies()) {
-            var projectCompaniesId = new ProjectCompaniesId();
+            ProjectCompaniesId projectCompaniesId = new ProjectCompaniesId();
             projectCompaniesId.setProjectId(projectDAO.getId());
             projectCompaniesId.setName(compagnieDTO.getName());
 
@@ -125,11 +124,11 @@ public class ProjectService {
             participantDTO.add(new ParticipantDTO(participant.getUser().getEmail()));
         }
 
-        for (ProjectCompaniesDAO projectCompaniesDAO : companiesDAO) {
+        for (var projectCompaniesDAO : companiesDAO) {
             projectCompaniesDTO.add(new ProjectCompaniesDTO(projectCompaniesDAO.getCompany().getName()));
         }
 
-        return new ProjectDTO(null, projectDAO.getDescription(), projectDAO.getTitle(), Status.EN_COURS, projectDAO.getStart_date(), projectDAO.getEnd_date(), participantDTO, projectCompaniesDTO);
+        return new ProjectDTO(null, projectDAO.getDescription(), projectDAO.getTitle(), null,  projectDAO.getStart_date(), null, participantDTO, projectCompaniesDTO);
 
     }
 

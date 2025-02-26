@@ -39,6 +39,7 @@ public class UserControllerImpl implements UserController {
         return new ResponseEntity<>(userService.updateUser(updateUserDTO, userDetails.getUsername()), HttpStatus.OK);
     }
 
+    @Override
     public ResponseEntity<ArrayList<ProjectDTO>> getParticipations(@AuthenticationPrincipal UserDetails userDetails) {
         log.debug(ApiStrings.GETTING_PARTICIPATIONS, userDetails.getUsername());
         return new ResponseEntity<>(userService.getProjectParticipation(userDetails), HttpStatus.OK);

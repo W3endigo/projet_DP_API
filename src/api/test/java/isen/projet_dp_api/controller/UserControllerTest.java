@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.util.List;
+
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @ActiveProfiles("test")
@@ -43,6 +45,24 @@ public class UserControllerTest extends ControllerTest {
 
         assertThat(user.getPassword()).isNull();
         assertThat(user.getFirstName()).isEqualTo(TestStrings.FIRST_NAME_SECONDARY);
+
+    }
+
+    @Test
+    void getParticipationsTest() {
+
+        var jwt = loginAndGetToken(TestStrings.EMAIL_HAROLD, TestStrings.PASSWORD);
+        var path = "/api/user/participations";
+
+        var projects = get(path, List.class, jwt);
+
+        for (var project : projects) {
+            assertThat(project)
+                    .isNotNull()
+                    .hasFieldOrPropertyWithValue("title", TestStrings.TITLE);
+        }
+
+
 
     }
 

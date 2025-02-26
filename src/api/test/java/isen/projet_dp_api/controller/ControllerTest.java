@@ -90,7 +90,7 @@ public abstract class ControllerTest {
                 .as(responseClass);
     }
 
-    protected Response del(String path, String jwt) {
+    protected Response delete(String path, Object body, String jwt) {
         RequestSpecBuilder specBuilder = new RequestSpecBuilder()
                 .setContentType(ContentType.JSON)
                 .addFilter(new ResponseLoggingFilter());
@@ -102,8 +102,12 @@ public abstract class ControllerTest {
 
         return given()
                 .spec(spec)
+                .body(body)
                 .when()
-                .delete(this.base + path);
+                .delete(this.base + path)
+                .then()
+                .extract()
+                .response();
     }
 
     protected <T> T post(String path, Object body, Class<T> responseClass, String jwt) {

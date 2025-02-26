@@ -22,4 +22,8 @@ public class ProjectCompaniesDAO {
     @MapsId("name")
     @JoinColumn(name = "name")
     private CompanyDAO company;
+
+    public ProjectCompaniesDAO(CompanyDAO company) {
+        this.company = company;
+    }
 }

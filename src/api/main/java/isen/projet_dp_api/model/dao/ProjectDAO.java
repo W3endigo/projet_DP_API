@@ -3,6 +3,7 @@ package isen.projet_dp_api.model.dao;
 import isen.projet_dp_api.model.dto.ProjectDTO;
 import isen.projet_dp_api.enums.Status;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,6 +14,7 @@ import java.util.Set;
 
 @Data
 @Entity
+@AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "project")
 public class ProjectDAO {
