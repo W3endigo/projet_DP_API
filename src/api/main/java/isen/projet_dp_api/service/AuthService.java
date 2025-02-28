@@ -9,6 +9,7 @@ import isen.projet_dp_api.model.dto.RegisterDTO;
 import isen.projet_dp_api.utils.ApiResponseMessage;
 import isen.projet_dp_api.utils.ApiStrings;
 import lombok.extern.log4j.Log4j2;
+import org.hibernate.boot.model.internal.OptionalDeterminationSecondPass;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -57,8 +58,9 @@ public class AuthService {
     }
 
     private Optional<String> prepareSendRegistrationEmail(UserDAO createdUser) {
-        var context = new Context();
-        context.setVariable(ApiStrings.NAME, createdUser.getFirstName());
-        return emailService.sendEmailTemplatePicture(createdUser.getEmail(), EmailTypes.REGISTRATION, context, Optional.empty());
+        //var context = new Context();
+        //context.setVariable(ApiStrings.NAME, createdUser.getFirstName());
+        //return emailService.sendEmailTemplatePicture(createdUser.getEmail(), EmailTypes.REGISTRATION, context, Optional.empty());
+        return Optional.empty();
     }
 }
