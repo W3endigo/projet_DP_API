@@ -44,11 +44,17 @@ public class ProjectCompaniesServiceDAOMock implements ProjectCompaniesServiceDA
     }
 
     @Override
-    public void deleteProjectCompanies(ProjectCompaniesDAO projectCompaniesDAO) {
+    public void deleteProjectCompaniesByCompanyNameAndProjectId(String name, Integer projectId) {
+        //TODO
+    }
+
+    /*@Override
+    public List<ProjectCompaniesDAO> deleteProjectCompanies(ProjectCompaniesDAO projectCompaniesDAO) {
         if (!projectCompaniesDAO.getCompany().getName().equals(TestStrings.COMPANY_THIRD)) {
             throw new IllegalArgumentException("Company name is not valid");
         }
-    }
+        return null;
+    }*/
 
     @Override
     public List<ProjectCompaniesDAO> getProjectCompaniesByCompanyName(String companyName) {
@@ -57,6 +63,11 @@ public class ProjectCompaniesServiceDAOMock implements ProjectCompaniesServiceDA
         } else {
             throw new IllegalArgumentException("Company name is not valid");
         }
+    }
+
+    @Override
+    public List<ProjectCompaniesDAO> getProjectCompaniesByCompanyNameAndProjectId(String companyName, Integer projectId) {
+        return List.of();
     }
 
 }

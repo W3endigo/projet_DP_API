@@ -44,7 +44,7 @@ public class CompanyService {
         var projectCompanies = projectCompaniesServiceDAO.getProjectCompaniesByCompanyName(companyServiceDAO.getCompanyByName(name).getName());
 
         for (var projectCompaniesDAO : projectCompanies) {
-            projectCompaniesServiceDAO.deleteProjectCompanies(projectCompaniesDAO);
+            projectCompaniesServiceDAO.deleteProjectCompaniesByCompanyNameAndProjectId(projectCompaniesDAO.getCompany().getName(), projectCompaniesDAO.getProject().getId());
         }
 
         companyServiceDAO.deleteCompany(companyServiceDAO.getCompanyByName(name));

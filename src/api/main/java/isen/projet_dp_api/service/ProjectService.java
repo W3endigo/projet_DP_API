@@ -1,6 +1,7 @@
 package isen.projet_dp_api.service;
 
 
+import isen.projet_dp_api.dao.company.CompanyServiceDAO;
 import isen.projet_dp_api.dao.participants.ParticipantServiceDAO;
 import isen.projet_dp_api.dao.project.ProjectServiceDAO;
 import isen.projet_dp_api.dao.projectscompanies.ProjectCompaniesServiceDAO;
@@ -8,20 +9,17 @@ import isen.projet_dp_api.dao.user.UserServiceDAO;
 import isen.projet_dp_api.enums.EmailTypes;
 import isen.projet_dp_api.model.ProjectCreationRequestResponse;
 import isen.projet_dp_api.model.dao.*;
-import isen.projet_dp_api.model.dto.CompanyDTO;
 import isen.projet_dp_api.model.dto.ParticipantDTO;
 import isen.projet_dp_api.model.dto.ProjectCompaniesDTO;
 import isen.projet_dp_api.model.dto.ProjectDTO;
 import isen.projet_dp_api.utils.ApiResponseMessage;
 import isen.projet_dp_api.utils.ApiStrings;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.context.Context;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -36,45 +34,24 @@ public class ProjectService {
     private final ParticipantServiceDAO participantServiceDAO;
 
     private final EmailService emailService;
+
     private final UserServiceDAO userServiceDAO;
 
+    private final CompanyServiceDAO companyServiceDAO;
 
-    public ProjectService(ProjectServiceDAO projectServiceDAO, ProjectCompaniesServiceDAO projectCompaniesServiceDAO, ParticipantServiceDAO participantServiceDAO, EmailService emailService, UserServiceDAO userServiceDAO) {
+
+
+    public ProjectService(ProjectServiceDAO projectServiceDAO, ProjectCompaniesServiceDAO projectCompaniesServiceDAO, ParticipantServiceDAO participantServiceDAO, EmailService emailService, UserServiceDAO userServiceDAO, CompanyServiceDAO companyServiceDAO) {
         this.projectServiceDAO = projectServiceDAO;
         this.projectCompaniesServiceDAO = projectCompaniesServiceDAO;
         this.participantServiceDAO = participantServiceDAO;
         this.emailService = emailService;
         this.userServiceDAO = userServiceDAO;
+        this.companyServiceDAO = companyServiceDAO;
     }
 
-    public ProjectCompaniesDAO createProjectCompanies(String name, ProjectDAO projectDAO) {
-        ProjectCompaniesId projectCompaniesId = new ProjectCompaniesId();
-        projectCompaniesId.setProjectId(projectDAO.getId());
-        projectCompaniesId.setName(name);
-
-        var compagnieDAO = new ProjectCompaniesDAO();
-        compagnieDAO.setId(projectCompaniesId);
-        compagnieDAO.setProject(projectDAO);
-        compagnieDAO.setCompany(new CompanyDAO(name));
-
-        this.projectCompaniesServiceDAO.createProjectCompanies(compagnieDAO);
-
-        return compagnieDAO;
-    }
-
-    public ParticipantDAO createParticipant(String email, ProjectDAO projectDAO) {
-        var participantId = new ParticipantId();
-        participantId.setEmail(email);
-        participantId.setProjectId(projectDAO.getId());
-
-        var participantDAO = new ParticipantDAO();
-        participantDAO.setId(participantId);
-        participantDAO.setUser(new UserDAO(email));
-        participantDAO.setProject(projectDAO);
-
-        participantServiceDAO.createParticipant(participantDAO);
-
-        return participantDAO;
+    public void createProjectCompanies(String name, ProjectDAO projectDAO) {
+        projectDAO.addCompagnie(companyServiceDAO.getCompanyByName(name));
     }
 
     @Transactional
@@ -94,17 +71,23 @@ public class ProjectService {
                 ApiResponseMessage.EMAIL_SENDING, ApiResponseMessage.SUCCESS
         ));
 
-        createParticipant(email, projectDAO);
+        projectDAO.addParticipant(userServiceDAO.getUserByEmail(email));
+        var projectParticipants = new ArrayList<ParticipantDTO>();
+        var p_chef = new ParticipantDTO();
+        p_chef.setEmail(email);
+        projectParticipants.add(p_chef);
+        projectDTO.setParticipants(projectParticipants);
 
         if (projectDTO.getParticipants() != null) {
             for (var participantDTO : projectDTO.getParticipants()) {
-                this.createParticipant(participantDTO.getEmail(), projectDAO);
+                projectDAO.addParticipant(userServiceDAO.getUserByEmail(participantDTO.getEmail()));
             }
         }
 
         if (projectDTO.getCompagnies() != null) {
             for (var compagnieDTO : projectDTO.getCompagnies()) {
-                this.createProjectCompanies(compagnieDTO.getName(), projectDAO);
+                projectDAO.addCompagnie(companyServiceDAO.getCompanyByName(compagnieDTO.getName()));
+
             }
         }
 
@@ -114,13 +97,10 @@ public class ProjectService {
         return new ProjectCreationRequestResponse(status, message, responseDetails, projectDTO);
     }
 
+
     @Transactional
     public ProjectDTO updateProject(ProjectDTO projectDTO, String email, String title) {
-
-
         var project = projectServiceDAO.getProjectByEmailAndTitle(email, title);
-        var listParticipants = new ArrayList<ParticipantDTO>();
-        var listCompagnies = new ArrayList<ProjectCompaniesDTO>();
 
         if (projectDTO.getTitle() != null && !projectDTO.getTitle().isEmpty()) {
             project.setTitle(projectDTO.getTitle());
@@ -143,77 +123,69 @@ public class ProjectService {
             project.setStart_date(projectDTO.getStart_date());
         }
 
-        if (projectDTO.getStart_date() != null) {
+        if (projectDTO.getEnd_date() != null) {
             project.setEnd_date(projectDTO.getEnd_date());
         }
 
-        for (var participant : project.getParticipants()) {
-            listParticipants.add(new ParticipantDTO(participant.getUser().getEmail()));
-        }
-
-        for (var company : project.getCompanies()) {
-            listCompagnies.add(new ProjectCompaniesDTO(company.getCompany().getName()));
-        }
-
-        var projectDAO = projectServiceDAO.updateProject(project);
-
 
         if (projectDTO.getParticipants() != null) {
-            var participants = participantServiceDAO.getParticipantsByProjectId(projectDAO.getId());
-            var participantDTONames = projectDTO.getParticipants().stream()
-                    .map(ParticipantDTO::getEmail)
-                    .toList();
-            for (var participant : participants) {
-                var participantDAOEmail = participant.getUser().getEmail();
+            var currentParticipants = project.getParticipants();
+            var newParticipantsEmails = projectDTO.getParticipants().stream().map(ParticipantDTO::getEmail).toList();
 
-                if (!participantDTONames.contains(participantDAOEmail)) {
+            currentParticipants.removeIf(participant -> {
+                if (!newParticipantsEmails.contains(participant.getUser().getEmail())) {
                     participantServiceDAO.deleteParticipant(participant);
+                    return true;
                 }
-            }
+                return false;
+            });
 
-            for (var participantDTOName : participantDTONames) {
-                boolean exists = participants.stream()
-                        .anyMatch(p -> p.getUser().getEmail().equals(participantDTOName));
+            for (var participantDTO : projectDTO.getParticipants()) {
+                boolean exists = currentParticipants.stream()
+                        .anyMatch(p -> p.getUser().getEmail().equals(participantDTO.getEmail()));
 
                 if (!exists) {
-                    var createdParticipant = createParticipant(participantDTOName, projectDAO);
-                    listParticipants.add(new ParticipantDTO(createdParticipant.getUser().getEmail()));
+                    project.addParticipant(userServiceDAO.getUserByEmail(participantDTO.getEmail()));
                 }
             }
         }
-        var projectCompanies = projectCompaniesServiceDAO.getProjectCompaniesByProjectId(projectDAO.getId());
-        log.info("VOILA {}", projectCompanies);
-        projectCompaniesServiceDAO.deleteProjectCompanies(projectCompanies.getFirst());
-        var projectCompaniesNew = projectCompaniesServiceDAO.getProjectCompaniesByProjectId(projectDAO.getId());
-        log.info("VOILA {}", projectCompaniesNew);
 
+        var currentCompanies = project.getCompanies();
+        var newCompanyNames = projectDTO.getCompagnies().stream().map(ProjectCompaniesDTO::getName).toList();
 
-        /*if (projectDTO.getCompagnies() != null) {
-            var projectCompanies = projectCompaniesServiceDAO.getProjectCompaniesByProjectId(projectDAO.getId());
-            var projectCompanyNames = projectDTO.getCompagnies().stream()
-                    .map(ProjectCompaniesDTO::getName)
-                    .toList();
-
-            for (var projectCompany : projectCompanies) {
-                var companyName = projectCompany.getCompany().getName();
-
-                if (!projectCompanyNames.contains(companyName)) {
-                    projectCompaniesServiceDAO.deleteProjectCompanies(projectCompany);
-                }
+        currentCompanies.removeIf(company -> {
+            if (!newCompanyNames.contains(company.getCompany().getName())) {
+                projectCompaniesServiceDAO.deleteProjectCompaniesByCompanyNameAndProjectId(
+                        company.getCompany().getName(), project.getId()
+                );
+                return true;
             }
+            return false;
+        });
 
-            for (var projectCompanyName : projectCompanyNames) {
-                boolean exists = projectCompanies.stream()
-                        .anyMatch(pc -> pc.getCompany().getName().equals(projectCompanyName));
+        for (var companyDTO : projectDTO.getCompagnies()) {
+            boolean exists = currentCompanies.stream()
+                    .anyMatch(pc -> pc.getCompany().getName().equals(companyDTO.getName()));
 
-                if (!exists) {
-                    var createdProjectCompanies = createProjectCompanies(projectCompanyName, projectDAO);
-                    listCompagnies.add(new ProjectCompaniesDTO(createdProjectCompanies.getCompany().getName()));
-                }
+            var existingCompany = projectCompaniesServiceDAO.getProjectCompaniesByCompanyNameAndProjectId(companyDTO.getName(), project.getId());
+            log.info(existingCompany);
+            if (existingCompany.isEmpty()) {
+                project.addCompagnie(companyServiceDAO.getCompanyByName(companyDTO.getName()));
             }
-        }*/
+        }
+        projectServiceDAO.updateProject(project);
 
-        return new ProjectDTO(project.getEmail().getEmail(), project.getDescription(), project.getTitle(), project.getStatus(), project.getStart_date(), project.getEnd_date(), listParticipants, listCompagnies);
+        return new ProjectDTO(
+                project.getEmail().getEmail(),
+                project.getDescription(),
+                project.getTitle(),
+                project.getStatus(),
+                project.getStart_date(),
+                project.getEnd_date(),
+                project.getParticipants().stream().map(p -> new ParticipantDTO(p.getUser().getEmail())).toList(),
+                project.getCompanies().stream().map(c -> new ProjectCompaniesDTO(c.getCompany().getName())).toList()
+        );
+
 
     }
 

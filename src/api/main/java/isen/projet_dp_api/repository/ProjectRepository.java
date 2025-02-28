@@ -14,5 +14,5 @@ public interface ProjectRepository extends JpaRepository<ProjectDAO, Integer> {
 
     Optional<ProjectDAO> findByEmailEmailAndTitle(String email_chef_project, String title);
 
-    boolean existsByTitle(String title);
+    boolean existsByEmailEmailAndTitleAndIdNot(String email, String title, Integer id);
 }

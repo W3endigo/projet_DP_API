@@ -8,7 +8,6 @@ import lombok.*;
 
 import java.sql.Date;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 
@@ -57,23 +56,68 @@ public class ProjectDAO {
         this.email = new UserDAO(email);
     }
 
-    public void addParticipant(ParticipantDAO participant) {
-        participants.add(participant);
+    public void addParticipant(UserDAO user) {
+        if (user == null) return;
+
+        boolean exists = participants.stream().anyMatch(p -> p.getUser().equals(user));
+        if (exists) return;
+
+        ParticipantId participantId = new ParticipantId();
+        participantId.setProjectId(this.id);
+        participantId.setEmail(user.getEmail());
+
+        ParticipantDAO participant = new ParticipantDAO();
+        participant.setId(participantId);
         participant.setProject(this);
+        participant.setUser(user);
+
+        participants.add(participant);
+        user.getParticipants().add(participant);
     }
 
-    public void addCompagnie(ProjectCompaniesDAO companie) {
-        companies.add(companie);
-        companie.setProject(this);
+    public void removeParticipant(UserDAO user) {
+        if (user == null) return;
+
+        participants.removeIf(participant -> {
+            boolean toRemove = participant.getUser().equals(user);
+            if (toRemove) {
+                participant.setProject(null);
+                participant.setUser(null);
+            }
+            return toRemove;
+        });
     }
 
-    public void removeCompagnie(ProjectCompaniesDAO companie) {
-        companies.remove(companie);
-        companie.setProject(null);
+
+    public void addCompagnie(CompanyDAO company) {
+        if (company == null) return;
+
+        boolean exists = companies.stream().anyMatch(pc -> pc.getCompany().equals(company));
+        if (exists) return;
+
+        ProjectCompaniesId companiesId = new ProjectCompaniesId();
+        companiesId.setProjectId(this.id);
+        companiesId.setName(company.getName());
+
+        ProjectCompaniesDAO projectCompany = new ProjectCompaniesDAO();
+        projectCompany.setId(companiesId);
+        projectCompany.setProject(this);
+        projectCompany.setCompany(company);
+
+        companies.add(projectCompany);
+        company.getProjects().add(projectCompany);
     }
 
-    public void removeParticipant(ParticipantDAO participant) {
-        participants.remove(participant);
-        participant.setProject(null);
+    public void removeCompagnie(CompanyDAO company) {
+        if (company == null) return;
+
+        companies.removeIf(pc -> {
+            boolean toRemove = pc.getCompany().equals(company);
+            if (toRemove) {
+                pc.setProject(null);
+                pc.setCompany(null);
+            }
+            return toRemove;
+        });
     }
 }

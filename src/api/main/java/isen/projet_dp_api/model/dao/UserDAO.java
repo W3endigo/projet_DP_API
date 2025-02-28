@@ -7,6 +7,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 @Entity
 @NoArgsConstructor
@@ -27,6 +30,9 @@ public class UserDAO {
     @JoinColumn(name = "name", referencedColumnName = "name")
     private CompanyDAO name;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ParticipantDAO> participants = new ArrayList<>();
+
     public UserDAO(RegisterDTO userDTO) {
         this.email = userDTO.getEmail();
         this.password = userDTO.getPassword();
@@ -37,5 +43,15 @@ public class UserDAO {
 
     public UserDAO(@NonNull String email) {
         this.email = email;
+    }
+
+    public void addParticipant(ParticipantDAO participant) {
+        participants.add(participant);
+        participant.setUser(this);
+    }
+
+    public void removeParticipant(ParticipantDAO participant) {
+        participants.remove(participant);
+        participant.setUser(null);
     }
 }

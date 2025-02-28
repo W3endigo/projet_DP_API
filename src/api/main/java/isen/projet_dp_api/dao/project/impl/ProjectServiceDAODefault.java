@@ -11,7 +11,6 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpStatus;
 import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Repository;
 
 
@@ -47,9 +46,8 @@ public class ProjectServiceDAODefault implements ProjectServiceDAO {
 
     @Override
     public ProjectDAO updateProject(ProjectDAO projectDAO) {
-        if (!projectRepository.existsByEmailAndTitle(projectDAO.getEmail(), projectDAO.getTitle())) {
-            LogExceptionUtils.logException(this.getClass(),
-                    String.format(ErrorMessage.ERROR_PROJECT_ALREADY_EXIST, projectDAO.getTitle()), null, projectDAO);
+        if (projectRepository.existsByEmailEmailAndTitleAndIdNot(projectDAO.getEmail().getEmail(), projectDAO.getTitle(), projectDAO.getId())) {
+            throw new ApiException(String.format(ErrorMessage.ERROR_PROJECT_ALREADY_EXIST, projectDAO.getTitle()), HttpStatus.CONFLICT);
         }
         try {
             return projectRepository.save(projectDAO);
