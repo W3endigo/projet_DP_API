@@ -43,4 +43,22 @@ public class ProjectServiceDAODefault implements ProjectServiceDAO {
     public ProjectDAO getProjectById(Integer id) {
         return projectRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Project not found with id: " + id));
     }
+
+    @Override
+    public ProjectDAO updateProject(ProjectDAO projectDAO) {
+        if (projectRepository.existsByEmailEmailAndTitleAndIdNot(projectDAO.getEmail().getEmail(), projectDAO.getTitle(), projectDAO.getId())) {
+            throw new ApiException(String.format(ErrorMessage.ERROR_PROJECT_ALREADY_EXIST, projectDAO.getTitle()), HttpStatus.CONFLICT);
+        }
+        try {
+            return projectRepository.save(projectDAO);
+        } catch(JpaObjectRetrievalFailureException e) {
+            LogExceptionUtils.logException(this.getClass(), ErrorMessage.ERROR_UPDATING_PROJECT + ErrorMessage.ERROR_FOREIGN_KEY_NOT_FOUND, e, projectDAO);
+            throw new ApiException(e, ErrorMessage.ERROR_UPDATING_PROJECT, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @Override
+    public ProjectDAO getProjectByEmailAndTitle(String email_chef_project, String title) {
+        return projectRepository.findByEmailEmailAndTitle(email_chef_project, title).orElseThrow(() -> new EntityNotFoundException(String.format("Project not found with title: " + title + ", and email: " + email_chef_project)));
+    }
 }

@@ -19,7 +19,7 @@ public class ErrorMessage {
 
     public static final String ERROR_COMPANY_NOT_FOUND = "company with name [%s] not found";
 
-    public static final String ERROR_PROJECT_NOT_FOUND = "company with name [%s] not found";
+    public static final String ERROR_UPDATING_PROJECT = "Error updating project, ";
 
     public static final String ERROR_COMPANY_ALREADY_EXIST = "company with name [%s] already exist";
 
@@ -30,6 +30,9 @@ public class ErrorMessage {
     public static final String ERROR_PROJECT_ALREADY_EXIST = "project with name [%s] already exist";
 
     public static final String ERROR_ASSOCIATION_NOT_FOUND = "Association not found";
+
+    public static final String ERROR_PARTICIPANT_NOT_FOUND = "This participant does not exist";
+
 
 
 

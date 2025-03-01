@@ -8,9 +8,11 @@ import java.util.List;
 @Service
 public interface ParticipantServiceDAO {
 
-    void createParticipant(ParticipantDAO participantDAO);
 
     List<ParticipantDAO> getParticipantsByEmail(String email);
 
     List<ParticipantDAO> getParticipantsByProjectId(Integer projectId);
+
+    void deleteParticipantByUserEmailAndProjectId(String email, Integer projectId);
+
 }

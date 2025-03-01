@@ -28,7 +28,7 @@ public class UserServiceDAOMock implements UserServiceDAO {
     @Override
     public UserDAO getUserByEmail(String email) {
         if (email.equals(TestStrings.EMAIL_HAROLD) || email.equals(TestStrings.EMAIL_ASTRID)) {
-            return new UserDAO(email, new BCryptPasswordEncoder().encode(TestStrings.PASSWORD), TestStrings.FIRST_NAME, TestStrings.LAST_NAME, new CompanyDAO(TestStrings.COMPANY));
+            return new UserDAO(email, new BCryptPasswordEncoder().encode(TestStrings.PASSWORD), TestStrings.FIRST_NAME, TestStrings.LAST_NAME, new CompanyDAO(TestStrings.COMPANY), null);
         } else {
             throw new UsernameNotFoundException(String.format(ErrorMessage.ERROR_USER_NOT_FOUND, email));
         }

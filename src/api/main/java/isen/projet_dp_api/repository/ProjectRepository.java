@@ -5,9 +5,14 @@ import isen.projet_dp_api.model.dao.UserDAO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface ProjectRepository extends JpaRepository<ProjectDAO, Integer> {
 
     boolean existsByEmailAndTitle(UserDAO email_chef_project, String title);
 
+    Optional<ProjectDAO> findByEmailEmailAndTitle(String email_chef_project, String title);
+
+    boolean existsByEmailEmailAndTitleAndIdNot(String email, String title, Integer id);
 }

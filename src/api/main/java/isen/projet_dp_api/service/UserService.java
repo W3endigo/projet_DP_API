@@ -1,8 +1,6 @@
 package isen.projet_dp_api.service;
 
 import isen.projet_dp_api.dao.participants.ParticipantServiceDAO;
-import isen.projet_dp_api.dao.project.ProjectServiceDAO;
-import isen.projet_dp_api.dao.projectscompanies.ProjectCompaniesServiceDAO;
 import isen.projet_dp_api.dao.user.UserServiceDAO;
 import isen.projet_dp_api.enums.EmailTypes;
 import isen.projet_dp_api.model.UpdateUserRequestResponse;
@@ -11,16 +9,17 @@ import isen.projet_dp_api.model.dto.ProjectDTO;
 import isen.projet_dp_api.model.dto.UserDTO;
 import isen.projet_dp_api.utils.ApiResponseMessage;
 import isen.projet_dp_api.utils.ApiStrings;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+@Log4j2
 @Service
 public class UserService {
 
@@ -33,7 +32,7 @@ public class UserService {
 
     private final ProjectService projectService;
 
-    public UserService(UserServiceDAO userServiceDAO, EmailService emailService, ParticipantServiceDAO participantServiceDAO, ProjectServiceDAO projectServiceDAO, ProjectCompaniesServiceDAO projectCompaniesServiceDAO, ProjectService projectService) {
+    public UserService(UserServiceDAO userServiceDAO, EmailService emailService, ParticipantServiceDAO participantServiceDAO,  ProjectService projectService) {
         this.userServiceDAO = userServiceDAO;
         this.emailService = emailService;
         this.participantServiceDAO = participantServiceDAO;
@@ -50,11 +49,9 @@ public class UserService {
         var projectsDTO = new ArrayList<ProjectDTO>();
 
         var participations = this.participantServiceDAO.getParticipantsByEmail(userDetails.getUsername());
-
         for (var participation : participations) {
-            projectsDTO.add(projectService.getProjectDTO(participation.getProject().getId()));
+            projectsDTO.add(projectService.getProjectById(participation.getProject().getId()));
         }
-
         return projectsDTO;
     }
 

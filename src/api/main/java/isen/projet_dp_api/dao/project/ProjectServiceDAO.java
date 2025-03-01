@@ -11,4 +11,8 @@ public interface ProjectServiceDAO {
     ProjectDAO createProject(ProjectDAO projectDAO);
 
     ProjectDAO getProjectById(Integer id);
+
+    ProjectDAO updateProject(ProjectDAO projectDAO);
+
+    ProjectDAO getProjectByEmailAndTitle(String email_chef_project, String title);
 }

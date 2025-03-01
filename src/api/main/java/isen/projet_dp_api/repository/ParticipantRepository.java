@@ -13,4 +13,6 @@ public interface ParticipantRepository extends JpaRepository<ParticipantDAO, Par
     List<ParticipantDAO> getParticipantByUserEmail(String userEmail);
 
     List<ParticipantDAO> getParticipantByProjectId(Integer projectId);
+
+    List<ParticipantDAO> findByUserEmailAndProjectId(String email, Integer projectId);
 }

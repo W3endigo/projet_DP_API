@@ -12,7 +12,11 @@ public interface ProjectCompaniesServiceDAO {
 
     List<ProjectCompaniesDAO> getProjectCompaniesByProjectId(Integer projectId);
 
-    void deleteProjectCompanies(ProjectCompaniesDAO projectCompaniesDAO);
+    void deleteProjectCompaniesByCompanyNameAndProjectId(String name, Integer projectId);
 
     List<ProjectCompaniesDAO> getProjectCompaniesByCompanyName(String companyName);
+
+    List<ProjectCompaniesDAO> getProjectCompaniesByCompanyNameAndProjectId(String companyName, Integer projectId);
+
+
 }

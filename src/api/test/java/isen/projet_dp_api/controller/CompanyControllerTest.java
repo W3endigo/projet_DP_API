@@ -74,14 +74,12 @@ public class CompanyControllerTest extends ControllerTest {
     }
 
     @Test
-    void deleteCompanyBadNameTest() {
-        var path = "/api/company/" + TestStrings.COMPANY_THIRD.replace(" ", "+");
+    void deleteCompanyNameTest() {
+        var path = "/api/company/" + TestStrings.COMPANY_THIRD;
 
         var jwt = loginAndGetToken(TestStrings.EMAIL_HAROLD, TestStrings.PASSWORD);
 
-        var response = del(path, jwt);
-
-        assertThat(response.getStatusCode()).isEqualTo(404);
+        assertThat(delete(path, new CompanyDTO(TestStrings.COMPANY), jwt).getStatusCode()).isEqualTo(200);
 
     }
 
