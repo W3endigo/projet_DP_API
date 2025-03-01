@@ -60,5 +60,6 @@ public class AuthService {
         var context = new Context();
         context.setVariable(ApiStrings.NAME, createdUser.getFirstName());
         return emailService.sendEmailTemplatePicture(createdUser.getEmail(), EmailTypes.REGISTRATION, context, Optional.empty());
+
     }
 }
