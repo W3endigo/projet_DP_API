@@ -15,4 +15,6 @@ public interface ProjectServiceDAO {
     ProjectDAO updateProject(ProjectDAO projectDAO);
 
     ProjectDAO getProjectByEmailAndTitle(String email_chef_project, String title);
+
+    void deleteProject(ProjectDAO projectDAO);
 }

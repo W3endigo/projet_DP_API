@@ -231,6 +231,13 @@ public class ProjectService {
 
     }
 
+    @Transactional
+    public void deleteProject(String email, String title) {
+        var projectDAO = projectServiceDAO.getProjectByEmailAndTitle(email, title);
+        projectServiceDAO.deleteProject(projectDAO);
+    }
+
+
 
 }
 

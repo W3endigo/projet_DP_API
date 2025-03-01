@@ -44,6 +44,7 @@ public class ApiStrings {
 
     public static final String UPDATING_PROJECT = "Updating project: title={}";
 
+    public static final String DELETING_PROJECT = "Deleting project: title={}";
 
     // END LOGS
 }

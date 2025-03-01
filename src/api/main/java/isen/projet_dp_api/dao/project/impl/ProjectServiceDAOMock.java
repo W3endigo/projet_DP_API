@@ -48,4 +48,11 @@ public class ProjectServiceDAOMock implements ProjectServiceDAO {
         }
         throw new IllegalArgumentException("project title or email is not valid");
     }
+
+    @Override
+    public void deleteProject(ProjectDAO projectDAO) {
+        if (!projectDAO.getTitle().equals(TestStrings.TITLE) && !projectDAO.getEmail().getEmail().equals(TestStrings.EMAIL_HAROLD)) {
+            throw new IllegalArgumentException("project title or email is not valid");
+        }
+    }
 }
