@@ -3,13 +3,16 @@ package isen.projet_dp_api.dao.projectscompanies.impl;
 import isen.projet_dp_api.dao.projectscompanies.ProjectCompaniesServiceDAO;
 import isen.projet_dp_api.model.dao.CompanyDAO;
 import isen.projet_dp_api.model.dao.ProjectCompaniesDAO;
+import isen.projet_dp_api.model.dao.ProjectCompaniesId;
 import isen.projet_dp_api.model.dao.ProjectDAO;
 import isen.projet_dp_api.utils.TestStrings;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Log4j2
 @Repository
 @Profile("test")
 public class ProjectCompaniesServiceDAOMock implements ProjectCompaniesServiceDAO {
@@ -45,21 +48,27 @@ public class ProjectCompaniesServiceDAOMock implements ProjectCompaniesServiceDA
 
     @Override
     public void deleteProjectCompaniesByCompanyNameAndProjectId(String name, Integer projectId) {
-        //TODO
-    }
-
-    /*@Override
-    public List<ProjectCompaniesDAO> deleteProjectCompanies(ProjectCompaniesDAO projectCompaniesDAO) {
-        if (!projectCompaniesDAO.getCompany().getName().equals(TestStrings.COMPANY_THIRD)) {
+        log.info(name);
+        if (!name.equals(TestStrings.COMPANY_THIRD)) {
             throw new IllegalArgumentException("Company name is not valid");
         }
-        return null;
-    }*/
+    }
 
     @Override
     public List<ProjectCompaniesDAO> getProjectCompaniesByCompanyName(String companyName) {
         if (companyName.equals(TestStrings.COMPANY.replace(" ", "+")) || companyName.equals(TestStrings.COMPANY_THIRD)) {
-            return List.of(new ProjectCompaniesDAO(new CompanyDAO(companyName)));
+            var pc = new ProjectCompaniesDAO(new CompanyDAO(companyName));
+            var project = new ProjectDAO();
+            project.setId(1);
+            project.setTitle(TestStrings.TITLE);
+            pc.setProject(project);
+
+            var projectCompaniesId = new ProjectCompaniesId();
+            projectCompaniesId.setProjectId(project.getId());
+            projectCompaniesId.setName(companyName);
+
+            pc.setId(projectCompaniesId);
+            return List.of(pc);
         } else {
             throw new IllegalArgumentException("Company name is not valid");
         }
@@ -67,7 +76,11 @@ public class ProjectCompaniesServiceDAOMock implements ProjectCompaniesServiceDA
 
     @Override
     public List<ProjectCompaniesDAO> getProjectCompaniesByCompanyNameAndProjectId(String companyName, Integer projectId) {
-        return List.of();
+        if (companyName.equals(TestStrings.COMPANY_THIRD) && projectId.equals(TestStrings.PROJECT_COMP_ID)) {
+            return List.of(new ProjectCompaniesDAO(new CompanyDAO(companyName)));
+        } else {
+            throw new IllegalArgumentException("Company name is not valid");
+        }
     }
 
 }

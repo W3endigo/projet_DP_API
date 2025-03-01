@@ -41,8 +41,8 @@ public class CompanyService {
 
     @Transactional
     public void deleteCompanyByName(String name) {
-        var projectCompanies = projectCompaniesServiceDAO.getProjectCompaniesByCompanyName(companyServiceDAO.getCompanyByName(name).getName());
 
+        var projectCompanies = projectCompaniesServiceDAO.getProjectCompaniesByCompanyName(companyServiceDAO.getCompanyByName(name).getName());
         for (var projectCompaniesDAO : projectCompanies) {
             projectCompaniesServiceDAO.deleteProjectCompaniesByCompanyNameAndProjectId(projectCompaniesDAO.getCompany().getName(), projectCompaniesDAO.getProject().getId());
         }

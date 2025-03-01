@@ -2,6 +2,7 @@ package isen.projet_dp_api.dao.project.impl;
 
 import isen.projet_dp_api.dao.project.ProjectServiceDAO;
 import isen.projet_dp_api.model.dao.ProjectDAO;
+import isen.projet_dp_api.model.dao.UserDAO;
 import isen.projet_dp_api.utils.TestStrings;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
@@ -12,6 +13,7 @@ public class ProjectServiceDAOMock implements ProjectServiceDAO {
     @Override
     public ProjectDAO createProject(ProjectDAO projectDAO) {
         if (projectDAO.getTitle().equals("Project")) {
+            projectDAO.setId(1);
             return projectDAO;
         }
         throw new IllegalArgumentException("project title is not valid");
@@ -23,6 +25,7 @@ public class ProjectServiceDAOMock implements ProjectServiceDAO {
         var project = new ProjectDAO();
         project.setId(1);
         project.setTitle(TestStrings.TITLE);
+        project.setEmail(new UserDAO(TestStrings.EMAIL_HAROLD));
         return project;
     }
 
@@ -40,6 +43,7 @@ public class ProjectServiceDAOMock implements ProjectServiceDAO {
             var project = new ProjectDAO();
             project.setId(1);
             project.setTitle(title);
+            project.setEmail(new UserDAO(email_chef_project));
             return project;
         }
         throw new IllegalArgumentException("project title or email is not valid");

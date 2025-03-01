@@ -5,12 +5,13 @@ import isen.projet_dp_api.model.dto.ProjectDTO;
 import isen.projet_dp_api.enums.Status;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.extern.log4j.Log4j2;
 
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
-
+@Log4j2
 @Entity
 @Table(name = "project")
 @AllArgsConstructor
@@ -47,13 +48,13 @@ public class ProjectDAO {
     @JsonManagedReference
     private List<ProjectCompaniesDAO> companies = new ArrayList<>();
 
-    public ProjectDAO(ProjectDTO projectDTO, String email) {
+    public ProjectDAO(ProjectDTO projectDTO, UserDAO user) {
         this.description = projectDTO.getDescription();
         this.title = projectDTO.getTitle();
         this.status = projectDTO.getStatus();
         this.start_date = projectDTO.getStart_date();
         this.end_date = projectDTO.getEnd_date();
-        this.email = new UserDAO(email);
+        this.email = user;
     }
 
     public void addParticipant(UserDAO user) {
@@ -70,11 +71,11 @@ public class ProjectDAO {
         participant.setId(participantId);
         participant.setProject(this);
         participant.setUser(user);
-
         participants.add(participant);
-        user.getParticipants().add(participant);
+        /*user.addParticipant(participant);*/
     }
 
+    //FUTURE USAGE
     public void removeParticipant(UserDAO user) {
         if (user == null) return;
 
@@ -105,9 +106,10 @@ public class ProjectDAO {
         projectCompany.setCompany(company);
 
         companies.add(projectCompany);
-        company.getProjects().add(projectCompany);
     }
 
+
+    //FUTURE USAGE
     public void removeCompagnie(CompanyDAO company) {
         if (company == null) return;
 

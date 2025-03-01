@@ -2,6 +2,7 @@ package isen.projet_dp_api.dao.participants.impl;
 
 import isen.projet_dp_api.dao.participants.ParticipantServiceDAO;
 import isen.projet_dp_api.model.dao.ParticipantDAO;
+import isen.projet_dp_api.model.dao.ParticipantId;
 import isen.projet_dp_api.model.dao.ProjectDAO;
 import isen.projet_dp_api.model.dao.UserDAO;
 import isen.projet_dp_api.utils.TestStrings;
@@ -14,22 +15,24 @@ import java.util.List;
 @Repository
 @Profile("test")
 public class ParticipantServiceDAOMock implements ParticipantServiceDAO {
-    @Override
-    public void createParticipant(ParticipantDAO participantDAO) {
-        if (!participantDAO.getUser().getEmail().equals(TestStrings.EMAIL_HAROLD) && !participantDAO.getProject().getEmail().getEmail().equals(TestStrings.EMAIL_HAROLD)) {
-            throw new IllegalArgumentException("Poject participant is not valid");
-        }
-    }
+
 
     @Override
     public List<ParticipantDAO> getParticipantsByEmail(String email) {
         if (email.equals(TestStrings.EMAIL_HAROLD)) {
             var part = new ParticipantDAO();
-            part.setUser(new UserDAO(TestStrings.EMAIL_HAROLD));
+            part.setUser(new UserDAO(email));
             var project = new ProjectDAO();
             project.setId(1);
             project.setTitle(TestStrings.TITLE);
             part.setProject(project);
+
+            var participantId = new ParticipantId();
+            participantId.setEmail(email);
+            participantId.setProjectId(project.getId());
+
+            part.setId(participantId);
+
             return List.of(part);
         } else {
             throw new IllegalArgumentException("Email is not valid");
@@ -52,10 +55,9 @@ public class ParticipantServiceDAOMock implements ParticipantServiceDAO {
         }
     }
 
+
     @Override
-    public void deleteParticipant(ParticipantDAO participantDAO) {
-        if (!participantDAO.getUser().getEmail().equals(TestStrings.EMAIL_HAROLD)) {
-            throw new IllegalArgumentException("Participant name is not valid");
-        }
+    public void deleteParticipantByUserEmailAndProjectId(String email, Integer projectId) {
+        //TODO
     }
 }
