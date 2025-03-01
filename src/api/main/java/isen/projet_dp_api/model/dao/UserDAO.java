@@ -52,7 +52,6 @@ public class UserDAO {
         if (!participant.getUser().equals(this)) {
             participant.setUser(this);
         }
-        log.info(participants);
     }
 
     //FUTURE USAGE

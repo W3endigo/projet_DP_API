@@ -38,7 +38,6 @@ public class ParticipantServiceDAODefault implements ParticipantServiceDAO {
     @Transactional
     public void deleteParticipantByUserEmailAndProjectId(String name, Integer projectId) {
         List<ParticipantDAO> participants = participantRepository.findByUserEmailAndProjectId(name, projectId);
-        log.info(participants);
         if (participants != null && !participants.isEmpty()) {
             participantRepository.deleteAll(participants);
         }

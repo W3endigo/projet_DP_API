@@ -39,7 +39,7 @@ public class ErrorMessage {
 
     public static final String ERROR_USER_NOT_FOUND = "user with email [%s] not found";
 
-
+    public static final String ERROR_COMPANY_NAME_NOT_VALID = "Company name is not valid";
     // END DB
 
     // START EMAIL
@@ -54,7 +54,7 @@ public class ErrorMessage {
 
     // START GENERIC ERRORS
 
-    public static final String ERROR_INTERNAL_SERVER = "Internal server error";
+    public static final String ERROR_INTERNAL_SERVER = "Internal Server Error";
 
 
 

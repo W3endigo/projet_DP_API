@@ -50,6 +50,7 @@ public class UserService {
         var projectsDTO = new ArrayList<ProjectDTO>();
 
         var participations = this.participantServiceDAO.getParticipantsByEmail(userDetails.getUsername());
+
         for (var participation : participations) {
             projectsDTO.add(projectService.getProjectById(participation.getProject().getId()));
         }

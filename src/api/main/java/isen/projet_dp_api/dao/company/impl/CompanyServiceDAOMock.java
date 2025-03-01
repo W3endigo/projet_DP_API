@@ -23,7 +23,7 @@ public class CompanyServiceDAOMock implements CompanyServiceDAO {
 
     @Override
     public CompanyDAO getCompanyByName(String name) {
-        if (name.equals(TestStrings.COMPANY.replace(" ", "+")) || name.equals(TestStrings.COMPANY_THIRD)) {
+        if (name.equals(TestStrings.COMPANY.replace(" ", "+")) || name.equals(TestStrings.COMPANY_THIRD) || name.equals(TestStrings.COMPANY_FOURTH) || name.equals(TestStrings.COMPANY_FIFTH) ||name.equals(TestStrings.COMPANY_SIXTH)) {
             return new CompanyDAO(name.replace("+", " "));
         } else {
             throw new IllegalArgumentException("Company name is not valid");
