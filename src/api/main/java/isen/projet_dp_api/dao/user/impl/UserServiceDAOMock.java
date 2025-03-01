@@ -42,4 +42,11 @@ public class UserServiceDAOMock implements UserServiceDAO {
             throw new UsernameNotFoundException(String.format(ErrorMessage.ERROR_USER_NOT_FOUND, userDAO.getEmail()));
         }
     }
+
+    @Override
+    public void deleteUser(UserDAO userDAO) {
+        if (!userDAO.getEmail().equals(TestStrings.EMAIL_HAROLD)) {
+            throw new UsernameNotFoundException(String.format(ErrorMessage.ERROR_USER_NOT_FOUND, userDAO.getEmail()));
+        }
+    }
 }

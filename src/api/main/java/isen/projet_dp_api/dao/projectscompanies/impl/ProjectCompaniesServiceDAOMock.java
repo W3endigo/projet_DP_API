@@ -16,18 +16,6 @@ import java.util.List;
 @Repository
 @Profile("test")
 public class ProjectCompaniesServiceDAOMock implements ProjectCompaniesServiceDAO {
-    @Override
-    public ProjectCompaniesDAO createProjectCompanies(ProjectCompaniesDAO projectCompaniesDAO) {
-        if (projectCompaniesDAO.getProject().getId().equals(TestStrings.PROJECT_COMP_ID) && projectCompaniesDAO.getCompany().getName().equals(TestStrings.COMPANY_THIRD)) {
-            var projectCompanies = new ProjectCompaniesDAO();
-            projectCompanies.setCompany(new CompanyDAO(projectCompaniesDAO.getCompany().getName()));
-            projectCompanies.setProject(projectCompaniesDAO.getProject());
-            return projectCompanies;
-        } else {
-            throw new IllegalArgumentException("Association project&company is not valid");
-        }
-    }
-
 
     @Override
     public List<ProjectCompaniesDAO> getProjectCompaniesByProjectId(Integer projectId) {

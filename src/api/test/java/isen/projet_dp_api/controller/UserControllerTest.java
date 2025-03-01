@@ -49,6 +49,28 @@ public class UserControllerTest extends ControllerTest {
     }
 
     @Test
+    void deleterUserDetailsTest() {
+
+        var jwt = loginAndGetToken(TestStrings.EMAIL_HAROLD, TestStrings.PASSWORD);
+        var path = "/api/user";
+
+        var userDTO = new UserDTO(TestStrings.PASSWORD, TestStrings.FIRST_NAME, TestStrings.LAST_NAME, TestStrings.COMPANY);
+        var user = delete(path, userDTO, jwt);
+
+        assertThat(user.getStatusCode()).isEqualTo(200);
+
+
+        var jwt2 = loginAndGetToken(TestStrings.EMAIL_ASTRID, TestStrings.PASSWORD);
+
+        userDTO = new UserDTO(TestStrings.PASSWORD, TestStrings.FIRST_NAME, TestStrings.LAST_NAME, TestStrings.COMPANY);
+        user = delete(path, userDTO, jwt2);
+
+        assertThat(user.getStatusCode()).isEqualTo(500);
+
+
+    }
+
+    @Test
     void getParticipationsTest() {
 
         var jwt = loginAndGetToken(TestStrings.EMAIL_HAROLD, TestStrings.PASSWORD);
@@ -61,8 +83,6 @@ public class UserControllerTest extends ControllerTest {
                     .isNotNull()
                     .hasFieldOrPropertyWithValue("title", TestStrings.TITLE);
         }
-
-
 
     }
 
