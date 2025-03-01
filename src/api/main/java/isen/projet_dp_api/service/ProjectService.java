@@ -105,6 +105,7 @@ public class ProjectService {
     public ProjectDTO updateProject(ProjectDTO projectDTO, String email, String title) {
 
         var project = projectServiceDAO.getProjectByEmailAndTitle(email, title);
+
         if (projectDTO.getTitle() != null && !projectDTO.getTitle().isEmpty()) {
             project.setTitle(projectDTO.getTitle());
         }
@@ -112,6 +113,7 @@ public class ProjectService {
         if (projectDTO.getEmail_chef_project() != null && !projectDTO.getEmail_chef_project().isEmpty()) {
             var existingUserFromMail = userServiceDAO.getUserByEmail(projectDTO.getEmail_chef_project());
             project.setEmail(existingUserFromMail);
+            log.info(existingUserFromMail);
         }
 
         if (projectDTO.getDescription() != null && !projectDTO.getDescription().isEmpty()) {
@@ -137,13 +139,12 @@ public class ProjectService {
         }
 
         var p_chef = new ParticipantDTO();
-        p_chef.setEmail(email);
+        p_chef.setEmail(projectDTO.getEmail_chef_project());
         projectParticipants.add(p_chef);
         projectDTO.setParticipants(projectParticipants);
 
         if (projectDTO.getParticipants() != null) {
             var currentParticipants = project.getParticipants();
-            log.info("FIN {}", currentParticipants);
 
             var newParticipantsEmails = projectDTO.getParticipants().stream().map(ParticipantDTO::getEmail).toList();
 

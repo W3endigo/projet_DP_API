@@ -59,6 +59,6 @@ public class ProjectServiceDAODefault implements ProjectServiceDAO {
 
     @Override
     public ProjectDAO getProjectByEmailAndTitle(String email_chef_project, String title) {
-        return projectRepository.findByEmailEmailAndTitle(email_chef_project, title).orElseThrow(() -> new EntityNotFoundException(String.format("Project not found with title: " + title)));
+        return projectRepository.findByEmailEmailAndTitle(email_chef_project, title).orElseThrow(() -> new EntityNotFoundException(String.format("Project not found with title: " + title + ", and email: " + email_chef_project)));
     }
 }
