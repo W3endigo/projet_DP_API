@@ -33,8 +33,9 @@ public class ErrorMessage {
 
     public static final String ERROR_PARTICIPANT_NOT_FOUND = "This participant does not exist";
 
+    public static final String ERROR_DELETING_USER = "This user does not exist";
 
-
+    public static final String ERROR_USER_HAS_PROJECTS = "This user is the chef of one or more projects and can't be deleted";
 
     public static final String ERROR_USER_NOT_FOUND = "user with email [%s] not found";
 

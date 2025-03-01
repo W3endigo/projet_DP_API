@@ -14,6 +14,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -54,6 +55,23 @@ public interface UserController {
             ))
     }, security = @SecurityRequirement(name = "bearerAuth"))
     ResponseEntity<UpdateUserRequestResponse> updateUser(@RequestBody @Valid UserDTO userDTO, @AuthenticationPrincipal UserDetails userDetails);
+
+
+    @DeleteMapping("/api/user")
+    @Operation(summary = "Delete user", responses = {
+            @ApiResponse(responseCode = "200", description = "User deleted", content = @Content(schema = @Schema(implementation = String.class))),
+            @ApiResponse(responseCode = "400", description = "Invalid user data", content = @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = ApiException.ErrorResponse.class)
+            )),
+            @ApiResponse(responseCode = "403", description = "User not authorized", content = @Content()),
+            @ApiResponse(responseCode = "404", description = "User not found", content = @Content(schema = @Schema(implementation = ApiException.ErrorResponse.class))),
+            @ApiResponse(responseCode = "500", description = "Unexpected error occurred", content = @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = ApiException.ErrorResponse.class)
+            ))
+    }, security = @SecurityRequirement(name = "bearerAuth"))
+    ResponseEntity<Void> deleteUser(@AuthenticationPrincipal UserDetails userDetails);
 
 
     @GetMapping("/api/user/participations")

@@ -46,5 +46,8 @@ public class ApiStrings {
 
     public static final String DELETING_PROJECT = "Deleting project: title={}";
 
+    public static final String DELETE_USER = "Deleting user: email={}";
+
+
     // END LOGS
 }
