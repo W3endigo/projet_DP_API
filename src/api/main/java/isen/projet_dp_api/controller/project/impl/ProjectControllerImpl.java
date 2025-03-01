@@ -3,7 +3,6 @@ package isen.projet_dp_api.controller.project.impl;
 
 import isen.projet_dp_api.controller.project.ProjectController;
 import isen.projet_dp_api.model.ProjectCreationRequestResponse;
-import isen.projet_dp_api.model.UpdateProjectRequestResponse;
 import isen.projet_dp_api.model.dto.ProjectDTO;
 import isen.projet_dp_api.service.ProjectService;
 import isen.projet_dp_api.utils.ApiStrings;
@@ -36,5 +35,12 @@ public class ProjectControllerImpl implements ProjectController {
     public ResponseEntity<ProjectDTO> updateProject(ProjectDTO projectDTO, UserDetails userDetails, String title) {
         log.debug(ApiStrings.UPDATING_PROJECT, projectDTO.getTitle());
         return new ResponseEntity<>(projectService.updateProject(projectDTO, userDetails.getUsername(), title), HttpStatus.CREATED);
+    }
+
+    @Override
+    public ResponseEntity<Void> deleteProject(UserDetails userDetails, String title) {
+        log.debug(ApiStrings.UPDATING_PROJECT, title);
+        projectService.deleteProject(userDetails.getUsername(), title);
+        return ResponseEntity.noContent().build();
     }
 }

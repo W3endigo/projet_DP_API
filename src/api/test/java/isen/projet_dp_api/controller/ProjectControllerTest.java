@@ -5,7 +5,6 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import isen.projet_dp_api.enums.Status;
 import isen.projet_dp_api.model.ApiException;
 import isen.projet_dp_api.model.ProjectCreationRequestResponse;
-import isen.projet_dp_api.model.UpdateUserRequestResponse;
 import isen.projet_dp_api.model.dto.ProjectDTO;
 import isen.projet_dp_api.utils.ApiResponseMessage;
 import isen.projet_dp_api.utils.TestStrings;
@@ -61,4 +60,19 @@ public class ProjectControllerTest extends ControllerTest{
         assertThat(project.getStatus()).isEqualTo(Status.TERMINE);
 
     }
+
+    @Test
+    void deleteProjectTest() {
+        var path = "/api/deleteProject?title=" + TestStrings.TITLE;
+        var jwt = loginAndGetToken(TestStrings.EMAIL_HAROLD, TestStrings.PASSWORD);
+
+        var deleteProjectDTO = new ProjectDTO(TestStrings.EMAIL_HAROLD, TestStrings.DESCRIPTION, TestStrings.TITLE, Status.TERMINE, TestStrings.START_DATE, TestStrings.END_DATE, null, null);
+
+        var project = delete(path, deleteProjectDTO, jwt);
+
+        assertThat(project.getStatusCode()).isEqualTo(204);
+
+    }
+
+
 }
