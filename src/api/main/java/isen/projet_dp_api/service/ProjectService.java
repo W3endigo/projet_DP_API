@@ -105,7 +105,6 @@ public class ProjectService {
     @Transactional
     public ProjectDTO updateProject(ProjectDTO projectDTO, String email, String title) {
         var project = projectServiceDAO.getProjectByEmailAndTitle(email, title);
-
         if (projectDTO.getTitle() != null && !projectDTO.getTitle().isEmpty()) {
             project.setTitle(projectDTO.getTitle());
         }
