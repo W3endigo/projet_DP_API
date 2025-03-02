@@ -1,10 +1,12 @@
 package isen.projet_dp_api.repository;
 
+import isen.projet_dp_api.enums.Status;
 import isen.projet_dp_api.model.dao.ProjectDAO;
 import isen.projet_dp_api.model.dao.UserDAO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -15,4 +17,6 @@ public interface ProjectRepository extends JpaRepository<ProjectDAO, Integer> {
     Optional<ProjectDAO> findByEmailEmailAndTitle(String email_chef_project, String title);
 
     boolean existsByEmailEmailAndTitleAndIdNot(String email, String title, Integer id);
+
+    Optional<List<ProjectDAO>> findByStatus(Status status);
 }

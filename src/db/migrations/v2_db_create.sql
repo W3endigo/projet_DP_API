@@ -87,3 +87,19 @@ CREATE TABLE participant(
     ,CONSTRAINT participant_project_FK FOREIGN KEY (id) REFERENCES project(id)
     ,CONSTRAINT participant_user0_FK FOREIGN KEY (email) REFERENCES user(email)
 )ENGINE=InnoDB;
+
+
+#-------------------------------------------------------------
+# Table: tache
+#-------------------------------------------------------------
+
+CREATE TABLE tache (
+                       id INT AUTO_INCREMENT NOT NULL,
+                       name VARCHAR(100) NOT NULL,
+                       description TEXT NOT NULL,
+                       project_id INT NOT NULL,
+                       assigned_user_email VARCHAR(255),
+                       CONSTRAINT tache_PK PRIMARY KEY (id),
+                       CONSTRAINT tache_project_FK FOREIGN KEY (project_id) REFERENCES project(id),
+                       CONSTRAINT tache_user_FK FOREIGN KEY (assigned_user_email) REFERENCES user(email)
+) ENGINE=InnoDB;

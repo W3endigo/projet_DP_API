@@ -7,6 +7,7 @@ import isen.projet_dp_api.dao.project.ProjectServiceDAO;
 import isen.projet_dp_api.dao.projectscompanies.ProjectCompaniesServiceDAO;
 import isen.projet_dp_api.dao.user.UserServiceDAO;
 import isen.projet_dp_api.enums.EmailTypes;
+import isen.projet_dp_api.enums.Status;
 import isen.projet_dp_api.model.ProjectCreationRequestResponse;
 import isen.projet_dp_api.model.dao.*;
 import isen.projet_dp_api.model.dto.ParticipantDTO;
@@ -20,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.context.Context;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -231,6 +233,34 @@ public class ProjectService {
     public void deleteProject(String email, String title) {
         var projectDAO = projectServiceDAO.getProjectByEmailAndTitle(email, title);
         projectServiceDAO.deleteProject(projectDAO);
+    }
+
+
+    public List<ProjectDTO> getProjectsByStatus(Status status) {
+        var projectsDAO = projectServiceDAO.getProjectByStatus(status);
+        var projectsDTO = new ArrayList<ProjectDTO>();
+        for (var project : projectsDAO) {
+
+            var projectParticipantDAO = project.getParticipants();
+            var participantsDTO = new ArrayList<ParticipantDTO>();
+            if (projectParticipantDAO != null) {
+                for (var participant : projectParticipantDAO) {
+                    participantsDTO.add(new ParticipantDTO(participant.getUser().getEmail()));
+                }
+            }
+
+            var projectCompaniesDAO = project.getCompanies();
+            var companiesDTO = new ArrayList<ProjectCompaniesDTO>();
+            if (projectCompaniesDAO != null) {
+                for (var companie : projectCompaniesDAO) {
+                    companiesDTO.add(new ProjectCompaniesDTO(companie.getCompany().getName()));
+                }
+            }
+
+            projectsDTO.add(new ProjectDTO(project.getEmail().getEmail(), project.getDescription(), project.getTitle(), project.getStatus(), project.getStart_date(), project.getEnd_date(), participantsDTO, companiesDTO));
+        }
+        log.info(projectsDTO);
+        return projectsDTO;
     }
 
 

@@ -2,6 +2,7 @@ package isen.projet_dp_api.dao.project.impl;
 
 
 import isen.projet_dp_api.dao.project.ProjectServiceDAO;
+import isen.projet_dp_api.enums.Status;
 import isen.projet_dp_api.model.ApiException;
 import isen.projet_dp_api.model.dao.ProjectDAO;
 import isen.projet_dp_api.repository.ProjectRepository;
@@ -12,6 +13,8 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpStatus;
 import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 
 @Repository
@@ -65,5 +68,10 @@ public class ProjectServiceDAODefault implements ProjectServiceDAO {
     @Override
     public void deleteProject(ProjectDAO projectDAO) {
         projectRepository.delete(projectDAO);
+    }
+
+    @Override
+    public List<ProjectDAO> getProjectByStatus(Status status) {
+        return projectRepository.findByStatus(status).orElseThrow(() -> new EntityNotFoundException("Project not found with status: " + status));
     }
 }

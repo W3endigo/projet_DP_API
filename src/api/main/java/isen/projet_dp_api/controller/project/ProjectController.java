@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import isen.projet_dp_api.enums.Status;
 import isen.projet_dp_api.model.ApiException;
 import isen.projet_dp_api.model.ProjectCreationRequestResponse;
 import isen.projet_dp_api.model.dto.ProjectDTO;
@@ -12,11 +13,10 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
 
 @Tag(name = "Project", description = "Endpoints for managing projects-related operations")
 public interface ProjectController {
@@ -74,4 +74,25 @@ public interface ProjectController {
             security = @SecurityRequirement(name = "bearerAuth")
     )
     ResponseEntity<Void> deleteProject(@AuthenticationPrincipal UserDetails userDetails, @RequestParam String title);
+
+
+    @GetMapping("/api/projectStatus")
+    @Operation(summary = "Get projects by status",
+            responses = {
+                    @ApiResponse(responseCode = "204", description = "Projects get successfully."),
+                    @ApiResponse(responseCode = "400", description = "Invalid status data", content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ApiException.ErrorResponse.class)
+                    )),
+                    @ApiResponse(responseCode = "404", description = "Project not found", content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ApiException.ErrorResponse.class)
+                    )),
+                    @ApiResponse(responseCode = "500", description = "Unexpected error occurred", content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ApiException.ErrorResponse.class)
+                    ))
+            })
+    ResponseEntity<List<ProjectDTO>> getProjectByStatus(@RequestParam Status status);
+
 }

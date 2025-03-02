@@ -2,6 +2,7 @@ package isen.projet_dp_api.controller.project.impl;
 
 
 import isen.projet_dp_api.controller.project.ProjectController;
+import isen.projet_dp_api.enums.Status;
 import isen.projet_dp_api.model.ProjectCreationRequestResponse;
 import isen.projet_dp_api.model.dto.ProjectDTO;
 import isen.projet_dp_api.service.ProjectService;
@@ -15,6 +16,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @Log4j2
 @RestController
 public class ProjectControllerImpl implements ProjectController {
@@ -26,7 +29,7 @@ public class ProjectControllerImpl implements ProjectController {
     }
 
     @Override
-   public ResponseEntity<ProjectCreationRequestResponse> createProject(@RequestBody @Valid ProjectDTO projectDTO, @AuthenticationPrincipal UserDetails userDetails) {
+   public ResponseEntity<ProjectCreationRequestResponse> createProject(ProjectDTO projectDTO, UserDetails userDetails) {
         log.debug(ApiStrings.CREATING_PROJECT, projectDTO.getTitle());
         return new ResponseEntity<>(projectService.createProject(projectDTO, userDetails.getUsername()), HttpStatus.CREATED);
     }
@@ -42,5 +45,11 @@ public class ProjectControllerImpl implements ProjectController {
         log.debug(ApiStrings.UPDATING_PROJECT, title);
         projectService.deleteProject(userDetails.getUsername(), title);
         return ResponseEntity.noContent().build();
+    }
+
+    @Override
+    public ResponseEntity<List<ProjectDTO>> getProjectByStatus(Status status) {
+        log.debug(ApiStrings.GETTING_PROJECTS, status);
+        return new ResponseEntity<>(projectService.getProjectsByStatus(status), HttpStatus.OK);
     }
 }

@@ -40,6 +40,12 @@ public class ErrorMessage {
     public static final String ERROR_USER_NOT_FOUND = "user with email [%s] not found";
 
     public static final String ERROR_COMPANY_NAME_NOT_VALID = "Company name is not valid";
+
+    public static final String ERROR_CREATING_TASK = "Task can't be created";
+
+    public static final String ERROR_UPDATING_TASK = "Task can't be updated";
+
+
     // END DB
 
     // START EMAIL

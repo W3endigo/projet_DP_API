@@ -46,7 +46,18 @@ public class ApiStrings {
 
     public static final String DELETING_PROJECT = "Deleting project: title={}";
 
+    public static final String GETTING_PROJECTS = "Getting project: status={}";
+
     public static final String DELETE_USER = "Deleting user: email={}";
+
+    public static final String CREATING_TASK = "Creating task: name={}";
+
+    public static final String UPDATING_TASK = "Updating task: name={}";
+
+    public static final String DELETING_TASK = "Deleting task: name={}";
+
+    public static final String GETTING_TASKS = "Retrieving tasks: project={}";
+
 
 
     // END LOGS
