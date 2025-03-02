@@ -12,7 +12,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -30,15 +29,14 @@ public class TacheControllerImpl implements TacheController {
 
     @Override
     public ResponseEntity<Void> deleteTask(String title,
-                                           Integer taskId,
                                            UserDetails userDetails) {
-        log.debug(ApiStrings.DELETING_TASK, taskId, title);
-        tacheService.deleteTask(title, taskId, userDetails.getUsername());
+        log.debug(ApiStrings.DELETING_TASK, title);
+        tacheService.deleteTask(title, userDetails.getUsername());
         return ResponseEntity.noContent().build();
     }
 
     @Override
-    public ResponseEntity<List<TacheDTO>> getTasksByProject(String title) {
+    public ResponseEntity<List<TacheDTO>> getTasksByProject(String title, UserDetails userDetails) {
         log.debug(ApiStrings.GETTING_TASKS, title);
         var tasks = tacheService.getTasksByProject(title);
         var tasksDTO = new ArrayList<TacheDTO>();
@@ -59,11 +57,10 @@ public class TacheControllerImpl implements TacheController {
 
     @Override
     public ResponseEntity<TacheDTO> updateTask(@PathVariable("title") String title,
-                                               @RequestParam Integer taskId,
                                                @RequestBody @Valid TacheDTO tacheDTO,
                                                @AuthenticationPrincipal UserDetails userDetails) {
-        log.debug(ApiStrings.UPDATING_TASK, tacheDTO.getName(), title, taskId);
-        TacheDTO updatedTask = tacheService.updateTask(title, taskId, tacheDTO, userDetails.getUsername());
+        log.debug(ApiStrings.UPDATING_TASK, tacheDTO.getName(), title);
+        TacheDTO updatedTask = tacheService.updateTask(title, tacheDTO, userDetails.getUsername());
         return new ResponseEntity<>(updatedTask, HttpStatus.OK);
     }
 }

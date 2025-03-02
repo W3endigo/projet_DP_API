@@ -52,4 +52,7 @@ public class ProjectDTO {
 
     @Schema(description = "List of companies")
     private List<ProjectCompaniesDTO> compagnies;
+
+    @Schema(description = "List of tasks associated with the project")
+    private List<TacheDTO> tasks;
 }

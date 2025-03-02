@@ -48,6 +48,10 @@ public class ProjectDAO {
     @JsonManagedReference
     private List<ProjectCompaniesDAO> companies = new ArrayList<>();
 
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<TacheDAO> taches = new ArrayList<>();
+
     public ProjectDAO(ProjectDTO projectDTO, UserDAO user) {
         this.description = projectDTO.getDescription();
         this.title = projectDTO.getTitle();

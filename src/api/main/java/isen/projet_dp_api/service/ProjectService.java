@@ -13,6 +13,7 @@ import isen.projet_dp_api.model.dao.*;
 import isen.projet_dp_api.model.dto.ParticipantDTO;
 import isen.projet_dp_api.model.dto.ProjectCompaniesDTO;
 import isen.projet_dp_api.model.dto.ProjectDTO;
+import isen.projet_dp_api.model.dto.TacheDTO;
 import isen.projet_dp_api.utils.ApiResponseMessage;
 import isen.projet_dp_api.utils.ApiStrings;
 import lombok.extern.log4j.Log4j2;
@@ -195,7 +196,9 @@ public class ProjectService {
                 project.getStart_date(),
                 project.getEnd_date(),
                 project.getParticipants().stream().map(p -> new ParticipantDTO(p.getUser().getEmail())).toList(),
-                project.getCompanies().stream().map(c -> new ProjectCompaniesDTO(c.getCompany().getName())).toList()
+                project.getCompanies().stream().map(c -> new ProjectCompaniesDTO(c.getCompany().getName())).toList(),
+                project.getTaches().stream().map(t -> new TacheDTO(t.getName(), t.getDescription(), t.getProject().getId(), t.getAssignedUser().getEmail())).toList()
+
         );
 
 
@@ -211,6 +214,8 @@ public class ProjectService {
 
         var participantDTO = new ArrayList<ParticipantDTO>();
         var projectCompaniesDTO = new ArrayList<ProjectCompaniesDTO>();
+        var tachesDTO = new ArrayList<TacheDTO>();
+
 
         var projectDAO = projectServiceDAO.getProjectById(projectId);
 
@@ -224,7 +229,11 @@ public class ProjectService {
         for (var projectCompaniesDAO : companiesDAO) {
             projectCompaniesDTO.add(new ProjectCompaniesDTO(projectCompaniesDAO.getCompany().getName()));
         }
-        return new ProjectDTO(projectDAO.getEmail().getEmail(), projectDAO.getDescription(), projectDAO.getTitle(), projectDAO.getStatus(),  projectDAO.getStart_date(), projectDAO.getEnd_date(), participantDTO, projectCompaniesDTO);
+
+        for (var tache : projectDAO.getTaches()) {
+            tachesDTO.add(new TacheDTO(tache.getName(), tache.getDescription(), tache.getProject().getId(), tache.getAssignedUser().getEmail()));
+        }
+        return new ProjectDTO(projectDAO.getEmail().getEmail(), projectDAO.getDescription(), projectDAO.getTitle(), projectDAO.getStatus(),  projectDAO.getStart_date(), projectDAO.getEnd_date(), participantDTO, projectCompaniesDTO, tachesDTO);
 
     }
 
@@ -256,7 +265,15 @@ public class ProjectService {
                 }
             }
 
-            projectsDTO.add(new ProjectDTO(project.getEmail().getEmail(), project.getDescription(), project.getTitle(), project.getStatus(), project.getStart_date(), project.getEnd_date(), participantsDTO, companiesDTO));
+            var tachesDAO = project.getTaches();
+            var tachesDTO = new ArrayList<TacheDTO>();
+            if (tachesDAO != null) {
+                for (var tache : tachesDAO) {
+                    tachesDTO.add(new TacheDTO(tache.getName(), tache.getDescription(), tache.getProject().getId(), tache.getAssignedUser().getEmail()));
+                }
+            }
+
+            projectsDTO.add(new ProjectDTO(project.getEmail().getEmail(), project.getDescription(), project.getTitle(), project.getStatus(), project.getStart_date(), project.getEnd_date(), participantsDTO, companiesDTO, tachesDTO));
         }
         log.info(projectsDTO);
         return projectsDTO;

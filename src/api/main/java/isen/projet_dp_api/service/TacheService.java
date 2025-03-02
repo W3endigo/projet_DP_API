@@ -1,6 +1,8 @@
 package isen.projet_dp_api.service;
 
+import isen.projet_dp_api.dao.project.ProjectServiceDAO;
 import isen.projet_dp_api.dao.tache.TacheServiceDAO;
+import isen.projet_dp_api.dao.user.UserServiceDAO;
 import isen.projet_dp_api.model.dao.TacheDAO;
 import isen.projet_dp_api.model.dto.TacheDTO;
 import isen.projet_dp_api.utils.ApiStrings;
@@ -16,19 +18,32 @@ import java.util.List;
 public class TacheService {
 
     private final TacheServiceDAO tacheServiceDAO;
+    private final ProjectServiceDAO projectServiceDAO;
+    private final UserServiceDAO userServiceDAO;
 
-    public TacheService(TacheServiceDAO tacheServiceDAO) {
+    public TacheService(TacheServiceDAO tacheServiceDAO, ProjectServiceDAO projectServiceDAO, UserServiceDAO userServiceDAO) {
         this.tacheServiceDAO = tacheServiceDAO;
+        this.projectServiceDAO = projectServiceDAO;
+        this.userServiceDAO = userServiceDAO;
     }
 
     @Transactional
     public TacheDTO createTask(String title, TacheDTO tacheDTO, String username) {
         log.debug(ApiStrings.CREATING_TASK, tacheDTO.getName(), title);
+        var project = projectServiceDAO.getProjectByEmailAndTitle(username, title);
         TacheDAO tacheDAO = new TacheDAO();
         tacheDAO.setName(tacheDTO.getName());
+        tacheDAO.setProject(project);
         tacheDAO.setDescription(tacheDTO.getDescription());
+        if (tacheDTO.getAssignedUser() != null) {
+            tacheDAO.setAssignedUser(userServiceDAO.getUserByEmail(tacheDTO.getAssignedUser()));
+        } else {
+            tacheDAO.setAssignedUser(userServiceDAO.getUserByEmail(username));
+        }
 
         TacheDAO createdTask = tacheServiceDAO.createTask(tacheDAO);
+        log.info(createdTask);
+
         return new TacheDTO(
                 createdTask.getName(),
                 createdTask.getDescription(),
@@ -38,8 +53,8 @@ public class TacheService {
     }
 
     @Transactional
-    public TacheDTO updateTask(String title, Integer taskId, TacheDTO tacheDTO, String username) {
-        log.debug(ApiStrings.UPDATING_TASK, tacheDTO.getName(), title, taskId);
+    public TacheDTO updateTask(String title, TacheDTO tacheDTO, String username) {
+        log.debug(ApiStrings.UPDATING_TASK, tacheDTO.getName(), title);
         TacheDAO tacheDAO = new TacheDAO();
         tacheDAO.setName(tacheDTO.getName());
         tacheDAO.setDescription(tacheDTO.getDescription());
@@ -53,9 +68,10 @@ public class TacheService {
     }
 
     @Transactional
-    public void deleteTask(String title, Integer taskId, String username) {
-        log.debug(ApiStrings.DELETING_TASK, taskId, title);
-        tacheServiceDAO.deleteTask(title, taskId, username);
+    public void deleteTask(String title, String username) {
+        log.debug(ApiStrings.DELETING_TASK, title);
+        var task = new TacheDAO();
+        tacheServiceDAO.deleteTask(task);
     }
 
     @Transactional(readOnly = true)

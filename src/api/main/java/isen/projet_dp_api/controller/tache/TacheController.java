@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import isen.projet_dp_api.model.ApiException;
 import isen.projet_dp_api.model.dto.TacheDTO;
@@ -32,7 +33,7 @@ public interface TacheController {
                             mediaType = "application/json",
                             schema = @Schema(implementation = ApiException.ErrorResponse.class)
                     ))
-            }
+            }, security = @SecurityRequirement(name = "bearerAuth")
     )
     ResponseEntity<TacheDTO> createTask(@PathVariable("title") String title,
                                         @RequestBody @Valid TacheDTO tacheDTO,
@@ -56,10 +57,9 @@ public interface TacheController {
                             mediaType = "application/json",
                             schema = @Schema(implementation = ApiException.ErrorResponse.class)
                     ))
-            }
+            }, security = @SecurityRequirement(name = "bearerAuth")
     )
     ResponseEntity<TacheDTO> updateTask(@PathVariable("title") String title,
-                                        @RequestParam Integer taskId,
                                         @RequestBody @Valid TacheDTO tacheDTO,
                                         @AuthenticationPrincipal UserDetails userDetails);
 
@@ -84,7 +84,6 @@ public interface TacheController {
             }
     )
     ResponseEntity<Void> deleteTask(@PathVariable("title") String title,
-                                    @RequestParam Integer taskId,
                                     @AuthenticationPrincipal UserDetails userDetails);
 
     @GetMapping("/api/projects/{title}/tasks")
@@ -104,7 +103,7 @@ public interface TacheController {
                             mediaType = "application/json",
                             schema = @Schema(implementation = ApiException.ErrorResponse.class)
                     ))
-            }
+            }, security = @SecurityRequirement(name = "bearerAuth")
     )
-    ResponseEntity<List<TacheDTO>> getTasksByProject(@PathVariable("title") String title);
+    ResponseEntity<List<TacheDTO>> getTasksByProject(@PathVariable("title") String title, @AuthenticationPrincipal UserDetails userDetails);
 }
