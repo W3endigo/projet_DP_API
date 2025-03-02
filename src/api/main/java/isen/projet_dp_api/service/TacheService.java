@@ -55,8 +55,8 @@ public class TacheService {
     @Transactional
     public TacheDTO updateTask(String title, TacheDTO tacheDTO, String username) {
         log.debug(ApiStrings.UPDATING_TASK, tacheDTO.getName(), title);
-        TacheDAO tacheDAO = new TacheDAO();
-        tacheDAO.setName(tacheDTO.getName());
+        TacheDAO tacheDAO = tacheServiceDAO.getTaskByNameAndAssignedUserEmail(title, username);
+                tacheDAO.setName(tacheDTO.getName());
         tacheDAO.setDescription(tacheDTO.getDescription());
         TacheDAO updatedTask = tacheServiceDAO.updateTask(tacheDAO);
         return new TacheDTO(

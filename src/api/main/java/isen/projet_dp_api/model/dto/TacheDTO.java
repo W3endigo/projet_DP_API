@@ -25,6 +25,6 @@ public class TacheDTO {
     @Schema(description = "Identifier of the project this task is associated with", example = "1")
     private Integer projectId;
 
-    @Schema(description = "Email of the assigned user (optional)", example = "jane.doe@example.com")
+    @Schema(description = "Email of the assigned user (optional)", example = "john.doe@example.com")
     private String assignedUser;
 }

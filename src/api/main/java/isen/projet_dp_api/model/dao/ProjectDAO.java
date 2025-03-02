@@ -18,7 +18,7 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 @EqualsAndHashCode(exclude = {"participants", "companies"})
-@ToString(exclude = {"participants", "companies"})
+@ToString(exclude = {"participants", "companies", "taches"})
 public class ProjectDAO {
 
     @Id

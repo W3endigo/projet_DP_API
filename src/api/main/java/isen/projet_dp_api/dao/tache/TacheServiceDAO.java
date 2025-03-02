@@ -9,11 +9,13 @@ public interface TacheServiceDAO {
 
     TacheDAO getTaskById(Integer id);
 
-    void deleteTask(String title, Integer taskId, String username);
-
     TacheDAO updateTask(TacheDAO tacheDAO);
 
     void deleteTask(TacheDAO tacheDAO);
 
     List<TacheDAO> getTasksByProject(String title);
+
+    TacheDAO getTaskByNameAndAssignedUserEmail(String title, String assignedUserEmail);
+
+
 }

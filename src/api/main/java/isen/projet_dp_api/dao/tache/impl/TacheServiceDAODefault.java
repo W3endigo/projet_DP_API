@@ -40,11 +40,6 @@ public class TacheServiceDAODefault implements TacheServiceDAO {
     }
 
     @Override
-    public void deleteTask(String title, Integer taskId, String username) {
-        //TODO
-    }
-
-    @Override
     public TacheDAO updateTask(TacheDAO tacheDAO) {
         try {
             return tacheRepository.save(tacheDAO);
@@ -66,5 +61,11 @@ public class TacheServiceDAODefault implements TacheServiceDAO {
         return tacheRepository.findByProjectTitle(title)
                 .orElseThrow(() -> new EntityNotFoundException("No tasks found for project with title: " + title));
 
+    }
+
+    @Override
+    public TacheDAO getTaskByNameAndAssignedUserEmail(String title, String assignedUserEmail) {
+        return tacheRepository.findByNameAndAssignedUserEmail(title, assignedUserEmail)
+                .orElseThrow(() -> new EntityNotFoundException("No task found name: " + title + " and for user: " + assignedUserEmail));
     }
 }

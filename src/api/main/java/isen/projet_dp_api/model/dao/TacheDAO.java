@@ -20,6 +20,7 @@ public class TacheDAO {
 
     private String description;
 
+    @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_id", nullable = false)
     @JsonBackReference
