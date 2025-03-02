@@ -48,7 +48,6 @@ public class ProjectCompaniesServiceDAOMock implements ProjectCompaniesServiceDA
 
     @Override
     public void deleteProjectCompaniesByCompanyNameAndProjectId(String name, Integer projectId) {
-        log.info(name);
         if (!name.equals(TestStrings.COMPANY_THIRD)) {
             throw new IllegalArgumentException("Company name is not valid");
         }
