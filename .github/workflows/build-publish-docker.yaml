@@ -33,3 +33,4 @@ jobs:
         run: docker push "${{ secrets.DOCKER_USERNAME }}/api_projet:latest"
 
       - name: Push DB Docker image
+        run: docker push "${{ secrets.DOCKER_USERNAME }}/db_projet:latest"
