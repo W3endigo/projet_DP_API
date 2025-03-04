@@ -13,6 +13,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.context.Context;
 
 import java.util.ArrayList;
@@ -49,6 +50,7 @@ public class UserService {
         var projectsDTO = new ArrayList<ProjectDTO>();
 
         var participations = this.participantServiceDAO.getParticipantsByEmail(userDetails.getUsername());
+
         for (var participation : participations) {
             projectsDTO.add(projectService.getProjectById(participation.getProject().getId()));
         }
@@ -90,6 +92,12 @@ public class UserService {
         var context = new Context();
         context.setVariable(ApiStrings.NAME, createdUser.getFirstName());
         return emailService.sendEmailTemplatePicture(createdUser.getEmail(), EmailTypes.UPDATE_PROFILE, context, Optional.empty());
+    }
+
+    @Transactional
+    public void deleteUser(String email) {
+        var user = userServiceDAO.getUserByEmail(email);
+        userServiceDAO.deleteUser(user);
     }
 
 }

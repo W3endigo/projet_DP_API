@@ -3,6 +3,7 @@ package isen.projet_dp_api.controller;
 import isen.projet_dp_api.model.ApiException;
 import isen.projet_dp_api.model.dto.CompanyDTO;
 import isen.projet_dp_api.utils.TestStrings;
+import isen.projet_dp_api.utils.exception.ErrorMessage;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
@@ -33,6 +34,19 @@ public class CompanyControllerTest extends ControllerTest {
                 )
         ).isEqualTo(companyDTO);
 
+
+        var newCompanyDTO = new CompanyDTO(TestStrings.COMPANY_THIRD);
+
+        assertThat(
+                put(
+                        path,
+                        newCompanyDTO,
+                        ApiException.ErrorResponse.class,
+                        jwt
+                )
+        ).extracting(ApiException.ErrorResponse::message)
+                .isEqualTo(ErrorMessage.ERROR_INTERNAL_SERVER);
+
     }
 
     @Test
@@ -44,6 +58,8 @@ public class CompanyControllerTest extends ControllerTest {
         var company = get(path, CompanyDTO.class, jwt);
 
         assertThat(company.getName()).isEqualTo(TestStrings.COMPANY);
+
+
     }
 
     @Test
@@ -78,9 +94,18 @@ public class CompanyControllerTest extends ControllerTest {
         var path = "/api/company/" + TestStrings.COMPANY_THIRD;
 
         var jwt = loginAndGetToken(TestStrings.EMAIL_HAROLD, TestStrings.PASSWORD);
-
         assertThat(delete(path, new CompanyDTO(TestStrings.COMPANY), jwt).getStatusCode()).isEqualTo(200);
 
+
+        var path2 = "/api/company/" + TestStrings.COMPANY_FOURTH;
+        assertThat(delete(path2, new CompanyDTO(TestStrings.COMPANY_FOURTH), jwt).getStatusCode()).isEqualTo(500);
+
+
+        var path3 = "/api/company/" + TestStrings.COMPANY_FIFTH;
+        assertThat(delete(path3, new CompanyDTO(TestStrings.COMPANY_FIFTH), jwt).getStatusCode()).isEqualTo(500);
+
+        var path4 = "/api/company/" + TestStrings.COMPANY_SIXTH;
+        assertThat(delete(path4, new CompanyDTO(TestStrings.COMPANY_FIFTH), jwt).getStatusCode()).isEqualTo(500);
     }
 
 

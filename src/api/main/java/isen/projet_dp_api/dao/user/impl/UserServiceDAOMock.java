@@ -18,7 +18,7 @@ public class UserServiceDAOMock implements UserServiceDAO {
 
     @Override
     public UserDAO registerUser(UserDAO userDAO) {
-        if (userDAO.getEmail().equals(TestStrings.EMAIL_HAROLD) || userDAO.getEmail().equals(TestStrings.EMAIL_ASTRID)) {
+        if (userDAO.getEmail().equals(TestStrings.EMAIL_HAROLD) || userDAO.getEmail().equals(TestStrings.EMAIL_ASTRID) || userDAO.getEmail().equals(TestStrings.EMAIL_DRAGON)) {
             return userDAO;
         } else {
             throw new ApiException(ErrorMessage.ERROR_REGISTERING_USER, HttpStatus.BAD_REQUEST);
@@ -27,7 +27,7 @@ public class UserServiceDAOMock implements UserServiceDAO {
 
     @Override
     public UserDAO getUserByEmail(String email) {
-        if (email.equals(TestStrings.EMAIL_HAROLD) || email.equals(TestStrings.EMAIL_ASTRID)) {
+        if (email.equals(TestStrings.EMAIL_HAROLD) || email.equals(TestStrings.EMAIL_ASTRID) || email.equals(TestStrings.EMAIL_DRAGON) || email.equals(TestStrings.EMAIL_BIDULE)) {
             return new UserDAO(email, new BCryptPasswordEncoder().encode(TestStrings.PASSWORD), TestStrings.FIRST_NAME, TestStrings.LAST_NAME, new CompanyDAO(TestStrings.COMPANY), null);
         } else {
             throw new UsernameNotFoundException(String.format(ErrorMessage.ERROR_USER_NOT_FOUND, email));
@@ -39,6 +39,13 @@ public class UserServiceDAOMock implements UserServiceDAO {
         if (userDAO.getEmail().equals(TestStrings.EMAIL_HAROLD)) {
             return userDAO;
         } else {
+            throw new UsernameNotFoundException(String.format(ErrorMessage.ERROR_USER_NOT_FOUND, userDAO.getEmail()));
+        }
+    }
+
+    @Override
+    public void deleteUser(UserDAO userDAO) {
+        if (!userDAO.getEmail().equals(TestStrings.EMAIL_HAROLD)) {
             throw new UsernameNotFoundException(String.format(ErrorMessage.ERROR_USER_NOT_FOUND, userDAO.getEmail()));
         }
     }

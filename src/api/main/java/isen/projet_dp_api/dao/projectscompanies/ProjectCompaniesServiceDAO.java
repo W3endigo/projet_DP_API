@@ -8,7 +8,6 @@ import java.util.List;
 @Service
 public interface ProjectCompaniesServiceDAO {
 
-    ProjectCompaniesDAO createProjectCompanies(ProjectCompaniesDAO projectCompaniesDAO);
 
     List<ProjectCompaniesDAO> getProjectCompaniesByProjectId(Integer projectId);
 

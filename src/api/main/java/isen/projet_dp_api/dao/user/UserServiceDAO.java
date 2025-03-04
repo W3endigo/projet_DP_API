@@ -12,4 +12,7 @@ public interface UserServiceDAO {
 
     UserDAO updateUser(UserDAO userDAO);
 
+    void deleteUser(UserDAO userDAO);
+
+
 }

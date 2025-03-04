@@ -92,7 +92,6 @@ public class ProjectService {
 
             }
         }
-        log.info("FIN {}", projectDAO);
 
         var status = emailError.isPresent() ? ApiResponseMessage.PARTIAL_SUCCESS : ApiResponseMessage.SUCCESS;
         var message = ApiResponseMessage.PROJECT_CREATION_SUCCESS + (emailError.isPresent() ? ApiResponseMessage.EMAIL_SEND_ERROR : ApiResponseMessage.EMAIL_SEND_SUCCESS);
@@ -103,7 +102,6 @@ public class ProjectService {
 
     @Transactional
     public ProjectDTO updateProject(ProjectDTO projectDTO, String email, String title) {
-
         var project = projectServiceDAO.getProjectByEmailAndTitle(email, title);
 
         if (projectDTO.getTitle() != null && !projectDTO.getTitle().isEmpty()) {
@@ -113,7 +111,6 @@ public class ProjectService {
         if (projectDTO.getEmail_chef_project() != null && !projectDTO.getEmail_chef_project().isEmpty()) {
             var existingUserFromMail = userServiceDAO.getUserByEmail(projectDTO.getEmail_chef_project());
             project.setEmail(existingUserFromMail);
-            log.info(existingUserFromMail);
         }
 
         if (projectDTO.getDescription() != null && !projectDTO.getDescription().isEmpty()) {
@@ -170,7 +167,6 @@ public class ProjectService {
         if (projectDTO.getCompagnies() != null) {
             var currentCompanies = project.getCompanies();
             var newCompanyNames = projectDTO.getCompagnies().stream().map(ProjectCompaniesDTO::getName).toList();
-
             currentCompanies.removeIf(company -> {
                 if (!newCompanyNames.contains(company.getCompany().getName())) {
                     projectCompaniesServiceDAO.deleteProjectCompaniesByCompanyNameAndProjectId(

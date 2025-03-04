@@ -40,8 +40,19 @@ public class UserControllerImpl implements UserController {
     }
 
     @Override
+    public ResponseEntity<Void> deleteUser(UserDetails userDetails) {
+        log.debug(ApiStrings.DELETE_USER, userDetails.getUsername());
+        userService.deleteUser(userDetails.getUsername());
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+
+    @Override
     public ResponseEntity<ArrayList<ProjectDTO>> getParticipations(@AuthenticationPrincipal UserDetails userDetails) {
         log.debug(ApiStrings.GETTING_PARTICIPATIONS, userDetails.getUsername());
         return new ResponseEntity<>(userService.getProjectParticipation(userDetails), HttpStatus.OK);
     }
+
+
+
 }

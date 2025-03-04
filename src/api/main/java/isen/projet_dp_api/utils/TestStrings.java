@@ -19,6 +19,10 @@ public class TestStrings {
 
     public static final String EMAIL_KROKMOU = "krokmou@berk.com";
 
+    public static final String EMAIL_DRAGON = "dagon@berk.com";
+
+    public static final String EMAIL_BIDULE = "bidule@berk.com";
+
     public static final String PASSWORD = "astrid4life";
 
     public static final String FIRST_NAME = "Harold";
@@ -26,6 +30,12 @@ public class TestStrings {
     public static final String LAST_NAME = "Haddock";
 
     public static final String COMPANY = "Dragon School";
+
+    public static final String COMPANY_FOURTH = "MSF";
+
+    public static final String COMPANY_FIFTH= "PETROLE";
+
+    public static final String COMPANY_SIXTH= "PISTACHE";
 
     public static final String FIRST_NAME_SECONDARY = "Astrid";
 
@@ -42,6 +52,8 @@ public class TestStrings {
     public static final String NEW_DESCRIPTION = "Project description";
 
     public static final String TITLE = "Project";
+
+    public static final String TITLE_SECOND = "Project 2";
 
     public static final Integer PROJECT_COMP_ID = 1;
 
