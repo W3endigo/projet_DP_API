@@ -1,0 +1,27 @@
+name: build-publish-docker
+on:
+  workflow_dispatch
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Log in to Docker Hub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: Build API Docker image
+        run: docker build -t "${{ secrets.DOCKER_USERNAME }}/api_projet:latest" -f Dockerfile .
+
+      - name: Build DB Docker image
+        run: docker build -t "${{ secrets.DOCKER_USERNAME }}/db_projet:latest" -f src/db/Dockerfile .
+
+      - name: List Docker images
+        run: docker images
+
+      - name: Push API Docker image
+        run: docker push "${{ secrets.DOCKER_USERNAME }}/api_projet:latest"
+
+      - name: Push DB Docker image
+        run: docker push "${{ secrets.DOCKER_USERNAME }}/db_projet:latest"
