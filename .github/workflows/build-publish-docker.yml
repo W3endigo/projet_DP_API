@@ -8,6 +8,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Set up JDK 21
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Build with Gradle
+        run: ./gradlew build
+
       - name: Log in to Docker Hub
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
@@ -24,4 +33,3 @@ jobs:
         run: docker push "${{ secrets.DOCKER_USERNAME }}/api_projet:latest"
 
       - name: Push DB Docker image
-        run: docker push "${{ secrets.DOCKER_USERNAME }}/db_projet:latest"
