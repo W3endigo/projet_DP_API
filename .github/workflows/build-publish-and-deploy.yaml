@@ -26,64 +26,64 @@ jobs:
       - name: Push DB Docker image
         run: docker push "${{ secrets.DOCKER_USERNAME }}/db_projet:latest"
 
-  deploy:
-    runs-on: ubuntu-latest
+  # deploy:
+  #   runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v2
 
-      - name: Set up AWS CLI
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
-          aws-region: eu-west-3
+  #     - name: Set up AWS CLI
+  #       uses: aws-actions/configure-aws-credentials@v1
+  #       with:
+  #         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+  #         aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
+  #         aws-region: eu-west-3
 
-      - name: Create EC2 Instance
-        run: |
-          instance_id=$(aws ec2 run-instances --image-id ami-0446057e5961dfab6 --instance-type t2.micro --security-group-ids sg-042896fe2dea4c357 --key-name g10_sshkey --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=g10_instance_github_projet}]' --query 'Instances[0].InstanceId' --output text)
-          echo "Instance ID: $instance_id"
-          echo "INSTANCE_ID=$instance_id" >> $GITHUB_ENV
+  #     - name: Create EC2 Instance
+  #       run: |
+  #         instance_id=$(aws ec2 run-instances --image-id ami-0446057e5961dfab6 --instance-type t2.micro --security-group-ids sg-042896fe2dea4c357 --key-name g10_sshkey --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=g10_instance_github_projet}]' --query 'Instances[0].InstanceId' --output text)
+  #         echo "Instance ID: $instance_id"
+  #         echo "INSTANCE_ID=$instance_id" >> $GITHUB_ENV
 
-      - name: Wait for Instance to be Running
-        run: |
-          aws ec2 wait instance-running --instance-ids ${{ env.INSTANCE_ID }}
+  #     - name: Wait for Instance to be Running
+  #       run: |
+  #         aws ec2 wait instance-running --instance-ids ${{ env.INSTANCE_ID }}
 
-      - name: Get Instance Public DNS
-        id: get_dns
-        run: |
-          public_dns=$(aws ec2 describe-instances --instance-ids ${{ env.INSTANCE_ID }} --query 'Reservations[0].Instances[0].PublicDnsName' --output text)
-          echo "Public DNS: $public_dns"
-          echo "PUBLIC_DNS=$public_dns" >> $GITHUB_ENV
+  #     - name: Get Instance Public DNS
+  #       id: get_dns
+  #       run: |
+  #         public_dns=$(aws ec2 describe-instances --instance-ids ${{ env.INSTANCE_ID }} --query 'Reservations[0].Instances[0].PublicDnsName' --output text)
+  #         echo "Public DNS: $public_dns"
+  #         echo "PUBLIC_DNS=$public_dns" >> $GITHUB_ENV
 
-      - name: Set up SSH key
-        run: |
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > my-key-pair.pem
-          chmod 600 my-key-pair.pem
+  #     - name: Set up SSH key
+  #       run: |
+  #         echo "${{ secrets.SSH_PRIVATE_KEY }}" > my-key-pair.pem
+  #         chmod 600 my-key-pair.pem
 
-      - name: Install Docker and Docker Compose
-        run: |
-          ssh -o StrictHostKeyChecking=no -i my-key-pair.pem ec2-user@${{ env.PUBLIC_DNS }} << 'EOF'
-            sudo yum update -y
-            sudo yum install docker -y
-            sudo service docker start
-            sudo usermod -a -G docker ec2-user
-            sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-            sudo chmod +x /usr/local/bin/docker-compose
-            exit
-          EOF
+  #     - name: Install Docker and Docker Compose
+  #       run: |
+  #         ssh -o StrictHostKeyChecking=no -i my-key-pair.pem ec2-user@${{ env.PUBLIC_DNS }} << 'EOF'
+  #           sudo yum update -y
+  #           sudo yum install docker -y
+  #           sudo service docker start
+  #           sudo usermod -a -G docker ec2-user
+  #           sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+  #           sudo chmod +x /usr/local/bin/docker-compose
+  #           exit
+  #         EOF
 
-      - name: Copy Docker Compose file to EC2
-        run: |
-          scp -o StrictHostKeyChecking=no -i my-key-pair.pem compose.yaml ec2-user@${{ env.PUBLIC_DNS }}:~/compose.yaml
+  #     - name: Copy Docker Compose file to EC2
+  #       run: |
+  #         scp -o StrictHostKeyChecking=no -i my-key-pair.pem compose.yaml ec2-user@${{ env.PUBLIC_DNS }}:~/compose.yaml
 
-      - name: Run Docker Compose on EC2 Instance
-        run: |
-          ssh -o StrictHostKeyChecking=no -i my-key-pair.pem ec2-user@${{ env.PUBLIC_DNS }} << 'EOF'
-            export SPRING_MAIL_USERNAME=${{ secrets.SPRING_MAIL_USERNAME }}
-            export SPRING_MAIL_PASSWORD=${{ secrets.SPRING_MAIL_PASSWORD }}
-            export SPRING_DATASOURCE_USERNAME=${{ secrets.SPRING_DATASOURCE_USERNAME }}
-            export SPRING_DATASOURCE_PASSWORD=${{ secrets.SPRING_DATASOURCE_PASSWORD }}
-            docker-compose -f ~/compose.yaml up -d
-          EOF
+  #     - name: Run Docker Compose on EC2 Instance
+  #       run: |
+  #         ssh -o StrictHostKeyChecking=no -i my-key-pair.pem ec2-user@${{ env.PUBLIC_DNS }} << 'EOF'
+  #           export SPRING_MAIL_USERNAME=${{ secrets.SPRING_MAIL_USERNAME }}
+  #           export SPRING_MAIL_PASSWORD=${{ secrets.SPRING_MAIL_PASSWORD }}
+  #           export SPRING_DATASOURCE_USERNAME=${{ secrets.SPRING_DATASOURCE_USERNAME }}
+  #           export SPRING_DATASOURCE_PASSWORD=${{ secrets.SPRING_DATASOURCE_PASSWORD }}
+  #           docker-compose -f ~/compose.yaml up -d
+  #         EOF
