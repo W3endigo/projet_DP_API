@@ -6,9 +6,11 @@ import isen.projet_dp_api.enums.PicturesTypes;
 import isen.projet_dp_api.utils.ApiStrings;
 import isen.projet_dp_api.utils.exception.ErrorMessage;
 import isen.projet_dp_api.utils.exception.LogExceptionUtils;
+import isen.projet_dp_api.utils.ResourceLoaderUtil;
 import lombok.extern.log4j.Log4j2;
 import org.eclipse.angus.mail.util.MailConnectException;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,7 @@ import jakarta.mail.MessagingException;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Optional;
@@ -56,7 +59,7 @@ public class EmailService {
             helper.setFrom(emailFrom);
 
             // Add logo image inline
-            helper.addInline(PicturesTypes.LOGO.getImageVarName(), new FileSystemResource(new File(PicturesTypes.LOGO.getImagePath())));
+            helper.addInline(PicturesTypes.LOGO.getImageVarName(), new ByteArrayResource(ResourceLoaderUtil.getResourceAsStream(PicturesTypes.LOGO.getImagePath()).readAllBytes()));
 
             // Add other images inline if provided
             if (pictures.isPresent()) {
@@ -74,6 +77,8 @@ public class EmailService {
         } catch (MessagingException e) {
             LogExceptionUtils.logException(this.getClass(), ErrorMessage.ERROR_SEND_EMAIL + ErrorMessage.ERROR_RENDERING_EMAIL, e);
             return Optional.of(ErrorMessage.ERROR_SEND_EMAIL + ErrorMessage.ERROR_RENDERING_EMAIL);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 }
